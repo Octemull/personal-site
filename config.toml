@@ -1,5 +1,5 @@
 baseURL = "https://octemull.github.io/personal-site/"
 languageCode = "en-us"
-title = "My New Hugo Site"
+title = "Octemull's Personal Site"
 theme = "ananke"
 publishDir = "docs"
