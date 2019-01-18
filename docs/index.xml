@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>My New Hugo Site</title>
-    <link>http://example.org/</link>
+    <link>https://octemull.github.io/personal-site/</link>
     <description>Recent content on My New Hugo Site</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 18 Jan 2019 11:37:41 +0800</lastBuildDate>
     
-	<atom:link href="http://example.org/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://octemull.github.io/personal-site/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>First Post</title>
-      <link>http://example.org/posts/first-post/</link>
+      <link>https://octemull.github.io/personal-site/posts/first-post/</link>
       <pubDate>Fri, 18 Jan 2019 11:37:41 +0800</pubDate>
       
-      <guid>http://example.org/posts/first-post/</guid>
+      <guid>https://octemull.github.io/personal-site/posts/first-post/</guid>
       <description> Hello World !    子目录名称 功能     archetypes 新文章默认模板   config.toml Hugo配置文档   content 存放所有Markdown格式的文章   layouts 存放自定义的view，可为空   static 存放图像、CNAME、css、js等资源，发布后该目录下所有资源将处于网页根目录   themes 存放下载的主题    </description>
     </item>
     
