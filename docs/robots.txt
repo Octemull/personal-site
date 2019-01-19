@@ -1,0 +1,2 @@
+User-agent: *
+Sitemap: https://octemull.github.io/personal-site/sitemap.xml

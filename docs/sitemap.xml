@@ -1,36 +1,125 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+<?xml-stylesheet type="text/xsl" href="https://octemull.github.io/personal-site/sitemap.xsl"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://octemull.github.io/personal-site/posts/detecting-influenza-epidemics-using-search-engine-query-data/</loc>
-    <lastmod>2019-01-18T11:37:41+08:00</lastmod>
+    <loc>https://octemull.github.io/personal-site/about/</loc>
+    <lastmod>2017-08-28T21:41:52+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://octemull.github.io/personal-site/posts/first-post/</loc>
-    <lastmod>2019-01-18T11:37:41+08:00</lastmod>
+    <loc>https://octemull.github.io/personal-site/post/svm-3d-boundary/</loc>
+    <lastmod>2019-01-19T19:18:01+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://octemull.github.io/personal-site/categories/</loc>
+    <loc>https://octemull.github.io/personal-site/post/hugo/</loc>
+    <lastmod>2019-01-18T11:37:41+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://octemull.github.io/personal-site/post/first-post/</loc>
+    <lastmod>2019-01-18T11:37:41+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://octemull.github.io/personal-site/</loc>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://octemull.github.io/personal-site/</loc>
-    <lastmod>2019-01-18T11:37:41+08:00</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://octemull.github.io/personal-site/posts/</loc>
+    <loc>https://octemull.github.io/personal-site/5/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://octemull.github.io/personal-site/categories/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://octemull.github.io/personal-site/categories/development/</loc>
     <lastmod>2019-01-18T11:37:41+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://octemull.github.io/personal-site/linenostable/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://octemull.github.io/personal-site/octemull/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://octemull.github.io/personal-site/</loc>
+    <lastmod>2017-08-28T21:41:52+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://octemull.github.io/personal-site/post/</loc>
+    <lastmod>2019-01-19T19:18:01+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://octemull.github.io/personal-site/series/</loc>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://octemull.github.io/personal-site/tags/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://octemull.github.io/personal-site/true/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://octemull.github.io/personal-site/true/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://octemull.github.io/personal-site/true/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://octemull.github.io/personal-site/true/</loc>
+    <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
   

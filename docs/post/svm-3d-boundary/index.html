@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>在Matlab下利用Libsvm的输出模型画SVM三维特征的二分类曲面 - Octemull&#39;s Personal Site</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Octemull" /><meta name="description" content="前言 在做毕设的时候用到了支持向量机（SVM）做分类，当特征为3维的时候，想画一个分类面出来。因为在matlab中使用的Libsvm包，没有画三维分类面的功能，所以参考了stackoverflow上的一个问题，写了一下画三维分类曲面的程序。
+所用软件  Matlab R2017b Libsvm-3.22 （安装在matlab的toolbox中）  所用数据    变量名 说明     model 用Libsvm建模输出的模型   train_data 标准化后的训练数据，每一行是一个样本，每一列是一个特征   train_target 样本标记，0-1向量    数据示例 说明  negative样本在前，positive样本在后 negative样本标记0，positive样本标记1 train_data已经标准化到-1、1之间（标准化后方便svm的训练和曲面的展示）  train_data train_target 训练模型 model = svmtrain(train_target,train_data, [&#39;-t 2 -c 100 -g&#39;, num2str(1/3),&#39; -b 1 -q&#39;]);  代码 Main Code | 主代码 close all clear clc tic % 开始计时 %% load data 加载数据 load(&#39;model&#39;,&#39;train_data&#39;,&#39;train_target&#39;) Xdata_scaled = train_data; group = train_target; %% code GN3Dplot(Xdata_scaled,sum(group==0),sum(group==1),0,0,0,0); %plot samples 画三维图 xlabel(&#39;F1&#39;);ylabel(&#39;F3&#39;); zlabel(&#39;F6&#39;); ylim([-1 0]); yticks([-1 -0." /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.53 with even 4.0.0" />
+
+
+<link rel="canonical" href="https://octemull.github.io/personal-site/post/svm-3d-boundary/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/personal-site/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/personal-site/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/personal-site/favicon-16x16.png">
+<link rel="manifest" href="/personal-site/manifest.json">
+<link rel="mask-icon" href="/personal-site/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/personal-site/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="在Matlab下利用Libsvm的输出模型画SVM三维特征的二分类曲面" />
+<meta property="og:description" content="前言 在做毕设的时候用到了支持向量机（SVM）做分类，当特征为3维的时候，想画一个分类面出来。因为在matlab中使用的Libsvm包，没有画三维分类面的功能，所以参考了stackoverflow上的一个问题，写了一下画三维分类曲面的程序。
+所用软件  Matlab R2017b Libsvm-3.22 （安装在matlab的toolbox中）  所用数据    变量名 说明     model 用Libsvm建模输出的模型   train_data 标准化后的训练数据，每一行是一个样本，每一列是一个特征   train_target 样本标记，0-1向量    数据示例 说明  negative样本在前，positive样本在后 negative样本标记0，positive样本标记1 train_data已经标准化到-1、1之间（标准化后方便svm的训练和曲面的展示）  train_data train_target 训练模型 model = svmtrain(train_target,train_data, [&#39;-t 2 -c 100 -g&#39;, num2str(1/3),&#39; -b 1 -q&#39;]);  代码 Main Code | 主代码 close all clear clc tic % 开始计时 %% load data 加载数据 load(&#39;model&#39;,&#39;train_data&#39;,&#39;train_target&#39;) Xdata_scaled = train_data; group = train_target; %% code GN3Dplot(Xdata_scaled,sum(group==0),sum(group==1),0,0,0,0); %plot samples 画三维图 xlabel(&#39;F1&#39;);ylabel(&#39;F3&#39;); zlabel(&#39;F6&#39;); ylim([-1 0]); yticks([-1 -0." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://octemull.github.io/personal-site/post/svm-3d-boundary/" /><meta property="article:published_time" content="2019-01-19T19:18:01&#43;08:00"/>
+<meta property="article:modified_time" content="2019-01-19T19:18:01&#43;08:00"/>
+
+<meta itemprop="name" content="在Matlab下利用Libsvm的输出模型画SVM三维特征的二分类曲面">
+<meta itemprop="description" content="前言 在做毕设的时候用到了支持向量机（SVM）做分类，当特征为3维的时候，想画一个分类面出来。因为在matlab中使用的Libsvm包，没有画三维分类面的功能，所以参考了stackoverflow上的一个问题，写了一下画三维分类曲面的程序。
+所用软件  Matlab R2017b Libsvm-3.22 （安装在matlab的toolbox中）  所用数据    变量名 说明     model 用Libsvm建模输出的模型   train_data 标准化后的训练数据，每一行是一个样本，每一列是一个特征   train_target 样本标记，0-1向量    数据示例 说明  negative样本在前，positive样本在后 negative样本标记0，positive样本标记1 train_data已经标准化到-1、1之间（标准化后方便svm的训练和曲面的展示）  train_data train_target 训练模型 model = svmtrain(train_target,train_data, [&#39;-t 2 -c 100 -g&#39;, num2str(1/3),&#39; -b 1 -q&#39;]);  代码 Main Code | 主代码 close all clear clc tic % 开始计时 %% load data 加载数据 load(&#39;model&#39;,&#39;train_data&#39;,&#39;train_target&#39;) Xdata_scaled = train_data; group = train_target; %% code GN3Dplot(Xdata_scaled,sum(group==0),sum(group==1),0,0,0,0); %plot samples 画三维图 xlabel(&#39;F1&#39;);ylabel(&#39;F3&#39;); zlabel(&#39;F6&#39;); ylim([-1 0]); yticks([-1 -0.">
+
+
+<meta itemprop="datePublished" content="2019-01-19T19:18:01&#43;08:00" />
+<meta itemprop="dateModified" content="2019-01-19T19:18:01&#43;08:00" />
+<meta itemprop="wordCount" content="378">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="在Matlab下利用Libsvm的输出模型画SVM三维特征的二分类曲面"/>
+<meta name="twitter:description" content="前言 在做毕设的时候用到了支持向量机（SVM）做分类，当特征为3维的时候，想画一个分类面出来。因为在matlab中使用的Libsvm包，没有画三维分类面的功能，所以参考了stackoverflow上的一个问题，写了一下画三维分类曲面的程序。
+所用软件  Matlab R2017b Libsvm-3.22 （安装在matlab的toolbox中）  所用数据    变量名 说明     model 用Libsvm建模输出的模型   train_data 标准化后的训练数据，每一行是一个样本，每一列是一个特征   train_target 样本标记，0-1向量    数据示例 说明  negative样本在前，positive样本在后 negative样本标记0，positive样本标记1 train_data已经标准化到-1、1之间（标准化后方便svm的训练和曲面的展示）  train_data train_target 训练模型 model = svmtrain(train_target,train_data, [&#39;-t 2 -c 100 -g&#39;, num2str(1/3),&#39; -b 1 -q&#39;]);  代码 Main Code | 主代码 close all clear clc tic % 开始计时 %% load data 加载数据 load(&#39;model&#39;,&#39;train_data&#39;,&#39;train_target&#39;) Xdata_scaled = train_data; group = train_target; %% code GN3Dplot(Xdata_scaled,sum(group==0),sum(group==1),0,0,0,0); %plot samples 画三维图 xlabel(&#39;F1&#39;);ylabel(&#39;F3&#39;); zlabel(&#39;F6&#39;); ylim([-1 0]); yticks([-1 -0."/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/personal-site/" class="logo">Octemull</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/personal-site/post/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/personal-site/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/personal-site/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/personal-site/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/personal-site/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/personal-site/" class="logo">Octemull</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/personal-site/post/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/personal-site/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/personal-site/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/personal-site/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/personal-site/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">在Matlab下利用Libsvm的输出模型画SVM三维特征的二分类曲面</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2019-01-19 </span>
+        
+          <span class="more-meta"> 378 words </span>
+          <span class="more-meta"> 2 mins read </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents">
+<ul>
+<li><a href="#前言">前言</a></li>
+<li><a href="#所用软件">所用软件</a></li>
+<li><a href="#所用数据">所用数据</a></li>
+<li><a href="#数据示例">数据示例</a>
+<ul>
+<li>
+<ul>
+<li><a href="#说明">说明</a></li>
+<li><a href="#train-data">train_data</a></li>
+<li><a href="#train-target">train_target</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#训练模型">训练模型</a></li>
+<li><a href="#代码">代码</a>
+<ul>
+<li>
+<ul>
+<li><a href="#main-code-主代码">Main Code | 主代码</a></li>
+<li><a href="#rbf-kernel-function-径向基核函数">RBF kernel function | 径向基核函数</a></li>
+<li><a href="#gn3dplot-三维散点图的绘制">GN3Dplot | 三维散点图的绘制</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#图像展示">图像展示</a>
+<ul>
+<li>
+<ul>
+<li><a href="#colorful-grid-彩色网格">colorful grid | 彩色网格</a></li>
+<li><a href="#black-grid-黑色网格">black grid 黑色网格</a></li>
+<li><a href="#black-plane-with-alpha-黑色曲面-可通过alpha调节透明度">black plane with alpha 黑色曲面，可通过alpha调节透明度</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#参考">参考</a></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      
+
+<h1 id="前言">前言</h1>
+
+<p>在做毕设的时候用到了支持向量机（SVM）做分类，当特征为3维的时候，想画一个分类面出来。因为在matlab中使用的Libsvm包，没有画三维分类面的功能，所以参考了stackoverflow上的一个问题，写了一下画三维分类曲面的程序。</p>
+
+<h1 id="所用软件">所用软件</h1>
+
+<ol>
+<li>Matlab R2017b</li>
+<li>Libsvm-3.22 （安装在matlab的toolbox中）</li>
+</ol>
+
+<h1 id="所用数据">所用数据</h1>
+
+<table>
+<thead>
+<tr>
+<th>变量名</th>
+<th>说明</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>model</td>
+<td>用Libsvm建模输出的模型</td>
+</tr>
+
+<tr>
+<td>train_data</td>
+<td>标准化后的训练数据，每一行是一个样本，每一列是一个特征</td>
+</tr>
+
+<tr>
+<td>train_target</td>
+<td>样本标记，0-1向量</td>
+</tr>
+</tbody>
+</table>
+
+<h1 id="数据示例">数据示例</h1>
+
+<h3 id="说明">说明</h3>
+
+<ol>
+<li>negative样本在前，positive样本在后</li>
+<li>negative样本标记0，positive样本标记1</li>
+<li>train_data已经标准化到-1、1之间（标准化后方便svm的训练和曲面的展示）</li>
+</ol>
+
+<h3 id="train-data">train_data</h3>
+
+<p><img src="https://i.loli.net/2019/01/19/5c4319e8359e0.jpg" alt="" /></p>
+
+<h3 id="train-target">train_target</h3>
+
+<p><img src="https://i.loli.net/2019/01/19/5c431a19aa4a3.jpg" alt="" /></p>
+
+<h1 id="训练模型">训练模型</h1>
+
+<pre><code class="language-matlab">model = svmtrain(train_target,train_data, ['-t 2 -c 100 -g', num2str(1/3),' -b 1 -q']); 
+</code></pre>
+
+<h1 id="代码">代码</h1>
+
+<h3 id="main-code-主代码">Main Code | 主代码</h3>
+
+<pre><code class="language-Matlab">close all
+clear
+clc
+
+tic % 开始计时
+
+%% load data 加载数据
+load('model','train_data','train_target') 
+
+Xdata_scaled = train_data;
+group = train_target;
+
+
+%% code 
+GN3Dplot(Xdata_scaled,sum(group==0),sum(group==1),0,0,0,0); %plot samples 画三维图
+xlabel('F1');ylabel('F3'); zlabel('F6');
+ylim([-1 0]);
+yticks([-1 -0.75 -0.5 -0.25 0])
+yticklabels({'-1','-0.5','0','0.5','1'})
+set(gca,'fontsize',14)
+box on
+
+k = 30; %grid density 网格密度，越大越慢
+cubeXMin = min(Xdata_scaled(:,1));
+cubeYMin = min(Xdata_scaled(:,2));
+cubeZMin = min(Xdata_scaled(:,3));
+
+cubeXMax = max(Xdata_scaled(:,1));
+cubeYMax = max(Xdata_scaled(:,2));
+cubeZMax = max(Xdata_scaled(:,3));
+stepx = (cubeXMax-cubeXMin)/(k-1);
+stepy = (cubeYMax-cubeYMin)/(k-1);
+stepz = (cubeZMax-cubeZMin)/(k-1);
+[x, y, z] = meshgrid(cubeXMin:stepx:cubeXMax,cubeYMin:stepy:cubeYMax,cubeZMin:stepz:cubeZMax);
+mm = size(x);
+x = x(:);
+y = y(:);
+z = z(:);
+f = funRBF([x y z],model); %kernel function 核函数，此处为RBF
+
+x0 = reshape(x, mm);
+y0 = reshape(y, mm);
+z0 = reshape(z, mm);
+v0 = reshape(f, mm);
+
+[faces,verts,colors] = isosurface(x0, y0, z0, v0, 0, x0);
+
+grid on
+box on
+
+%% plot 画图
+% colorful grid 彩色网格
+p = patch('Faces',faces,'Vertices',verts,'facecolor','w','edgecolor','flat','CData',verts(:,3), 'FaceAlpha', 0.5)
+
+% black grid 黑色网格
+% p = patch('Faces',faces,'Vertices',verts,'facecolor','w','CData',verts(:,3),'FaceAlpha', 0.5)
+
+% black plane with alpha 黑色曲面，可通过alpha调节透明度
+% p = patch('Vertices', verts, 'Faces', faces, 'FaceColor','k','Edgecolor', 'none', 'FaceAlpha', 0.5);
+
+set(gca,'fontsize',14) %设置图像中的字体大小
+hold off
+
+toc %结束计时
+</code></pre>
+
+<h3 id="rbf-kernel-function-径向基核函数">RBF kernel function | 径向基核函数</h3>
+
+<pre><code class="language-matlab">function y = funRBF(x,model)
+% x: the vector
+% SVs: support vectors
+
+gamma = model.Parameters(4);
+SVs = model.SVs;
+sv_coef = model.sv_coef;
+b = -model.rho;
+
+RBF = @(u,v)( exp(-gamma.*sum( (u-v).^2) ) );
+
+for i = 1:size(x,1)
+    y(i) = 0;
+    for j = 1:size(SVs,1)
+        u = SVs(j,:);
+        y(i) = y(i) + sv_coef(j)*RBF(u,x(i,:));
+    end
+    y(i) = y(i) + b;
+end
+</code></pre>
+
+<h3 id="gn3dplot-三维散点图的绘制">GN3Dplot | 三维散点图的绘制</h3>
+
+<pre><code class="language-matlab">function GN3Dplot(x,nNeg,nPos,xp,yp,zp,textFlag)
+% BZ: if standardized
+% function 
+if size(x,2) &lt; 3
+	error('dim(x) &lt; 3!!!');
+end
+
+n = nPos+nNeg;
+target = [zeros(nNeg,1);ones(nPos,1)];
+
+% plot
+figure; %三维作图
+for i = 1:n
+    if target(i) == 1
+        h1 = stem3(x(i,1),x(i,2),x(i,3),'filled','-r');
+        hold on;
+    else
+%         h2 = stem3(x(i,1),x(i,2),x(i,3),'filled','-b');
+        h2 = stem3(x(i,1),x(i,2),x(i,3),'-.b');
+        hold on;
+    end
+    if textFlag == 1
+        text(x(i,1)+xp,x(i,2)+yp,x(i,3)+zp,num2str(i));
+    end
+end
+legend([h1 h2],'Positive','Negative');
+
+xpp = (max(x(:,1))-min(x(:,1)))/10;
+ypp = (max(x(:,2))-min(x(:,2)))/10;
+zpp = (max(x(:,3))-min(x(:,3)))/10;
+xlim([min(x(:,1)) - xpp,max(x(:,1)) + xpp]);
+ylim([min(x(:,2)) - ypp,max(x(:,2)) + ypp]);
+zlim([min(x(:,3)) - zpp,max(x(:,3)) + zpp]);
+grid on; grid minor;
+hold off;
+
+end
+</code></pre>
+
+<h1 id="图像展示">图像展示</h1>
+
+<h3 id="colorful-grid-彩色网格">colorful grid | 彩色网格</h3>
+
+<p><img src="https://i.loli.net/2019/01/19/5c431e4364c09.jpg" alt="" /></p>
+
+<h3 id="black-grid-黑色网格">black grid 黑色网格</h3>
+
+<p><img src="https://i.loli.net/2019/01/19/5c431e84f2e96.jpg" alt="" /></p>
+
+<h3 id="black-plane-with-alpha-黑色曲面-可通过alpha调节透明度">black plane with alpha 黑色曲面，可通过alpha调节透明度</h3>
+
+<p><img src="https://i.loli.net/2019/01/19/5c431ea2a92c9.jpg" alt="" /></p>
+
+<h1 id="参考">参考</h1>
+
+<p><a href="https://stackoverflow.com/questions/16146212/how-to-plot-a-hyper-plane-in-3d-for-the-svm-results">https://stackoverflow.com/questions/16146212/how-to-plot-a-hyper-plane-in-3d-for-the-svm-results</a></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">Octemull</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">2019-01-19</span>
+  </p>
+  
+  
+</div><footer class="post-footer">
+      
+      <nav class="post-nav">
+        
+        <a class="next" href="/personal-site/post/hugo/">
+            <span class="next-text nav-default">Detecting influenza epidemics using search engine query data</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/Octemull" class="iconfont icon-github" title="github"></a>
+  <a href="https://octemull.github.io/personal-site/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Octemull</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/personal-site/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/personal-site/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

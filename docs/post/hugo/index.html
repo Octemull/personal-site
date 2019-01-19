@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Detecting influenza epidemics using search engine query data - Octemull&#39;s Personal Site</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Octemull" /><meta name="description" content="Paper  Title: Detecting influenza epidemics using search engine query data Authors: Jeremy Ginsberg, Matthew H. Mohebbi, Rajan S. Patel, Lynnette Brammer, Mark S. Smolinski &amp;amp; Larry Brilliant DOI: 10.1038/nature07634 Tags: Year: 2009  Summary  What
+ Propose a method of analyzing large numbers of Google search queries to track influenza-like illness in a population which can shorten reporting lag for 1-2 weeks.  Why analyze Google queries possible" /><meta name="keywords" content="Hugo, theme, even" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.53 with even 4.0.0" />
+
+
+<link rel="canonical" href="https://octemull.github.io/personal-site/post/hugo/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/personal-site/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/personal-site/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/personal-site/favicon-16x16.png">
+<link rel="manifest" href="/personal-site/manifest.json">
+<link rel="mask-icon" href="/personal-site/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/personal-site/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="Detecting influenza epidemics using search engine query data" />
+<meta property="og:description" content="Paper  Title: Detecting influenza epidemics using search engine query data Authors: Jeremy Ginsberg, Matthew H. Mohebbi, Rajan S. Patel, Lynnette Brammer, Mark S. Smolinski &amp; Larry Brilliant DOI: 10.1038/nature07634 Tags: Year: 2009  Summary  What
+ Propose a method of analyzing large numbers of Google search queries to track influenza-like illness in a population which can shorten reporting lag for 1-2 weeks.  Why analyze Google queries possible" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://octemull.github.io/personal-site/post/hugo/" /><meta property="article:published_time" content="2019-01-18T11:37:41&#43;08:00"/>
+<meta property="article:modified_time" content="2019-01-18T11:37:41&#43;08:00"/>
+
+<meta itemprop="name" content="Detecting influenza epidemics using search engine query data">
+<meta itemprop="description" content="Paper  Title: Detecting influenza epidemics using search engine query data Authors: Jeremy Ginsberg, Matthew H. Mohebbi, Rajan S. Patel, Lynnette Brammer, Mark S. Smolinski &amp; Larry Brilliant DOI: 10.1038/nature07634 Tags: Year: 2009  Summary  What
+ Propose a method of analyzing large numbers of Google search queries to track influenza-like illness in a population which can shorten reporting lag for 1-2 weeks.  Why analyze Google queries possible">
+
+
+<meta itemprop="datePublished" content="2019-01-18T11:37:41&#43;08:00" />
+<meta itemprop="dateModified" content="2019-01-18T11:37:41&#43;08:00" />
+<meta itemprop="wordCount" content="520">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Detecting influenza epidemics using search engine query data"/>
+<meta name="twitter:description" content="Paper  Title: Detecting influenza epidemics using search engine query data Authors: Jeremy Ginsberg, Matthew H. Mohebbi, Rajan S. Patel, Lynnette Brammer, Mark S. Smolinski &amp; Larry Brilliant DOI: 10.1038/nature07634 Tags: Year: 2009  Summary  What
+ Propose a method of analyzing large numbers of Google search queries to track influenza-like illness in a population which can shorten reporting lag for 1-2 weeks.  Why analyze Google queries possible"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/personal-site/" class="logo">Octemull</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/personal-site/post/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/personal-site/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/personal-site/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/personal-site/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/personal-site/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/personal-site/" class="logo">Octemull</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/personal-site/post/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/personal-site/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/personal-site/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/personal-site/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/personal-site/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Detecting influenza epidemics using search engine query data</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2019-01-18 </span>
+        <div class="post-category">
+            <a href="/personal-site/categories/development/"> Development </a>
+            </div>
+          <span class="more-meta"> 520 words </span>
+          <span class="more-meta"> 3 mins read </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents">
+<ul>
+<li><a href="#paper">Paper</a></li>
+<li><a href="#summary">Summary</a></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      
+
+<h1 id="paper">Paper</h1>
+
+<ul>
+<li><strong>Title</strong>: Detecting influenza epidemics using search engine query data</li>
+<li><strong>Authors</strong>: Jeremy Ginsberg, Matthew H. Mohebbi, Rajan S. Patel, Lynnette Brammer, Mark S. Smolinski &amp; Larry Brilliant</li>
+<li><strong>DOI</strong>: 10.1038/nature07634</li>
+<li><strong>Tags</strong>:</li>
+<li><strong>Year</strong>: 2009</li>
+</ul>
+
+<h1 id="summary">Summary</h1>
+
+<ul>
+<li><p>What</p>
+
+<ul>
+<li>Propose a method of analyzing large numbers of Google search queries to track influenza-like illness in a population which can shorten reporting lag for 1-2 weeks.</li>
+</ul></li>
+
+<li><p>Why analyze Google queries possible</p>
+
+<ul>
+<li>Innovative surveillance systems become available, e.g. telephone traige advice lines and over-the-counter drug sales.</li>
+<li>A large number of American adults (about 90 million) tend to search online for information about specific disease.</li>
+<li>Data of required queries can be accessed through several websites which collect such information.</li>
+<li>Correlation between a set of <em>Yahoo</em> search queries containing keywords about influenza-like illness and virological and mortality surveillance data were found.</li>
+</ul></li>
+
+<li><p>How</p>
+
+<ul>
+<li>Obtain data
+
+<ul>
+<li>Query fraction
+
+<ul>
+<li>Create a time series of weekly counts for 50 million of the  most common search queries of in the US from search queries logs between 2003 and 2008.</li>
+<li>The time series data was separately calculated for nine states.</li>
+<li><strong>Query fraction</strong> was computed to remove the effect of totla numbers of queries.</li>
+</ul></li>
+<li>ILI data
+
+<ul>
+<li>Publicly available historical data from the CDC&rsquo;s US Influenza Sentinel Provider Surveillance Network.</li>
+<li>Only record data of weeks inside annual influenza seasons.</li>
+</ul></li>
+</ul></li>
+
+<li><p>Method</p>
+
+<ul>
+<li>Linear model
+
+<ul>
+<li>$\mathit{logit}(I(t)) =\alpha \mathit{logit}(Q(t)) + \varepsilon$</li>
+<li>where $I(t)$ is the percentage of ILI physician visits, $Q(t)$ is the ILI-related query fraction at time $t$, $\alpha$ is the multiplicative coefficient, and $\varepsilon$ is the error term. $\mathit{logit}(p)$ is simply $\ln (p/(1 - p))$.</li>
+</ul></li>
+<li>Select ILI-relatied queries
+
+<ul>
+<li>A list of highest scoring search queries
+
+<ul>
+<li>Use one query at a time to measure the efficiency of fitting in each region.</li>
+<li>Reward query which shows regional variations similar to the regional ILI data.</li>
+<li>Obtain a list of highest scoring queries, sorted by mean Z-transformed correlation across nine regions.</li>
+</ul></li>
+<li>A set of search queries
+
+<ul>
+<li>Consider different sets of top $n$ queries in the list. $n=45$ was found to be the best result.
+<img src="media/15474546545213.jpg" alt="-w547" /></li>
+<li>The 45 queries appear to be consistently related to ILIs. Other 55 queries tend to coincide with influenza season in the US.
+<img src="media/15474540867133.jpg" alt="-w534" /></li>
+</ul></li>
+</ul></li>
+</ul></li>
+
+<li><p>Evaluation</p>
+
+<ul>
+<li>Correlation between $\mathit{logit}(I(t))$  and CDC-reported weekly ILI percentages.</li>
+</ul></li>
+</ul></li>
+
+<li><p>Results</p>
+
+<ul>
+<li>For nine region together
+
+<ul>
+<li>Train set: A mean correlation of 0.90 (min=0.80, max=0.96, n=9 regions; Fig.2).
+<img src="media/15474546972090.jpg" alt="-w535" /></li>
+<li>Validation set: A mean correlation of 0.97 (min= 0.92, max = 0.99, n = 9 regions) across 42 validation points.</li>
+<li>Estimate consistently the current ILI percentage <strong>1-2 weeks ahead</strong> of the publication of reports by the CDC&rsquo;s US Influenza Sentinel Provider Surveillance.</li>
+</ul></li>
+
+<li><p>For one state (Utah) only</p>
+
+<ul>
+<li>A correlation of 0.90 across 42 validation points.
+<img src="media/15474549956373.jpg" alt="-w537" /></li>
+</ul></li>
+
+<li><p>Conclusions</p>
+
+<ul>
+<li>Pros
+
+<ul>
+<li>Resulting ILI estimates were consistently 1-2 weeks ahead of CDC&rsquo;s reports.</li>
+<li>Up-to-date report may enable public health officials and health professionals to respond better to seasonal epdemics.</li>
+</ul></li>
+<li>Cons
+
+<ul>
+<li>Can&rsquo;t replace traditional surveillance networks or supplant the need for laboratory-based diagnoses and surveillance.</li>
+<li>The correlations are only meaningful across large populations since the queries are not only submitted by users who are experiencing influenza-like symptoms.</li>
+<li>The system remains susceptible to false alerts caused by a sudden increase in ILI-related queries, such as drug recall event.
+<br /></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">Octemull</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">2019-01-18</span>
+  </p>
+  
+  
+</div><footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/personal-site/post/svm-3d-boundary/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">在Matlab下利用Libsvm的输出模型画SVM三维特征的二分类曲面</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/personal-site/post/first-post/">
+            <span class="next-text nav-default">First Post</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="https://github.com/Octemull" class="iconfont icon-github" title="github"></a>
+  <a href="https://octemull.github.io/personal-site/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Octemull</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/personal-site/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/personal-site/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>

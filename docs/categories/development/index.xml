@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Development on Octemull&#39;s Personal Site</title>
+    <link>https://octemull.github.io/personal-site/categories/development/</link>
+    <description>Recent content in Development on Octemull&#39;s Personal Site</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 18 Jan 2019 11:37:41 +0800</lastBuildDate>
+    
+	<atom:link href="https://octemull.github.io/personal-site/categories/development/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Detecting influenza epidemics using search engine query data</title>
+      <link>https://octemull.github.io/personal-site/post/hugo/</link>
+      <pubDate>Fri, 18 Jan 2019 11:37:41 +0800</pubDate>
+      
+      <guid>https://octemull.github.io/personal-site/post/hugo/</guid>
+      <description>Paper  Title: Detecting influenza epidemics using search engine query data Authors: Jeremy Ginsberg, Matthew H. Mohebbi, Rajan S. Patel, Lynnette Brammer, Mark S. Smolinski &amp;amp; Larry Brilliant DOI: 10.1038/nature07634 Tags: Year: 2009  Summary  What
+ Propose a method of analyzing large numbers of Google search queries to track influenza-like illness in a population which can shorten reporting lag for 1-2 weeks.  Why analyze Google queries possible</description>
+    </item>
+    
+  </channel>
+</rss>
