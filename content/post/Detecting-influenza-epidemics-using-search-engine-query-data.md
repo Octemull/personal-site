@@ -1,3 +1,13 @@
+---
+title: "Detecting influenza epidemics using search engine query data"
+date: 2019-01-18T11:37:41+08:00
+toc: true
+show_comments: true
+slug: hugo
+categories:
+- Development
+---
+
 # Paper
 - **Title**: Detecting influenza epidemics using search engine query data
 - **Authors**: Jeremy Ginsberg, Matthew H. Mohebbi, Rajan S. Patel, Lynnette Brammer, Mark S. Smolinski & Larry Brilliant

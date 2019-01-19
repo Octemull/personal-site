@@ -12,22 +12,22 @@
     
     
     <item>
+      <title>Detecting influenza epidemics using search engine query data</title>
+      <link>https://octemull.github.io/personal-site/posts/detecting-influenza-epidemics-using-search-engine-query-data/</link>
+      <pubDate>Fri, 18 Jan 2019 11:37:41 +0800</pubDate>
+      
+      <guid>https://octemull.github.io/personal-site/posts/detecting-influenza-epidemics-using-search-engine-query-data/</guid>
+      <description>Paper  Title: Detecting influenza epidemics using search engine query data Authors: Jeremy Ginsberg, Matthew H. Mohebbi, Rajan S. Patel, Lynnette Brammer, Mark S. Smolinski &amp;amp; Larry Brilliant DOI: 10.1038/nature07634 Tags: Year: 2009  Summary  What
+ Propose a method of analyzing large numbers of Google search queries to track influenza-like illness in a population which can shorten reporting lag for 1-2 weeks.  Why analyze Google queries possible</description>
+    </item>
+    
+    <item>
       <title>First Post</title>
       <link>https://octemull.github.io/personal-site/posts/first-post/</link>
       <pubDate>Fri, 18 Jan 2019 11:37:41 +0800</pubDate>
       
       <guid>https://octemull.github.io/personal-site/posts/first-post/</guid>
       <description> Hello World !    子目录名称 功能     archetypes 新文章默认模板   config.toml Hugo配置文档   content 存放所有Markdown格式的文章   layouts 存放自定义的view，可为空   static 存放图像、CNAME、css、js等资源，发布后该目录下所有资源将处于网页根目录   themes 存放下载的主题    </description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://octemull.github.io/personal-site/posts/detecting-influenza-epidemics-using-search-engine-query-data/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://octemull.github.io/personal-site/posts/detecting-influenza-epidemics-using-search-engine-query-data/</guid>
-      <description>Paper  Title: Detecting influenza epidemics using search engine query data Authors: Jeremy Ginsberg, Matthew H. Mohebbi, Rajan S. Patel, Lynnette Brammer, Mark S. Smolinski &amp;amp; Larry Brilliant DOI: 10.1038/nature07634 Tags: Year: 2009  Summary  What
- Propose a method of analyzing large numbers of Google search queries to track influenza-like illness in a population which can shorten reporting lag for 1-2 weeks.  Why analyze Google queries possible</description>
     </item>
     
   </channel>
