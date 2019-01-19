@@ -45,21 +45,21 @@ categories:
                 - Obtain a list of highest scoring queries, sorted by mean Z-transformed correlation across nine regions.
             - A set of search queries
                 - Consider different sets of top $n$ queries in the list. $n=45$ was found to be the best result.
-                  ![-w547](media/15474546545213.jpg)
+                  ![-w547](https://i.loli.net/2019/01/19/5c4337e73ee51.jpg)
                 - The 45 queries appear to be consistently related to ILIs. Other 55 queries tend to coincide with influenza season in the US.
-                  ![-w534](media/15474540867133.jpg)
+                  ![-w534](https://i.loli.net/2019/01/19/5c4337e832467.jpg)
 
     - Evaluation
         - Correlation between $\mathit{logit}(I(t))$  and CDC-reported weekly ILI percentages.
 - Results
     - For nine region together
         - Train set: A mean correlation of 0.90 (min=0.80, max=0.96, n=9 regions; Fig.2).
-        ![-w535](media/15474546972090.jpg)
+        ![-w535](https://i.loli.net/2019/01/19/5c4337e7d04ae.jpg)
         - Validation set: A mean correlation of 0.97 (min= 0.92, max = 0.99, n = 9 regions) across 42 validation points.
         - Estimate consistently the current ILI percentage **1-2 weeks ahead** of the publication of reports by the CDC's US Influenza Sentinel Provider Surveillance.
     - For one state (Utah) only 
         - A correlation of 0.90 across 42 validation points.
-        ![-w537](media/15474549956373.jpg)
+        ![-w537](https://i.loli.net/2019/01/19/5c4337e851088.jpg)
  
  - Conclusions
      - Pros

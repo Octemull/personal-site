@@ -1,6 +1,10 @@
 ---
-title: "{{ replace .Name "-" " " | title }}"
+title: "{{ replace .TranslationBaseName "-" " " | title }}"
 date: {{ .Date }}
+lastmod: {{ .Date }}
 draft: true
+keywords: []
+description: ""
+tags: []
+categories: []
 ---
-
