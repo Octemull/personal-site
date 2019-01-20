@@ -141,7 +141,7 @@ copyright = "Octemull"    # default: author.name          # 默认为下面配�
 
   [params.gitalk]           # Gitalk is a comment system based on GitHub issues. see https://github.com/gitalk/gitalk
     owner = "Octemull"              # Your GitHub ID
-    repo = "personal-site-gitment"               # The repo to store comments
+    repo = "octemull.github.io"               # The repo to store comments
     clientId = "ce8007fddcb901cf8139"           # Your client ID
     clientSecret = "25db834f14aadc3708bf0c8eeb5c10127a9f5a22"       # Your client secret
 
