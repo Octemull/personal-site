@@ -135,9 +135,9 @@ copyright = "Octemull"    # default: author.name          # 默认为下面配�
 
   [params.gitment]          # Gitment is a comment system based on GitHub issues. see https://github.com/imsun/gitment
     owner = "Octemull"      # Your GitHub ID
-    repo = "octemull.github.io"      # The repo to store comments
-    clientId = "ce8007fddcb901cf8139"           # Your client ID
-    clientSecret = "25db834f14aadc3708bf0c8eeb5c10127a9f5a22"       # Your client secret
+    repo = "https://octemull.github.io/personal-site/"  # The repo to store comments
+    clientId = "ce8007fddcb901cf8139"      # Your client ID
+    clientSecret = "25db834f14aadc3708bf0c8eeb5c10127a9f5a22" # Your client secret
 
   # [params.gitalk]           # Gitalk is a comment system based on GitHub issues. see https://github.com/gitalk/gitalk
   #   owner = ""              # Your GitHub ID
