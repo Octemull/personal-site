@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Python on Octemull&#39;s Personal Site</title>
+    <link>https://octemull.github.io/personal-site/categories/python/</link>
+    <description>Recent content in Python on Octemull&#39;s Personal Site</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 30 Oct 2018 22:14:46 +0800</lastBuildDate>
+    
+	<atom:link href="https://octemull.github.io/personal-site/categories/python/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Jupyter notebook使用技巧 &#43; nbextentions</title>
+      <link>https://octemull.github.io/personal-site/post/jupyter-skills/</link>
+      <pubDate>Tue, 30 Oct 2018 22:14:46 +0800</pubDate>
+      
+      <guid>https://octemull.github.io/personal-site/post/jupyter-skills/</guid>
+      <description>Tab！  单按Tab：代码自动补全 Shift + Tab：查看帮助  输出矢量图！ import matplotlib import matplotlib.pyplot as plt %matplotlib inline %config InlineBackend.figure_format = &#39;svg&#39;  上面的最后一行指定了输出的格式是 svg，这样浏览器就能为你渲染矢量图了。
+savefig 只要指定文件名后缀是 .pdf 或者 .eps 就能生成能方便地插入 latex 的图片了！
+plt.savefig(&#39;tmp.pdf&#39;, bbox_inches=&#39;tight&#39;) plt.show()  magic命令！  参考：https://blog.csdn.net/tianjie5768/article/details/80164142
+ Magic单元分为两种，一种是line magics，另外一种cell magics。Line magic是通过在前面加%，表示magic只在本行有效。Cell magic是通过在前面加%%，表示magic在整个cell单元有效。
+🌰e.g. 下图中使用%%bash，产生了linux下的shell环境（window下不支持，不过可以使用%%cmd），这样就可以运行pwd和ls命令了。
+1、输入%lsmagic，可以显示所有magic命令。
+2、其中一些比较常用的magic：
+（1）在jupyter内打印图片
+%matplotline inline  （2）将本地py文件代码导入进来到当前单元中
+%load  🌰e.g.
+%load test.py  （3）运行本地代码
+%run  利用这个magic，我们可以把一些头文件，基本设置，共同函数写在不同的notebook内，用的时候运行一下就可以了。
+🌰e.g. 将公共的函数写在common_import.ipynb中，一些导入函数的配置文件存在utils.ipynb中，需要的时候使用%run直接运行一下，就可以把公共函数和环境配置好了。这样可以将代码写成不同的模块，而不是全部写进一个notebook。
+配置文件命令 便捷获取配置文件所在路径的命令
+jupyter notebook --generate-config  注意： 这条命令虽然可以用于查看配置文件所在的路径，但主要用途是是否将这个路径下的配置文件替换为默认配置文件。 如果你是第一次查询，那么或许不会出现下图的提示；若文件已经存在或被修改，使用这个命令之后会出现询问“Overwrite /Users/raxxie/.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -6,24 +6,24 @@
     <description>Recent content in Tags on Octemull&#39;s Personal Site</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 19 Jan 2019 19:18:01 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 22 Mar 2018 20:56:49 +0800</lastBuildDate>
     
 	<atom:link href="https://octemull.github.io/personal-site/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Matlab</title>
-      <link>https://octemull.github.io/personal-site/tags/matlab/</link>
-      <pubDate>Sat, 19 Jan 2019 19:18:01 +0800</pubDate>
+      <title>Mac</title>
+      <link>https://octemull.github.io/personal-site/tags/mac/</link>
+      <pubDate>Thu, 22 Mar 2018 20:56:49 +0800</pubDate>
       
-      <guid>https://octemull.github.io/personal-site/tags/matlab/</guid>
+      <guid>https://octemull.github.io/personal-site/tags/mac/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Original</title>
       <link>https://octemull.github.io/personal-site/tags/original/</link>
-      <pubDate>Sat, 19 Jan 2019 19:18:01 +0800</pubDate>
+      <pubDate>Thu, 27 Sep 2018 19:18:01 +0800</pubDate>
       
       <guid>https://octemull.github.io/personal-site/tags/original/</guid>
       <description></description>
@@ -44,6 +44,15 @@
       <pubDate>Sun, 20 Jan 2019 11:52:59 +0800</pubDate>
       
       <guid>https://octemull.github.io/personal-site/tags/reports/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Tools</title>
+      <link>https://octemull.github.io/personal-site/tags/tools/</link>
+      <pubDate>Tue, 30 Oct 2018 22:14:46 +0800</pubDate>
+      
+      <guid>https://octemull.github.io/personal-site/tags/tools/</guid>
       <description></description>
     </item>
     

@@ -1,10 +1,10 @@
 ---
 title: "在Matlab下利用Libsvm的输出模型画SVM三维特征的二分类曲面"
-date: 2019-01-19T19:18:01+08:00
+date: 2018-09-27T19:18:01+08:00
 lastmod: 2019-01-20T12:04:00+08:00
 draft: false
-tags: ["Matlab","Original"]
-categories: ["Machine Learning"]
+tags: ["Original"]
+categories: ["Matlab","Machine Learning"]
 show_comments: true
 ---
 

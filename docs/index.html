@@ -171,10 +171,72 @@
 
     <article class="post">
   <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/personal-site/post/hugo/">Detecting influenza epidemics using search engine query data</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 18 Jan 19 11:37 CST </span>
+      <div class="post-category">
+          <a href="/personal-site/categories/data-mining/"> Data Mining </a>
+          </div>
+        <span class="more-meta"> 520 words </span>
+        <span class="more-meta"> 3 mins read </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      Paper  Title: Detecting influenza epidemics using search engine query data Authors: Jeremy Ginsberg, Matthew H. Mohebbi, Rajan S. Patel, Lynnette Brammer, Mark S. Smolinski &amp; Larry Brilliant DOI: 10.1038/nature07634 Tags: Year: 2009  Summary  What
+ Propose a method of analyzing large numbers of Google search queries to track influenza-like illness in a population which can shorten reporting lag for 1-2 weeks.  Why analyze Google queries possible
+    </div>
+    <div class="read-more">
+      <a href="/personal-site/post/hugo/" class="read-more-link">Read more..</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/personal-site/post/jupyter-skills/">Jupyter notebook使用技巧 &#43; nbextentions</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 30 Oct 18 22:14 CST </span>
+      <div class="post-category">
+          <a href="/personal-site/categories/python/"> Python </a>
+          </div>
+        <span class="more-meta"> 219 words </span>
+        <span class="more-meta"> 2 mins read </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      Tab！  单按Tab：代码自动补全 Shift + Tab：查看帮助  输出矢量图！ import matplotlib import matplotlib.pyplot as plt %matplotlib inline %config InlineBackend.figure_format = 'svg'  上面的最后一行指定了输出的格式是 svg，这样浏览器就能为你渲染矢量图了。
+savefig 只要指定文件名后缀是 .pdf 或者 .eps 就能生成能方便地插入 latex 的图片了！
+plt.savefig('tmp.pdf', bbox_inches='tight') plt.show()  magic命令！  参考：https://blog.csdn.net/tianjie5768/article/details/80164142
+ Magic单元分为两种，一种是line magics，另外一种cell magics。Line magic是通过在前面加%，表示magic只在本行有效。Cell magic是通过在前面加%%，表示magic在整个cell单元有效。
+🌰e.g. 下图中使用%%bash，产生了linux下的shell环境（window下不支持，不过可以使用%%cmd），这样就可以运行pwd和ls命令了。
+1、输入%lsmagic，可以显示所有magic命令。
+2、其中一些比较常用的magic：
+（1）在jupyter内打印图片
+%matplotline inline  （2）将本地py文件代码导入进来到当前单元中
+%load  🌰e.g.
+%load test.py  （3）运行本地代码
+%run  利用这个magic，我们可以把一些头文件，基本设置，共同函数写在不同的notebook内，用的时候运行一下就可以了。
+🌰e.g. 将公共的函数写在common_import.ipynb中，一些导入函数的配置文件存在utils.ipynb中，需要的时候使用%run直接运行一下，就可以把公共函数和环境配置好了。这样可以将代码写成不同的模块，而不是全部写进一个notebook。
+配置文件命令 便捷获取配置文件所在路径的命令
+jupyter notebook --generate-config  注意： 这条命令虽然可以用于查看配置文件所在的路径，但主要用途是是否将这个路径下的配置文件替换为默认配置文件。 如果你是第一次查询，那么或许不会出现下图的提示；若文件已经存在或被修改，使用这个命令之后会出现询问“Overwrite /Users/raxxie/.
+    </div>
+    <div class="read-more">
+      <a href="/personal-site/post/jupyter-skills/" class="read-more-link">Read more..</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/personal-site/post/svm-3d-boundary/">在Matlab下利用Libsvm的输出模型画SVM三维特征的二分类曲面</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 19 Jan 19 19:18 CST </span>
+      <span class="post-time"> 27 Sep 18 19:18 CST </span>
       <div class="post-category">
+          <a href="/personal-site/categories/matlab/"> Matlab </a>
           <a href="/personal-site/categories/machine-learning/"> Machine Learning </a>
           </div>
         <span class="more-meta"> 406 words </span>
@@ -195,24 +257,35 @@
 
     <article class="post">
   <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/personal-site/post/hugo/">Detecting influenza epidemics using search engine query data</a></h1>
+    <h1 class="post-title"><a class="post-link" href="/personal-site/post/mac-livsvm/">Mac下matlab2014b安装libsvm</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 18 Jan 19 11:37 CST </span>
+      <span class="post-time"> 22 Mar 18 20:56 CST </span>
       <div class="post-category">
-          <a href="/personal-site/categories/data-mining/"> Data Mining </a>
+          <a href="/personal-site/categories/machine-learning/"> Machine Learning </a>
           </div>
-        <span class="more-meta"> 520 words </span>
-        <span class="more-meta"> 3 mins read </span>
+        <span class="more-meta"> 364 words </span>
+        <span class="more-meta"> 2 mins read </span>
     </div>
   </header>
   
   <div class="post-content">
     <div class="post-summary">
-      Paper  Title: Detecting influenza epidemics using search engine query data Authors: Jeremy Ginsberg, Matthew H. Mohebbi, Rajan S. Patel, Lynnette Brammer, Mark S. Smolinski &amp; Larry Brilliant DOI: 10.1038/nature07634 Tags: Year: 2009  Summary  What
- Propose a method of analyzing large numbers of Google search queries to track influenza-like illness in a population which can shorten reporting lag for 1-2 weeks.  Why analyze Google queries possible
+      环境&amp;软件说明  系统：macOS High Sierra 10.13.3 matlab版本：matlab2014b xcode版本：Xcode9.1， SDK版本10.13 （必须要有xcode才行） libsvm版本：libsvm3.22  下载libsvm 1）在libsvm主页下载最新的libsvm
+2）直接在Downloads下解压
+3）将解压后的文件夹复制到/Applications/MATLAB_R2014b.app/toolbox/下 （P.S. 从Finder中的Application里找到Matlab，右键显示包内容）
+下载xcode、安装command line tool 1）安装command line tools：打开终端(Terminal)，输入
+xcode-select --install  然后点击安装，等待下载安装即可。
+2）确认xcode的SDK版本
+从Finder进入 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs ，
+看到SDK版本为10.13（Xcode9.1）
+3）修改xml文件【MATLAB2017b可跳过这一步直接编译】
+ 参考：https://blog.csdn.net/wukong1981/article/details/72805084） 因为matlab2014b不支持（自动识别）10.13版本的SDK，所以要在XML里添加几行
+  打开matlab，在command window中输入  edit ([matlabroot '/bin/maci64/mexopts/clang_maci64.xml'])  查找&quot;10.9&quot;关键词，得到例如：
+&lt;dirExists name=&quot; /Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk&quot;/&gt;&lt;cmdReturnsname=&quot;find/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk&quot;/&gt;&lt;cmdReturnsname=&quot;find -name MacOSX10.9.sdk&quot; /&gt;  在下面依次的加入10.12，10.13加好之后应该是这个样子的
+&lt;/XCODE_AGREED_VERSION&gt; &lt;ISYSROOT&gt; &lt;and&gt; &lt;cmdReturns name=&quot;xcode-select -print-path&quot;/&gt; &lt;or&gt; &lt;dirExists name=&quot;$$/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk&quot; /&gt; &lt;dirExists name=&quot;$$/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.10.sdk&quot; /&gt; &lt;dirExists name=&quot;$$/Platforms/MacOSX.
     </div>
     <div class="read-more">
-      <a href="/personal-site/post/hugo/" class="read-more-link">Read more..</a>
+      <a href="/personal-site/post/mac-livsvm/" class="read-more-link">Read more..</a>
     </div>
   </div>
 </article>

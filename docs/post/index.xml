@@ -39,16 +39,6 @@
     </item>
     
     <item>
-      <title>在Matlab下利用Libsvm的输出模型画SVM三维特征的二分类曲面</title>
-      <link>https://octemull.github.io/personal-site/post/svm-3d-boundary/</link>
-      <pubDate>Sat, 19 Jan 2019 19:18:01 +0800</pubDate>
-      
-      <guid>https://octemull.github.io/personal-site/post/svm-3d-boundary/</guid>
-      <description>前言 在做毕设的时候用到了支持向量机（SVM）做分类，当特征为3维的时候，想画一个分类面出来。因为在matlab中使用的Libsvm包，没有画三维分类面的功能，所以参考了stackoverflow上的一个问题，写了一下画三维分类曲面的程序。
-所用软件  Matlab R2017b Libsvm-3.22 （安装在matlab的toolbox中）  所用数据    变量名 说明     model 用Libsvm建模输出的模型   train_data 标准化后的训练数据，每一行是一个样本，每一列是一个特征   train_target 样本标记，0-1向量    数据示例 说明  negative样本在前，positive样本在后 negative样本标记0，positive样本标记1 train_data已经标准化到-1、1之间（标准化后方便svm的训练和曲面的展示） 训练svm的核函数为RBF，若训练时使用了其他的核函数，则需要修改funRBF  train_data train_target 训练模型 model = svmtrain(train_target,train_data, [&#39;-t 2 -c 100 -g&#39;, num2str(1/3),&#39; -b 1 -q&#39;]);  代码 Main Code | 主代码 close all clear clc tic % 开始计时 %% load data 加载数据 load(&#39;model&#39;,&#39;train_data&#39;,&#39;train_target&#39;) Xdata_scaled = train_data; group = train_target; %% code GN3Dplot(Xdata_scaled,sum(group==0),sum(group==1),0,0,0,0); %plot samples 画三维图 xlabel(&#39;F1&#39;);ylabel(&#39;F3&#39;); zlabel(&#39;F6&#39;); ylim([-1 0]); yticks([-1 -0.</description>
-    </item>
-    
-    <item>
       <title>Detecting influenza epidemics using search engine query data</title>
       <link>https://octemull.github.io/personal-site/post/hugo/</link>
       <pubDate>Fri, 18 Jan 2019 11:37:41 +0800</pubDate>
@@ -56,6 +46,60 @@
       <guid>https://octemull.github.io/personal-site/post/hugo/</guid>
       <description>Paper  Title: Detecting influenza epidemics using search engine query data Authors: Jeremy Ginsberg, Matthew H. Mohebbi, Rajan S. Patel, Lynnette Brammer, Mark S. Smolinski &amp;amp; Larry Brilliant DOI: 10.1038/nature07634 Tags: Year: 2009  Summary  What
  Propose a method of analyzing large numbers of Google search queries to track influenza-like illness in a population which can shorten reporting lag for 1-2 weeks.  Why analyze Google queries possible</description>
+    </item>
+    
+    <item>
+      <title>Jupyter notebook使用技巧 &#43; nbextentions</title>
+      <link>https://octemull.github.io/personal-site/post/jupyter-skills/</link>
+      <pubDate>Tue, 30 Oct 2018 22:14:46 +0800</pubDate>
+      
+      <guid>https://octemull.github.io/personal-site/post/jupyter-skills/</guid>
+      <description>Tab！  单按Tab：代码自动补全 Shift + Tab：查看帮助  输出矢量图！ import matplotlib import matplotlib.pyplot as plt %matplotlib inline %config InlineBackend.figure_format = &#39;svg&#39;  上面的最后一行指定了输出的格式是 svg，这样浏览器就能为你渲染矢量图了。
+savefig 只要指定文件名后缀是 .pdf 或者 .eps 就能生成能方便地插入 latex 的图片了！
+plt.savefig(&#39;tmp.pdf&#39;, bbox_inches=&#39;tight&#39;) plt.show()  magic命令！  参考：https://blog.csdn.net/tianjie5768/article/details/80164142
+ Magic单元分为两种，一种是line magics，另外一种cell magics。Line magic是通过在前面加%，表示magic只在本行有效。Cell magic是通过在前面加%%，表示magic在整个cell单元有效。
+🌰e.g. 下图中使用%%bash，产生了linux下的shell环境（window下不支持，不过可以使用%%cmd），这样就可以运行pwd和ls命令了。
+1、输入%lsmagic，可以显示所有magic命令。
+2、其中一些比较常用的magic：
+（1）在jupyter内打印图片
+%matplotline inline  （2）将本地py文件代码导入进来到当前单元中
+%load  🌰e.g.
+%load test.py  （3）运行本地代码
+%run  利用这个magic，我们可以把一些头文件，基本设置，共同函数写在不同的notebook内，用的时候运行一下就可以了。
+🌰e.g. 将公共的函数写在common_import.ipynb中，一些导入函数的配置文件存在utils.ipynb中，需要的时候使用%run直接运行一下，就可以把公共函数和环境配置好了。这样可以将代码写成不同的模块，而不是全部写进一个notebook。
+配置文件命令 便捷获取配置文件所在路径的命令
+jupyter notebook --generate-config  注意： 这条命令虽然可以用于查看配置文件所在的路径，但主要用途是是否将这个路径下的配置文件替换为默认配置文件。 如果你是第一次查询，那么或许不会出现下图的提示；若文件已经存在或被修改，使用这个命令之后会出现询问“Overwrite /Users/raxxie/.</description>
+    </item>
+    
+    <item>
+      <title>在Matlab下利用Libsvm的输出模型画SVM三维特征的二分类曲面</title>
+      <link>https://octemull.github.io/personal-site/post/svm-3d-boundary/</link>
+      <pubDate>Thu, 27 Sep 2018 19:18:01 +0800</pubDate>
+      
+      <guid>https://octemull.github.io/personal-site/post/svm-3d-boundary/</guid>
+      <description>前言 在做毕设的时候用到了支持向量机（SVM）做分类，当特征为3维的时候，想画一个分类面出来。因为在matlab中使用的Libsvm包，没有画三维分类面的功能，所以参考了stackoverflow上的一个问题，写了一下画三维分类曲面的程序。
+所用软件  Matlab R2017b Libsvm-3.22 （安装在matlab的toolbox中）  所用数据    变量名 说明     model 用Libsvm建模输出的模型   train_data 标准化后的训练数据，每一行是一个样本，每一列是一个特征   train_target 样本标记，0-1向量    数据示例 说明  negative样本在前，positive样本在后 negative样本标记0，positive样本标记1 train_data已经标准化到-1、1之间（标准化后方便svm的训练和曲面的展示） 训练svm的核函数为RBF，若训练时使用了其他的核函数，则需要修改funRBF  train_data train_target 训练模型 model = svmtrain(train_target,train_data, [&#39;-t 2 -c 100 -g&#39;, num2str(1/3),&#39; -b 1 -q&#39;]);  代码 Main Code | 主代码 close all clear clc tic % 开始计时 %% load data 加载数据 load(&#39;model&#39;,&#39;train_data&#39;,&#39;train_target&#39;) Xdata_scaled = train_data; group = train_target; %% code GN3Dplot(Xdata_scaled,sum(group==0),sum(group==1),0,0,0,0); %plot samples 画三维图 xlabel(&#39;F1&#39;);ylabel(&#39;F3&#39;); zlabel(&#39;F6&#39;); ylim([-1 0]); yticks([-1 -0.</description>
+    </item>
+    
+    <item>
+      <title>Mac下matlab2014b安装libsvm</title>
+      <link>https://octemull.github.io/personal-site/post/mac-livsvm/</link>
+      <pubDate>Thu, 22 Mar 2018 20:56:49 +0800</pubDate>
+      
+      <guid>https://octemull.github.io/personal-site/post/mac-livsvm/</guid>
+      <description>环境&amp;amp;软件说明  系统：macOS High Sierra 10.13.3 matlab版本：matlab2014b xcode版本：Xcode9.1， SDK版本10.13 （必须要有xcode才行） libsvm版本：libsvm3.22  下载libsvm 1）在libsvm主页下载最新的libsvm
+2）直接在Downloads下解压
+3）将解压后的文件夹复制到/Applications/MATLAB_R2014b.app/toolbox/下 （P.S. 从Finder中的Application里找到Matlab，右键显示包内容）
+下载xcode、安装command line tool 1）安装command line tools：打开终端(Terminal)，输入
+xcode-select --install  然后点击安装，等待下载安装即可。
+2）确认xcode的SDK版本
+从Finder进入 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs ，
+看到SDK版本为10.13（Xcode9.1）
+3）修改xml文件【MATLAB2017b可跳过这一步直接编译】
+ 参考：https://blog.csdn.net/wukong1981/article/details/72805084） 因为matlab2014b不支持（自动识别）10.13版本的SDK，所以要在XML里添加几行
+  打开matlab，在command window中输入  edit ([matlabroot &#39;/bin/maci64/mexopts/clang_maci64.xml&#39;])  查找&amp;quot;10.9&amp;quot;关键词，得到例如：
+&amp;lt;dirExists name=&amp;quot; /Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk&amp;quot;/&amp;gt;&amp;lt;cmdReturnsname=&amp;quot;find/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk&amp;quot;/&amp;gt;&amp;lt;cmdReturnsname=&amp;quot;find -name MacOSX10.9.sdk&amp;quot; /&amp;gt;  在下面依次的加入10.12，10.13加好之后应该是这个样子的
+&amp;lt;/XCODE_AGREED_VERSION&amp;gt; &amp;lt;ISYSROOT&amp;gt; &amp;lt;and&amp;gt; &amp;lt;cmdReturns name=&amp;quot;xcode-select -print-path&amp;quot;/&amp;gt; &amp;lt;or&amp;gt; &amp;lt;dirExists name=&amp;quot;$$/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk&amp;quot; /&amp;gt; &amp;lt;dirExists name=&amp;quot;$$/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.10.sdk&amp;quot; /&amp;gt; &amp;lt;dirExists name=&amp;quot;$$/Platforms/MacOSX.</description>
     </item>
     
   </channel>
