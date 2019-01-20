@@ -40,7 +40,7 @@ copyright = "Octemull"    # default: author.name          # 默认为下面配�
   name = "Home"
   weight = 10
   identifier = "home"
-  url = "/post/"
+  url = "/"
 [[menu.main]]
   name = "Archives"
   weight = 20
