@@ -133,17 +133,17 @@ copyright = "Octemull"    # default: author.name          # 默认为下面配�
     hint = 30               # Display hint if the last modified time is more than these days ago.    # 如果文章最后更新于这天数之前，显示提醒
     warn = 180              # Display warning if the last modified time is more than these days ago.    # 如果文章最后更新于这天数之前，显示警告
 
-  [params.gitment]          # Gitment is a comment system based on GitHub issues. see https://github.com/imsun/gitment
-    owner = "Octemull"      # Your GitHub ID
-    repo = "personal-site-gitment"  # The repo to store comments
-    clientId = "ce8007fddcb901cf8139"      # Your client ID
-    clientSecret = "25db834f14aadc3708bf0c8eeb5c10127a9f5a22" # Your client secret
+  # [params.gitment]          # Gitment is a comment system based on GitHub issues. see https://github.com/imsun/gitment
+  #   owner = "Octemull"      # Your GitHub ID
+  #   repo = "personal-site-gitment"  # The repo name to store comments
+  #   clientId = "ce8007fddcb901cf8139"      # Your client ID
+  #   clientSecret = "25db834f14aadc3708bf0c8eeb5c10127a9f5a22" # Your client secret
 
-  # [params.gitalk]           # Gitalk is a comment system based on GitHub issues. see https://github.com/gitalk/gitalk
-  #   owner = ""              # Your GitHub ID
-  #   repo = ""               # The repo to store comments
-  #   clientId = ""           # Your client ID
-  #   clientSecret = ""       # Your client secret
+  [params.gitalk]           # Gitalk is a comment system based on GitHub issues. see https://github.com/gitalk/gitalk
+    owner = "Octemull"              # Your GitHub ID
+    repo = "personal-site-gitment"               # The repo to store comments
+    clientId = "ce8007fddcb901cf8139"           # Your client ID
+    clientSecret = "25db834f14aadc3708bf0c8eeb5c10127a9f5a22"       # Your client secret
 
   # [params.flowchartDiagrams]# see https://blog.olowolo.com/example-site/post/js-flowchart-diagrams/
   #   enable = false
