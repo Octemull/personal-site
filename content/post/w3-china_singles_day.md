@@ -28,7 +28,9 @@ categories: ["Marketing"]
     - At least four other similar companies as Alibaba launched single-day promotions, but Alibaba captured 68 percent of total sales.
 
 ## What & How
+
 **Single Day's growth is slowing and will need to further evolve**
+
 - Past five years average of almost 50%, past two years 44%, this year 25% (more in line with retail growth in China).
 - **Solution**: 
     - Tap new markets outside China
@@ -37,6 +39,7 @@ categories: ["Marketing"]
     - Launch promotions on other holidays
 
 **Discounts play a big role in Singles Day sales**
+
 - Biggest discount drove additional market share. 🌰e.g. parent and baby products: 6 to 7 → 18 to 19 percentage; skin-care and cosmetic brand: 3 to 5 → 12 to 15 percent.
 - Different discount form. 🌰e.g. direct online price cut, coupons which can be used both online or real stores, promotions offered during presale events, platform discounts offered by Tmall.
 - Discount of Alibaba's subsidiaries. 🌰e.g. Ele.me, social media, music streaming and travel apps.
@@ -45,6 +48,7 @@ categories: ["Marketing"]
     - **Solutions 2**: Shift the emphasis towards to new products (🌰e.g. Dyson used social media to launch its new Airwrap hair-curling product, Budweiser sold special package of beers, Johnson & Johnson introduced new flavored Listerine).
 
 **Singles Day is spilling over to physical stores**
+
 - Alibaba made sure offline stores offer discounts as well. 🌰e.g. 100 Hema supermarkets, 222 Easyhome furniture and home-improvement stores.
 - Individual brands also used discounts and strategies such as click and collect to drive additional sale in store. 🌰e.g. Luckin Coffee -- "Buy 1, get 2 free", Xiaomi -- same discount for online and physical stores,
 - Pros of ominichannel sales
@@ -52,6 +56,7 @@ categories: ["Marketing"]
     - More meaningful services can be served in offline stores.
 
 **Rooted in China, Singles Day is an increasingly global event**
+
 - More than 19,000 multinational brands participated in Singles Day. Overall growth 24%, imported product growth 63% in Tmall. 🌰e.g. MartiDerm, Moony, Dyson, Schiff.
 - Singles Day fanned out over the world. 🌰e.g. **Lazada** (almostly 91% owned by Alibaba) launched Singles Day in several Southeast Asia countries and its sale during the first hour sevenfold over last year. **Shopee** (leading online shopping platform in Southeast Asia and Taiwan) grew its total customer orders by 4.5 times on Singles Day.
 - AliExpress partnered with EL Corte Inglés department store to create more than 2,000 click-and-collect pickup locations. And AliExpress's total sales on Singles Day grew 40 percent.
