@@ -10,7 +10,14 @@
   </url>
   
   <url>
-    <loc>https://octemull.github.io/personal-site/post/md/</loc>
+    <loc>https://octemull.github.io/personal-site/post/w3-china_singles_day/</loc>
+    <lastmod>2019-01-20T11:52:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://octemull.github.io/personal-site/post/md-example/</loc>
     <lastmod>2019-01-19T21:18:55+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -18,20 +25,13 @@
   
   <url>
     <loc>https://octemull.github.io/personal-site/post/svm-3d-boundary/</loc>
-    <lastmod>2019-01-19T19:18:01+08:00</lastmod>
+    <lastmod>2019-01-20T12:04:00+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://octemull.github.io/personal-site/post/hugo/</loc>
-    <lastmod>2019-01-18T11:37:41+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://octemull.github.io/personal-site/post/first-post/</loc>
     <lastmod>2019-01-18T11:37:41+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -62,7 +62,7 @@
   </url>
   
   <url>
-    <loc>https://octemull.github.io/personal-site/categories/development/</loc>
+    <loc>https://octemull.github.io/personal-site/categories/data-mining/</loc>
     <lastmod>2019-01-18T11:37:41+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0</priority>
@@ -70,6 +70,27 @@
   
   <url>
     <loc>https://octemull.github.io/personal-site/linenostable/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://octemull.github.io/personal-site/categories/machine-learning/</loc>
+    <lastmod>2019-01-20T12:04:00+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://octemull.github.io/personal-site/categories/marketing/</loc>
+    <lastmod>2019-01-20T11:52:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://octemull.github.io/personal-site/tags/matlab/</loc>
+    <lastmod>2019-01-20T12:04:00+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
@@ -88,8 +109,29 @@
   </url>
   
   <url>
+    <loc>https://octemull.github.io/personal-site/tags/original/</loc>
+    <lastmod>2019-01-20T12:04:00+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://octemull.github.io/personal-site/tags/papers/</loc>
+    <lastmod>2019-01-18T11:37:41+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://octemull.github.io/personal-site/post/</loc>
-    <lastmod>2019-01-19T21:18:55+08:00</lastmod>
+    <lastmod>2019-01-20T11:52:59+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://octemull.github.io/personal-site/tags/reports/</loc>
+    <lastmod>2019-01-20T11:52:59+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
@@ -102,6 +144,7 @@
   
   <url>
     <loc>https://octemull.github.io/personal-site/tags/</loc>
+    <lastmod>2019-01-20T12:04:00+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>

@@ -3,6 +3,7 @@ title: "Hugo Even 主题预览"
 date: 2019-01-19T21:18:55+08:00
 draft: false
 toc: true
+show_comments: true
 ---
 lastmod: 2019-01-19T21:18:55+08:00
 

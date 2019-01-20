@@ -11,11 +11,29 @@
     
     
     <item>
-      <title>Development</title>
-      <link>https://octemull.github.io/personal-site/categories/development/</link>
+      <title>Data Mining</title>
+      <link>https://octemull.github.io/personal-site/categories/data-mining/</link>
       <pubDate>Fri, 18 Jan 2019 11:37:41 +0800</pubDate>
       
-      <guid>https://octemull.github.io/personal-site/categories/development/</guid>
+      <guid>https://octemull.github.io/personal-site/categories/data-mining/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Machine Learning</title>
+      <link>https://octemull.github.io/personal-site/categories/machine-learning/</link>
+      <pubDate>Sat, 19 Jan 2019 19:18:01 +0800</pubDate>
+      
+      <guid>https://octemull.github.io/personal-site/categories/machine-learning/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Marketing</title>
+      <link>https://octemull.github.io/personal-site/categories/marketing/</link>
+      <pubDate>Sun, 20 Jan 2019 11:52:59 +0800</pubDate>
+      
+      <guid>https://octemull.github.io/personal-site/categories/marketing/</guid>
       <description></description>
     </item>
     

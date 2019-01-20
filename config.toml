@@ -26,7 +26,7 @@ hasCJKLanguage = true     # has chinese/japanese/korean ? # 自动检测是否�
 paginate = 5                                              # 首页每页显示的文章数
 disqusShortname = ""      # disqus_shortname
 googleAnalytics = ""      # UA-XXXXXXXX-X
-copyright = "Octemull"            # default: author.name ↓        # 默认为下面配置的author.name ↓
+copyright = "Octemull"    # default: author.name          # 默认为下面配置的author.name ↓
 
 [author]                  # essential                     # 必需
   name = "Octemull"
@@ -64,7 +64,7 @@ copyright = "Octemull"            # default: author.name ↓        # 默认为�
   since = "2019"            # Site creation time          # 站点建立时间
 
   # site info (optional)                                  # 站点信息（可选，不需要的可以直接注释掉）
-  logoTitle = "Octemull"        # default: the title value    # 默认值: 上面设置的title值
+  logoTitle = "Octemull"    # default: the title value    # 默认值: 上面设置的title值
   keywords = ["Hugo", "theme","even"]
   description = "Hugo theme even example site."
 
@@ -75,7 +75,7 @@ copyright = "Octemull"            # default: author.name ↓        # 默认为�
   showArchiveCount = false
 
   # The date format to use; for a list of valid formats, see https://gohugo.io/functions/format/
-  dateFormatToUse = "2006-01-02"
+  dateFormatToUse = "02 Jan 06 15:04 MST"
 
   # show word count and read time ?                       # 是否显示字数统计与阅读时间
   moreMeta = true
@@ -97,17 +97,17 @@ copyright = "Octemull"            # default: author.name ↓        # 默认为�
 
   postMetaInFooter = true   # contain author, lastMod, markdown link, license           # 包含作者，上次修改时间，markdown链接，许可信息
   linkToMarkDown = false    # Only effective when hugo will output .md files.           # 链接到markdown原始文件（仅当允许hugo生成markdown文件时有效）
-  contentCopyright = ''     # e.g. '<a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a>'
+  # contentCopyright = ''     # e.g. '<a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a>'
 
-  changyanAppid = ""        # Changyan app id             # 畅言
-  changyanAppkey = ""       # Changyan app key
+  # changyanAppid = ""        # Changyan app id             # 畅言
+  # changyanAppkey = ""       # Changyan app key
 
-  livereUID = ""            # LiveRe UID                  # 来必力
+  # livereUID = ""            # LiveRe UID                  # 来必力
 
-  baiduPush = false        # baidu push                  # 百度
-  baiduAnalytics = ""      # Baidu Analytics
-  baiduVerification = ""   # Baidu Verification
-  googleVerification = ""  # Google Verification         # 谷歌
+  # baiduPush = false        # baidu push                  # 百度
+  # baiduAnalytics = ""      # Baidu Analytics
+  # baiduVerification = ""   # Baidu Verification
+  # googleVerification = ""  # Google Verification         # 谷歌
 
   # Link custom CSS and JS assets
   #   (relative to /static/css and /static/js respectively)
@@ -134,24 +134,24 @@ copyright = "Octemull"            # default: author.name ↓        # 默认为�
     warn = 180              # Display warning if the last modified time is more than these days ago.    # 如果文章最后更新于这天数之前，显示警告
 
   [params.gitment]          # Gitment is a comment system based on GitHub issues. see https://github.com/imsun/gitment
-    owner = ""              # Your GitHub ID
-    repo = ""               # The repo to store comments
-    clientId = ""           # Your client ID
-    clientSecret = ""       # Your client secret
+    owner = "Octemull"      # Your GitHub ID
+    repo = "https://github.com/Octemull/personal-site-gitment.git"      # The repo to store comments
+    clientId = "ce8007fddcb901cf8139"           # Your client ID
+    clientSecret = "25db834f14aadc3708bf0c8eeb5c10127a9f5a22"       # Your client secret
 
-  [params.gitalk]           # Gitalk is a comment system based on GitHub issues. see https://github.com/gitalk/gitalk
-    owner = ""              # Your GitHub ID
-    repo = ""               # The repo to store comments
-    clientId = ""           # Your client ID
-    clientSecret = ""       # Your client secret
+  # [params.gitalk]           # Gitalk is a comment system based on GitHub issues. see https://github.com/gitalk/gitalk
+  #   owner = ""              # Your GitHub ID
+  #   repo = ""               # The repo to store comments
+  #   clientId = ""           # Your client ID
+  #   clientSecret = ""       # Your client secret
 
-  [params.flowchartDiagrams]# see https://blog.olowolo.com/example-site/post/js-flowchart-diagrams/
-    enable = false
-    options = ""
+  # [params.flowchartDiagrams]# see https://blog.olowolo.com/example-site/post/js-flowchart-diagrams/
+  #   enable = false
+  #   options = ""
 
-  [params.sequenceDiagrams] # see https://blog.olowolo.com/example-site/post/js-sequence-diagrams/
-    enable = false
-    options = ""            # default: "{theme: 'simple'}"
+  # [params.sequenceDiagrams] # see https://blog.olowolo.com/example-site/post/js-sequence-diagrams/
+  #   enable = false
+  #   options = ""            # default: "{theme: 'simple'}"
 
 
   [params.social]                                         # 社交链接

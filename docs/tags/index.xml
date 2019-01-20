@@ -6,9 +6,46 @@
     <description>Recent content in Tags on Octemull&#39;s Personal Site</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
+    <lastBuildDate>Sat, 19 Jan 2019 19:18:01 +0800</lastBuildDate>
     
 	<atom:link href="https://octemull.github.io/personal-site/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Matlab</title>
+      <link>https://octemull.github.io/personal-site/tags/matlab/</link>
+      <pubDate>Sat, 19 Jan 2019 19:18:01 +0800</pubDate>
+      
+      <guid>https://octemull.github.io/personal-site/tags/matlab/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Original</title>
+      <link>https://octemull.github.io/personal-site/tags/original/</link>
+      <pubDate>Sat, 19 Jan 2019 19:18:01 +0800</pubDate>
+      
+      <guid>https://octemull.github.io/personal-site/tags/original/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Papers</title>
+      <link>https://octemull.github.io/personal-site/tags/papers/</link>
+      <pubDate>Fri, 18 Jan 2019 11:37:41 +0800</pubDate>
+      
+      <guid>https://octemull.github.io/personal-site/tags/papers/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Reports</title>
+      <link>https://octemull.github.io/personal-site/tags/reports/</link>
+      <pubDate>Sun, 20 Jan 2019 11:52:59 +0800</pubDate>
+      
+      <guid>https://octemull.github.io/personal-site/tags/reports/</guid>
+      <description></description>
+    </item>
     
   </channel>
 </rss>

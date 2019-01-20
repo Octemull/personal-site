@@ -6,17 +6,26 @@
     <description>Recent content in Posts on Octemull&#39;s Personal Site</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 19 Jan 2019 21:18:55 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 20 Jan 2019 11:52:59 +0800</lastBuildDate>
     
 	<atom:link href="https://octemull.github.io/personal-site/post/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>What Singles Day can tell us about how retail is changing in China</title>
+      <link>https://octemull.github.io/personal-site/post/w3-china_singles_day/</link>
+      <pubDate>Sun, 20 Jan 2019 11:52:59 +0800</pubDate>
+      
+      <guid>https://octemull.github.io/personal-site/post/w3-china_singles_day/</guid>
+      <description>Paper  Title: What Singles Day can tell us about how retail is changing in China Authors: Lambert Bu, Anne Kronschnabl, Kelly Ungerman, Daniel Zipser Year: 2018 Link: What Singles Day can tell us about how retail is changing in China Tags: Open Access: Yes  Notes Why  Singles Day is the largest single-day sales even over the world, and its influence is becoming wider. Biggest sales  $45 billion purchased made in 24-hour period.</description>
+    </item>
+    
+    <item>
       <title>Hugo Even 主题预览</title>
-      <link>https://octemull.github.io/personal-site/post/md/</link>
+      <link>https://octemull.github.io/personal-site/post/md-example/</link>
       <pubDate>Sat, 19 Jan 2019 21:18:55 +0800</pubDate>
       
-      <guid>https://octemull.github.io/personal-site/post/md/</guid>
+      <guid>https://octemull.github.io/personal-site/post/md-example/</guid>
       <description>lastmod: 2019-01-19T21:18:55+08:00
  Copy from 《Hugo 主题 Nuo 文章样式预览》
  这篇文章集中说明主题所支持的 Markdown 语法和 Hugo Shortcodes 插件，你也可以在这里预览到他们的样子。如果你不喜欢某些样式，可以去修改 css/ 文件夹下的 .scss 文件。
@@ -47,15 +56,6 @@
       <guid>https://octemull.github.io/personal-site/post/hugo/</guid>
       <description>Paper  Title: Detecting influenza epidemics using search engine query data Authors: Jeremy Ginsberg, Matthew H. Mohebbi, Rajan S. Patel, Lynnette Brammer, Mark S. Smolinski &amp;amp; Larry Brilliant DOI: 10.1038/nature07634 Tags: Year: 2009  Summary  What
  Propose a method of analyzing large numbers of Google search queries to track influenza-like illness in a population which can shorten reporting lag for 1-2 weeks.  Why analyze Google queries possible</description>
-    </item>
-    
-    <item>
-      <title>First Post</title>
-      <link>https://octemull.github.io/personal-site/post/first-post/</link>
-      <pubDate>Fri, 18 Jan 2019 11:37:41 +0800</pubDate>
-      
-      <guid>https://octemull.github.io/personal-site/post/first-post/</guid>
-      <description> Hello World !    子目录名称 功能     archetypes 新文章默认模板   config.toml Hugo配置文档   content 存放所有Markdown格式的文章   layouts 存放自定义的view，可为空   static 存放图像、CNAME、css、js等资源，发布后该目录下所有资源将处于网页根目录   themes 存放下载的主题    </description>
     </item>
     
   </channel>

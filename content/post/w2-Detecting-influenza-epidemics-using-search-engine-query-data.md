@@ -1,11 +1,12 @@
 ---
 title: "Detecting influenza epidemics using search engine query data"
 date: 2019-01-18T11:37:41+08:00
+lastmod: 2019-01-18T11:37:41+08:00
 toc: true
 show_comments: true
 slug: hugo
-categories:
-- Development
+tags: ["Papers"]
+categories: ["Data Mining"]
 ---
 
 # Paper

@@ -1,8 +1,11 @@
 ---
 title: "在Matlab下利用Libsvm的输出模型画SVM三维特征的二分类曲面"
 date: 2019-01-19T19:18:01+08:00
-lastmod: 2019-01-19T19:18:01+08:00
+lastmod: 2019-01-20T12:04:00+08:00
 draft: false
+tags: ["Matlab","Original"]
+categories: ["Machine Learning"]
+show_comments: true
 ---
 
 # 前言
@@ -42,7 +45,7 @@ model = svmtrain(train_target,train_data, ['-t 2 -c 100 -g', num2str(1/3),' -b 1
 # 代码
 
 ### Main Code | 主代码
-``` Matlab
+```matlab
 close all
 clear
 clc
