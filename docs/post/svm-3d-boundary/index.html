@@ -17,7 +17,7 @@
 
 
 <meta name="author" content="Octemull" /><meta name="description" content="前言 在做毕设的时候用到了支持向量机（SVM）做分类，当特征为3维的时候，想画一个分类面出来。因为在matlab中使用的Libsvm包，没有画三维分类面的功能，所以参考了stackoverflow上的一个问题，写了一下画三维分类曲面的程序。
-所用软件  Matlab R2017b Libsvm-3.22 （安装在matlab的toolbox中）  所用数据    变量名 说明     model 用Libsvm建模输出的模型   train_data 标准化后的训练数据，每一行是一个样本，每一列是一个特征   train_target 样本标记，0-1向量    数据示例 说明  negative样本在前，positive样本在后 negative样本标记0，positive样本标记1 train_data已经标准化到-1、1之间（标准化后方便svm的训练和曲面的展示）  train_data train_target 训练模型 model = svmtrain(train_target,train_data, [&#39;-t 2 -c 100 -g&#39;, num2str(1/3),&#39; -b 1 -q&#39;]);  代码 Main Code | 主代码 close all clear clc tic % 开始计时 %% load data 加载数据 load(&#39;model&#39;,&#39;train_data&#39;,&#39;train_target&#39;) Xdata_scaled = train_data; group = train_target; %% code GN3Dplot(Xdata_scaled,sum(group==0),sum(group==1),0,0,0,0); %plot samples 画三维图 xlabel(&#39;F1&#39;);ylabel(&#39;F3&#39;); zlabel(&#39;F6&#39;); ylim([-1 0]); yticks([-1 -0." /><meta name="keywords" content="Hugo, theme, even" />
+所用软件  Matlab R2017b Libsvm-3.22 （安装在matlab的toolbox中）  所用数据    变量名 说明     model 用Libsvm建模输出的模型   train_data 标准化后的训练数据，每一行是一个样本，每一列是一个特征   train_target 样本标记，0-1向量    数据示例 说明  negative样本在前，positive样本在后 negative样本标记0，positive样本标记1 train_data已经标准化到-1、1之间（标准化后方便svm的训练和曲面的展示） 训练svm的核函数为RBF，若训练时使用了其他的核函数，则需要修改funRBF  train_data train_target 训练模型 model = svmtrain(train_target,train_data, [&#39;-t 2 -c 100 -g&#39;, num2str(1/3),&#39; -b 1 -q&#39;]);  代码 Main Code | 主代码 close all clear clc tic % 开始计时 %% load data 加载数据 load(&#39;model&#39;,&#39;train_data&#39;,&#39;train_target&#39;) Xdata_scaled = train_data; group = train_target; %% code GN3Dplot(Xdata_scaled,sum(group==0),sum(group==1),0,0,0,0); %plot samples 画三维图 xlabel(&#39;F1&#39;);ylabel(&#39;F3&#39;); zlabel(&#39;F6&#39;); ylim([-1 0]); yticks([-1 -0." /><meta name="keywords" content="Hugo, theme, even" />
 
 
 
@@ -41,19 +41,19 @@
 
 <meta property="og:title" content="在Matlab下利用Libsvm的输出模型画SVM三维特征的二分类曲面" />
 <meta property="og:description" content="前言 在做毕设的时候用到了支持向量机（SVM）做分类，当特征为3维的时候，想画一个分类面出来。因为在matlab中使用的Libsvm包，没有画三维分类面的功能，所以参考了stackoverflow上的一个问题，写了一下画三维分类曲面的程序。
-所用软件  Matlab R2017b Libsvm-3.22 （安装在matlab的toolbox中）  所用数据    变量名 说明     model 用Libsvm建模输出的模型   train_data 标准化后的训练数据，每一行是一个样本，每一列是一个特征   train_target 样本标记，0-1向量    数据示例 说明  negative样本在前，positive样本在后 negative样本标记0，positive样本标记1 train_data已经标准化到-1、1之间（标准化后方便svm的训练和曲面的展示）  train_data train_target 训练模型 model = svmtrain(train_target,train_data, [&#39;-t 2 -c 100 -g&#39;, num2str(1/3),&#39; -b 1 -q&#39;]);  代码 Main Code | 主代码 close all clear clc tic % 开始计时 %% load data 加载数据 load(&#39;model&#39;,&#39;train_data&#39;,&#39;train_target&#39;) Xdata_scaled = train_data; group = train_target; %% code GN3Dplot(Xdata_scaled,sum(group==0),sum(group==1),0,0,0,0); %plot samples 画三维图 xlabel(&#39;F1&#39;);ylabel(&#39;F3&#39;); zlabel(&#39;F6&#39;); ylim([-1 0]); yticks([-1 -0." />
+所用软件  Matlab R2017b Libsvm-3.22 （安装在matlab的toolbox中）  所用数据    变量名 说明     model 用Libsvm建模输出的模型   train_data 标准化后的训练数据，每一行是一个样本，每一列是一个特征   train_target 样本标记，0-1向量    数据示例 说明  negative样本在前，positive样本在后 negative样本标记0，positive样本标记1 train_data已经标准化到-1、1之间（标准化后方便svm的训练和曲面的展示） 训练svm的核函数为RBF，若训练时使用了其他的核函数，则需要修改funRBF  train_data train_target 训练模型 model = svmtrain(train_target,train_data, [&#39;-t 2 -c 100 -g&#39;, num2str(1/3),&#39; -b 1 -q&#39;]);  代码 Main Code | 主代码 close all clear clc tic % 开始计时 %% load data 加载数据 load(&#39;model&#39;,&#39;train_data&#39;,&#39;train_target&#39;) Xdata_scaled = train_data; group = train_target; %% code GN3Dplot(Xdata_scaled,sum(group==0),sum(group==1),0,0,0,0); %plot samples 画三维图 xlabel(&#39;F1&#39;);ylabel(&#39;F3&#39;); zlabel(&#39;F6&#39;); ylim([-1 0]); yticks([-1 -0." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://octemull.github.io/personal-site/post/svm-3d-boundary/" /><meta property="article:published_time" content="2019-01-19T19:18:01&#43;08:00"/>
 <meta property="article:modified_time" content="2019-01-20T12:04:00&#43;08:00"/>
 
 <meta itemprop="name" content="在Matlab下利用Libsvm的输出模型画SVM三维特征的二分类曲面">
 <meta itemprop="description" content="前言 在做毕设的时候用到了支持向量机（SVM）做分类，当特征为3维的时候，想画一个分类面出来。因为在matlab中使用的Libsvm包，没有画三维分类面的功能，所以参考了stackoverflow上的一个问题，写了一下画三维分类曲面的程序。
-所用软件  Matlab R2017b Libsvm-3.22 （安装在matlab的toolbox中）  所用数据    变量名 说明     model 用Libsvm建模输出的模型   train_data 标准化后的训练数据，每一行是一个样本，每一列是一个特征   train_target 样本标记，0-1向量    数据示例 说明  negative样本在前，positive样本在后 negative样本标记0，positive样本标记1 train_data已经标准化到-1、1之间（标准化后方便svm的训练和曲面的展示）  train_data train_target 训练模型 model = svmtrain(train_target,train_data, [&#39;-t 2 -c 100 -g&#39;, num2str(1/3),&#39; -b 1 -q&#39;]);  代码 Main Code | 主代码 close all clear clc tic % 开始计时 %% load data 加载数据 load(&#39;model&#39;,&#39;train_data&#39;,&#39;train_target&#39;) Xdata_scaled = train_data; group = train_target; %% code GN3Dplot(Xdata_scaled,sum(group==0),sum(group==1),0,0,0,0); %plot samples 画三维图 xlabel(&#39;F1&#39;);ylabel(&#39;F3&#39;); zlabel(&#39;F6&#39;); ylim([-1 0]); yticks([-1 -0.">
+所用软件  Matlab R2017b Libsvm-3.22 （安装在matlab的toolbox中）  所用数据    变量名 说明     model 用Libsvm建模输出的模型   train_data 标准化后的训练数据，每一行是一个样本，每一列是一个特征   train_target 样本标记，0-1向量    数据示例 说明  negative样本在前，positive样本在后 negative样本标记0，positive样本标记1 train_data已经标准化到-1、1之间（标准化后方便svm的训练和曲面的展示） 训练svm的核函数为RBF，若训练时使用了其他的核函数，则需要修改funRBF  train_data train_target 训练模型 model = svmtrain(train_target,train_data, [&#39;-t 2 -c 100 -g&#39;, num2str(1/3),&#39; -b 1 -q&#39;]);  代码 Main Code | 主代码 close all clear clc tic % 开始计时 %% load data 加载数据 load(&#39;model&#39;,&#39;train_data&#39;,&#39;train_target&#39;) Xdata_scaled = train_data; group = train_target; %% code GN3Dplot(Xdata_scaled,sum(group==0),sum(group==1),0,0,0,0); %plot samples 画三维图 xlabel(&#39;F1&#39;);ylabel(&#39;F3&#39;); zlabel(&#39;F6&#39;); ylim([-1 0]); yticks([-1 -0.">
 
 
 <meta itemprop="datePublished" content="2019-01-19T19:18:01&#43;08:00" />
 <meta itemprop="dateModified" content="2019-01-20T12:04:00&#43;08:00" />
-<meta itemprop="wordCount" content="378">
+<meta itemprop="wordCount" content="406">
 
 
 
@@ -61,7 +61,7 @@
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="在Matlab下利用Libsvm的输出模型画SVM三维特征的二分类曲面"/>
 <meta name="twitter:description" content="前言 在做毕设的时候用到了支持向量机（SVM）做分类，当特征为3维的时候，想画一个分类面出来。因为在matlab中使用的Libsvm包，没有画三维分类面的功能，所以参考了stackoverflow上的一个问题，写了一下画三维分类曲面的程序。
-所用软件  Matlab R2017b Libsvm-3.22 （安装在matlab的toolbox中）  所用数据    变量名 说明     model 用Libsvm建模输出的模型   train_data 标准化后的训练数据，每一行是一个样本，每一列是一个特征   train_target 样本标记，0-1向量    数据示例 说明  negative样本在前，positive样本在后 negative样本标记0，positive样本标记1 train_data已经标准化到-1、1之间（标准化后方便svm的训练和曲面的展示）  train_data train_target 训练模型 model = svmtrain(train_target,train_data, [&#39;-t 2 -c 100 -g&#39;, num2str(1/3),&#39; -b 1 -q&#39;]);  代码 Main Code | 主代码 close all clear clc tic % 开始计时 %% load data 加载数据 load(&#39;model&#39;,&#39;train_data&#39;,&#39;train_target&#39;) Xdata_scaled = train_data; group = train_target; %% code GN3Dplot(Xdata_scaled,sum(group==0),sum(group==1),0,0,0,0); %plot samples 画三维图 xlabel(&#39;F1&#39;);ylabel(&#39;F3&#39;); zlabel(&#39;F6&#39;); ylim([-1 0]); yticks([-1 -0."/>
+所用软件  Matlab R2017b Libsvm-3.22 （安装在matlab的toolbox中）  所用数据    变量名 说明     model 用Libsvm建模输出的模型   train_data 标准化后的训练数据，每一行是一个样本，每一列是一个特征   train_target 样本标记，0-1向量    数据示例 说明  negative样本在前，positive样本在后 negative样本标记0，positive样本标记1 train_data已经标准化到-1、1之间（标准化后方便svm的训练和曲面的展示） 训练svm的核函数为RBF，若训练时使用了其他的核函数，则需要修改funRBF  train_data train_target 训练模型 model = svmtrain(train_target,train_data, [&#39;-t 2 -c 100 -g&#39;, num2str(1/3),&#39; -b 1 -q&#39;]);  代码 Main Code | 主代码 close all clear clc tic % 开始计时 %% load data 加载数据 load(&#39;model&#39;,&#39;train_data&#39;,&#39;train_target&#39;) Xdata_scaled = train_data; group = train_target; %% code GN3Dplot(Xdata_scaled,sum(group==0),sum(group==1),0,0,0,0); %plot samples 画三维图 xlabel(&#39;F1&#39;);ylabel(&#39;F3&#39;); zlabel(&#39;F6&#39;); ylim([-1 0]); yticks([-1 -0."/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -135,7 +135,7 @@
         <div class="post-category">
             <a href="/personal-site/categories/machine-learning/"> Machine Learning </a>
             </div>
-          <span class="more-meta"> 378 words </span>
+          <span class="more-meta"> 406 words </span>
           <span class="more-meta"> 2 mins read </span>
         
       </div>
@@ -229,9 +229,10 @@
 <h3 id="说明">说明</h3>
 
 <ol>
-<li>negative样本在前，positive样本在后</li>
-<li>negative样本标记0，positive样本标记1</li>
-<li>train_data已经标准化到-1、1之间（标准化后方便svm的训练和曲面的展示）</li>
+<li><code>negative</code>样本在前，<code>positive</code>样本在后</li>
+<li><code>negative</code>样本标记<code>0</code>，<code>positive</code>样本标记<code>1</code></li>
+<li><code>train_data</code>已经标准化到<code>-1</code>、<code>1</code>之间（标准化后方便svm的训练和曲面的展示）</li>
+<li>训练svm的核函数为<code>RBF</code>，若训练时使用了其他的核函数，则需要修改<code>funRBF</code></li>
 </ol>
 
 <h3 id="train-data">train_data</h3>
@@ -317,6 +318,46 @@ hold off
 toc %结束计时
 </code></pre>
 
+<p>对isosurface的一些说明：</p>
+
+<p><strong>patch</strong></p>
+
+<p>重要的命令：</p>
+
+<pre><code class="language-matlab">'FaceVertexCData',colors
+</code></pre>
+
+<ul>
+<li>&lsquo;edgecolor&rsquo;网格线：若要画出彩色的网格线（’interp&rsquo;），需要加入’FaceVertexCData’项，否则’edgecolor’选项只能使用’none&rsquo;</li>
+</ul>
+
+<p><img src="https://i.loli.net/2019/01/20/5c445fc1bdf42.jpg" alt="" /></p>
+
+<ul>
+<li>&lsquo;FaceColor’曲面颜色：若要画出彩色的网格线（’interp&rsquo;），需要加入’FaceVertexCData’项，否则’FaceColor’选项只能使用’none&rsquo;</li>
+</ul>
+
+<p><img src="https://i.loli.net/2019/01/20/5c445fd70bb82.jpg" alt="" /></p>
+
+<p>或</p>
+
+<p><img src="https://i.loli.net/2019/01/20/5c445fe337ede.jpg" alt="" /></p>
+
+<p><strong>&lsquo;FaceAlpha&rsquo; — Face transparency 曲面透明度</strong></p>
+
+<ul>
+<li>[0, 1]间的常数：固定的透明度，1为不透明，0为全透明</li>
+<li>‘flat’: 根据FaceVertexAlphaData确定不同的透明度</li>
+<li>&lsquo;interp’ : 根据FaceVertexAlphaData，用差值法确定不同的透明度</li>
+</ul>
+
+<p><strong>相关命令: view(a, b)</strong></p>
+
+<ul>
+<li>作用：设置图像观察方向</li>
+<li>一般b设置为30就可以，a可以根据需要调整。</li>
+</ul>
+
 <h3 id="rbf-kernel-function-径向基核函数">RBF kernel function | 径向基核函数</h3>
 
 <pre><code class="language-matlab">function y = funRBF(x,model)
@@ -397,7 +438,10 @@ end
 
 <h1 id="参考">参考</h1>
 
-<p><a href="https://stackoverflow.com/questions/16146212/how-to-plot-a-hyper-plane-in-3d-for-the-svm-results">https://stackoverflow.com/questions/16146212/how-to-plot-a-hyper-plane-in-3d-for-the-svm-results</a></p>
+<ul>
+<li>matlab: <a href="https://stackoverflow.com/questions/16146212/how-to-plot-a-hyper-plane-in-3d-for-the-svm-results">https://stackoverflow.com/questions/16146212/how-to-plot-a-hyper-plane-in-3d-for-the-svm-results</a></li>
+<li>python: <a href="https://www.semipol.de/2015/10/29/SVM-separating-hyperplane-3d-matplotlib.html">https://www.semipol.de/2015/10/29/SVM-separating-hyperplane-3d-matplotlib.html</a></li>
+</ul>
 
     </div>
 

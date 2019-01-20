@@ -9,9 +9,11 @@ show_comments: true
 ---
 
 # 前言
+
 在做毕设的时候用到了支持向量机（SVM）做分类，当特征为3维的时候，想画一个分类面出来。因为在matlab中使用的Libsvm包，没有画三维分类面的功能，所以参考了stackoverflow上的一个问题，写了一下画三维分类曲面的程序。
 
 # 所用软件
+
 1. Matlab R2017b
 2. Libsvm-3.22 （安装在matlab的toolbox中）
 
@@ -26,9 +28,11 @@ show_comments: true
 # 数据示例
 
 ### 说明
-1. negative样本在前，positive样本在后
-2. negative样本标记0，positive样本标记1
-3. train_data已经标准化到-1、1之间（标准化后方便svm的训练和曲面的展示）
+
+1. `negative`样本在前，`positive`样本在后
+2. `negative`样本标记`0`，`positive`样本标记`1`
+3. `train_data`已经标准化到`-1`、`1`之间（标准化后方便svm的训练和曲面的展示）
+4. 训练svm的核函数为`RBF`，若训练时使用了其他的核函数，则需要修改`funRBF`
 
 ### train_data
 
@@ -38,6 +42,7 @@ show_comments: true
 ![](https://i.loli.net/2019/01/19/5c431a19aa4a3.jpg)
 
 # 训练模型
+
 ```matlab
 model = svmtrain(train_target,train_data, ['-t 2 -c 100 -g', num2str(1/3),' -b 1 -q']); 
 ```
@@ -45,6 +50,7 @@ model = svmtrain(train_target,train_data, ['-t 2 -c 100 -g', num2str(1/3),' -b 1
 # 代码
 
 ### Main Code | 主代码
+
 ```matlab
 close all
 clear
@@ -112,7 +118,41 @@ hold off
 toc %结束计时
 ```
 
+对isosurface的一些说明：
+
+**patch**
+
+重要的命令：
+
+```matlab
+'FaceVertexCData',colors
+```
+
+* 'edgecolor'网格线：若要画出彩色的网格线（’interp'），需要加入’FaceVertexCData’项，否则’edgecolor’选项只能使用’none'
+
+![](https://i.loli.net/2019/01/20/5c445fc1bdf42.jpg)
+
+* 'FaceColor’曲面颜色：若要画出彩色的网格线（’interp'），需要加入’FaceVertexCData’项，否则’FaceColor’选项只能使用’none'
+
+![](https://i.loli.net/2019/01/20/5c445fd70bb82.jpg)
+
+或
+
+![](https://i.loli.net/2019/01/20/5c445fe337ede.jpg)
+
+**'FaceAlpha' — Face transparency 曲面透明度**
+
+* [0, 1]间的常数：固定的透明度，1为不透明，0为全透明
+* ‘flat’: 根据FaceVertexAlphaData确定不同的透明度
+* 'interp’ : 根据FaceVertexAlphaData，用差值法确定不同的透明度
+
+**相关命令: view(a, b)**
+
+* 作用：设置图像观察方向
+* 一般b设置为30就可以，a可以根据需要调整。
+
 ### RBF kernel function | 径向基核函数
+
 ```matlab
 function y = funRBF(x,model)
 % x: the vector
@@ -195,5 +235,7 @@ end
 
 
 # 参考
-https://stackoverflow.com/questions/16146212/how-to-plot-a-hyper-plane-in-3d-for-the-svm-results
+
+* matlab: https://stackoverflow.com/questions/16146212/how-to-plot-a-hyper-plane-in-3d-for-the-svm-results
+* python: https://www.semipol.de/2015/10/29/SVM-separating-hyperplane-3d-matplotlib.html
 
