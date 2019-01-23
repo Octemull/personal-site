@@ -6,7 +6,7 @@ draft: false
 keywords: []
 description: ""
 show_comments: true
-tags: ["Reports"]
+tags: ["Reports","Notes"]
 categories: ["Marketing"]
 ---
 

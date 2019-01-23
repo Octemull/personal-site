@@ -24,8 +24,8 @@ pygmentsCodefencesGuessSyntax = true
 
 hasCJKLanguage = true     # has chinese/japanese/korean ? # 自动检测是否包含 中文\日文\韩文
 paginate = 5                                              # 首页每页显示的文章数
-disqusShortname = ""      # disqus_shortname
-googleAnalytics = ""      # UA-XXXXXXXX-X
+# disqusShortname = ""      # disqus_shortname
+googleAnalytics = "UA-132995982-1"      # UA-XXXXXXXX-X
 copyright = "Octemull"    # default: author.name          # 默认为下面配置的author.name ↓
 
 [author]                  # essential                     # 必需
@@ -105,7 +105,7 @@ copyright = "Octemull"    # default: author.name          # 默认为下面配�
   # livereUID = ""            # LiveRe UID                  # 来必力
 
   # baiduPush = false        # baidu push                  # 百度
-  # baiduAnalytics = ""      # Baidu Analytics
+  baiduAnalytics = "https://hm.baidu.com/hm.js?41497b30235376fbac44b6375248dcd8"      # Baidu Analytics
   # baiduVerification = ""   # Baidu Verification
   # googleVerification = ""  # Google Verification         # 谷歌
 

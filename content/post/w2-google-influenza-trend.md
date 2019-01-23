@@ -5,7 +5,7 @@ lastmod: 2019-01-18T11:37:41+08:00
 toc: true
 show_comments: true
 slug: hugo
-tags: ["Papers"]
+tags: ["Papers", "Notes"]
 categories: ["Data Mining"]
 ---
 

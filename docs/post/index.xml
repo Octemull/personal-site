@@ -21,21 +21,12 @@
     </item>
     
     <item>
-      <title>Hugo Even 主题预览</title>
-      <link>https://octemull.github.io/personal-site/post/md-example/</link>
-      <pubDate>Sat, 19 Jan 2019 21:18:55 +0800</pubDate>
+      <title>Sequences of purchases in credit card data reveal lifestyles in urban populations</title>
+      <link>https://octemull.github.io/personal-site/post/w3-sequence-purchase/</link>
+      <pubDate>Sat, 19 Jan 2019 10:51:32 +0800</pubDate>
       
-      <guid>https://octemull.github.io/personal-site/post/md-example/</guid>
-      <description>lastmod: 2019-01-19T21:18:55+08:00
- Copy from 《Hugo 主题 Nuo 文章样式预览》
- 这篇文章集中说明主题所支持的 Markdown 语法和 Hugo Shortcodes 插件，你也可以在这里预览到他们的样子。如果你不喜欢某些样式，可以去修改 css/ 文件夹下的 .scss 文件。
-1.标题 H1 H2 H3 H4 H5 H6 2. 段落 使用单引号 * 或者单下划线 _ 标记 斜体强调 或者 斜体强调
-使用两个引号 ** 或者两个下划线 __ 标记 加粗强调 或者 加粗强调
-引号和下划线可叠加使用 → 只是加粗 斜体并加粗
-使用两个波浪线 ~~ 标记 已删除文字
-插入文字暂无 Markdown 标记，直接使用 HTML 标签 &amp;lt;ins&amp;gt; 标记 插入文字
-行内代码使用反引号标记 → print(&amp;quot;hello world&amp;quot;)
-上标 X2 / 下标 X2</description>
+      <guid>https://octemull.github.io/personal-site/post/w3-sequence-purchase/</guid>
+      <description>Paper  Title: Sequences of purchases in credit card data reveal lifestyles in urban populations Authors: Riccardo Di Clemente, Miguel Luengo-Oroz, Matias Travizano, Sharon Xu, Bapu Vaitla &amp;amp; Marta C. González DOI: 10.1038/s41467-018-05690-8 Tags: Year: 2018 Open Access: Yes  Notes What  A framework was defined using a text compression technique on the sequences of credit card purchases to cluster different patterns of collective behaviors. Five consumer groups which shared similar characteristics were found.</description>
     </item>
     
     <item>
