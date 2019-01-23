@@ -105,7 +105,7 @@ copyright = "Octemull"    # default: author.name          # 默认为下面配�
   # livereUID = ""            # LiveRe UID                  # 来必力
 
   # baiduPush = false        # baidu push                  # 百度
-  baiduAnalytics = "https://hm.baidu.com/hm.js?41497b30235376fbac44b6375248dcd8"      # Baidu Analytics
+  baiduAnalytics = "41497b30235376fbac44b6375248dcd8"      # Baidu Analytics
   # baiduVerification = ""   # Baidu Verification
   # googleVerification = ""  # Google Verification         # 谷歌
 
