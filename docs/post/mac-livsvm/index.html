@@ -28,7 +28,7 @@ xcode-select --install  然后点击安装，等待下载安装即可。
  参考：https://blog.csdn.net/wukong1981/article/details/72805084） 因为matlab2014b不支持（自动识别）10.13版本的SDK，所以要在XML里添加几行
   打开matlab，在command window中输入  edit ([matlabroot &#39;/bin/maci64/mexopts/clang_maci64.xml&#39;])  查找&amp;quot;10.9&amp;quot;关键词，得到例如：
 &amp;lt;dirExists name=&amp;quot; /Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk&amp;quot;/&amp;gt;&amp;lt;cmdReturnsname=&amp;quot;find/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk&amp;quot;/&amp;gt;&amp;lt;cmdReturnsname=&amp;quot;find -name MacOSX10.9.sdk&amp;quot; /&amp;gt;  在下面依次的加入10.12，10.13加好之后应该是这个样子的
-&amp;lt;/XCODE_AGREED_VERSION&amp;gt; &amp;lt;ISYSROOT&amp;gt; &amp;lt;and&amp;gt; &amp;lt;cmdReturns name=&amp;quot;xcode-select -print-path&amp;quot;/&amp;gt; &amp;lt;or&amp;gt; &amp;lt;dirExists name=&amp;quot;$$/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk&amp;quot; /&amp;gt; &amp;lt;dirExists name=&amp;quot;$$/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.10.sdk&amp;quot; /&amp;gt; &amp;lt;dirExists name=&amp;quot;$$/Platforms/MacOSX." /><meta name="keywords" content="Hugo, theme, even" />
+&amp;lt;/XCODE_AGREED_VERSION&amp;gt; &amp;lt;ISYSROOT&amp;gt; &amp;lt;and&amp;gt; &amp;lt;cmdReturns name=&amp;quot;xcode-select -print-path&amp;quot;/&amp;gt; &amp;lt;or&amp;gt; &amp;lt;dirExists name=&amp;quot;$$/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk&amp;quot; /&amp;gt; &amp;lt;dirExists name=&amp;quot;$$/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.10.sdk&amp;quot; /&amp;gt; &amp;lt;dirExists name=&amp;quot;$$/Platforms/MacOSX." /><meta name="keywords" content="Blog" />
 
 
 
@@ -492,6 +492,7 @@ model = svmtrain(heart_scale_label,heart_scale_inst, '-c 1 -g 0.07');
 
     <footer id="footer" class="footer">
       <div class="social-links">
+      <a href="mailto:yyear103@outlook.com" class="iconfont icon-email" title="email"></a>
       <a href="https://github.com/Octemull" class="iconfont icon-github" title="github"></a>
   <a href="https://octemull.github.io/personal-site/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
 </div>
@@ -542,7 +543,7 @@ model = svmtrain(heart_scale_label,heart_scale_inst, '-c 1 -g 0.07');
   (function() {
     if (window.location.hostname === 'localhost') return;
     var hm = document.createElement("script"); hm.async = true;
-    hm.src = "https://hm.baidu.com/hm.js?https:\/\/hm.baidu.com\/hm.js?41497b30235376fbac44b6375248dcd8";
+    hm.src = "https://hm.baidu.com/hm.js?41497b30235376fbac44b6375248dcd8";
     var s = document.getElementsByTagName("script")[0];
     s.parentNode.insertBefore(hm, s);
   })();
