@@ -39,5 +39,35 @@
  Propose a method of analyzing large numbers of Google search queries to track influenza-like illness in a population which can shorten reporting lag for 1-2 weeks.  Why analyze Google queries possible</description>
     </item>
     
+    <item>
+      <title>chap 02 - 模型评估与选择</title>
+      <link>https://octemull.github.io/personal-site/post/ml-chap02/</link>
+      <pubDate>Tue, 07 Nov 2017 15:59:40 +0800</pubDate>
+      
+      <guid>https://octemull.github.io/personal-site/post/ml-chap02/</guid>
+      <description>2.1 经验误差与过拟合 基本概念：
+ 错误率 error rate：分类错误的样本数占总样本数的比例。如，在m个样本中有a个样本分类错误，则错误率E=a/m。 精度 accuracy：精度=1-错误率。如，续上，精度=1 - a/m。 误差 error：学习器的实际预测输出与样本真实值之间的差异。 训练误差 training error / 经验误差 empirical error：学习器在训练集上的误差。 泛化误差 generalization error：学习器在新样本（除训练集之外的样本）上的误差。
+ 过拟合 overfitting / 过配：学习器把训练样本学得“太好”了，很可能把训练样本特有的性质当做所有潜在样本具有的一般性质，以致于泛化性能下降。学习器学习能力过于强大。
+ 欠拟合 underfitting / 欠配：学习器对样本的普遍性质尚未学习完全。学习器的学习能力不足。
+  机器学习的目标： * 学习的泛化误差小，即学习器对新样本的预测效果好。
+过拟合是机器学习面临的关键障碍，只能“缓解”不可“避免” 过拟合是机器学习面临的关键障碍，各类学习算法都带有一些针对过拟合的措施；然而必须认识到，过拟合无法彻底避免，我们能做的只是“缓解”，或者说减小其风险。关于这一点，可以大致这样理解：机器学习面临的问题通常是NP难甚至更难，而有效的学习算法必然是在多项式时间内运行完成的，若可彻底避免过拟合，则通过经验误差最小化就能获得最优解，这就意味着我们构造性地证明了“P=NP”；因此，只要相信“P≠NP”，过拟合就不可避免。
+2.2 评估方法 在现实任务中，我们往往有多种算法可以选择，甚至对同一个算法，当使用不同的参数配置时，也会产生不同的模型。“选什么样的模型、使用哪种参数配置？”就是机器学习中的“模型选择”( model selection )问题。自然地，理想的解决方案是对不同算法、不同参数配置的模型进行评估，选择泛化误差最小的那个模型。但泛化误差无法直接获取，而经验误差由于过拟合的存在不适合作为评判标准。那么，在现实任务中应该如何选择呢？
+“测试误差”近似“泛化误差” 概念： * 测试集 testing set：从样本真实分布中独立同分布采样得到的样本的集合。
+ 注意：测试集应尽量与训练集互斥，即测试集中应尽量不出现训练集中已有的样本。 原因：测试集越是和训练集接近，其测试效果越没有说服力。如，老师上课讲了10道例题，考试时考的就是这10道原封不动的例题，自然没有办法测试出学生的真实水平，反映不出学生学得好不好。训练样本相当于练习题、例题，测试样本相当于考试题。老师都希望学生在学习上能够“举一反三”，就像我们希望训练的模型泛化能力强一样。
+  测试误差 testing error：训练好的学习器对测试集中样本的预测值与测试集样本的真实值的误差。  但是，实际情况中，我们往往只有一个数据集。若全用来训练学习器，就没有多余的数据用来测试。同时，我们也很难保证在一样的条件下在总体中重新采样，获得新的样本。为了解决既要训练又要测试的问题，我们通常用一定的方法将数据集D划分为训练集S和测试集T，用于训练和测试模型。
+2.2.1 留出法 hold-out 方法： * 直接将数据集D划分为两个互斥的集合，训练集S和测试集T。 * T ∪ S = D 且，T ∩ S = ∅。</description>
+    </item>
+    
+    <item>
+      <title>chap 01 - 绪论</title>
+      <link>https://octemull.github.io/personal-site/post/ml-chap01/</link>
+      <pubDate>Mon, 06 Nov 2017 15:59:40 +0800</pubDate>
+      
+      <guid>https://octemull.github.io/personal-site/post/ml-chap01/</guid>
+      <description>1.1 引言——什么是“机器学习”（machine learning）  走在街上看天气、买西瓜的一天 —— 我们根据自己的经验对未知的事情做出了预测或判断 机器学习——将信息输入机器，由机器产生模型，从而对未知的事情做出预判 机器学习是研究“学习算法”的学问  1.2 基本术语 关于数据样本
+ 数据集 data set：一组描述不同个体的各种属性信息的集合 示例 instance / 样本 sample：一个个体、事件、对象。如，一个西瓜，一个机场。 属性 attribute / 特征 feature：反映事件或对象在某方面的表现或者性质的事项。如，色泽，敲声，是否成熟。 属性值 attribute value：属性的取值。如，颜色——红、黄、蓝&amp;hellip; 属性空间 attribute space / 样本空间 sample space / 输入空间：属性张成的空间。如，把西瓜的“色泽”“根蒂”“敲声”作为三个坐标轴，则它们张成一个用于描述西瓜的三维空间。 特征向量 feature vector：示例在属性空间中的另一种叫法。续上，在该三维空间中，每个西瓜都可以用一个向量表示，空间中每一个点都对应一个向量坐标，即“特征向量”。 维数 dimensionality：在某数据集中，一个对象的属性的个数。续上上，西瓜数据集的维数 = 3，因为有三个不同的属性。  关于模型习得
+ 学习 learning / 训练 training：从数据中学习，通过某种算法得到模型的过程。如，从西瓜的特征里学习，得到预测西瓜是不是好瓜的模型。 训练数据 training data：输入进机器，用来得到模型的数据。如上，一些西瓜的“色泽”“根蒂”“敲声”属性及其取值。 训练样本 training sample：训练数据中的每一个样本。如上，每一个西瓜都是一个训练样本。 训练集 training set：训练样本组成的集合。如上，一堆西瓜。 假设 hypothesis：学得模型对应了关于数据的某种潜在规律。如，学得的模型可以通过西瓜的某些特征，判断西瓜是不是好瓜。 真相/真实 ground-truth：续上，事物的潜在规律本身。如，好瓜的真实规律。 学习器 learner：习得的模型的另一称呼。  关于预测 ( prediction )模型</description>
+    </item>
+    
   </channel>
 </rss>
