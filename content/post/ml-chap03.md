@@ -40,7 +40,7 @@ $f(\boldsymbol{x}_i) = \boldsymbol{w}^{\top} \boldsymbol{x}_i + \boldsymbol{b}$�
 **符号说明：**
 
 * 数据集 $D = \{(\boldsymbol{x}_1,y_1), (\boldsymbol{x}_2,y_2), \cdots, (\boldsymbol{x}_m,y_m)\}$.
-* 样本 $\boldsymbol{x}_i = ( x_{i1}; x_{i2}; \cdots; x_{id})$，每个样本有$d$个属性.
+* 样本 $\boldsymbol{x}_i = (x\_{i1}; x\_{i2}; \cdots; x\_{id})$，每个样本有$d$个属性.
 * 样本标记$y_i \in \mathbb{R}$.
 
 ### 3.2.1 一元线性回归
@@ -59,7 +59,7 @@ $f(\boldsymbol{x}_i) = \boldsymbol{w}^{\top} \boldsymbol{x}_i + \boldsymbol{b}$�
 > 最小二乘法：找到一条直线，使所有样本到直线上的欧氏距离之和最小。
 
 
-求解 $w, b$ ， 使 $E_{(w,b)} = \sum_{i=1}^m (y_i - w x_i -b)^2$ 最小，可分别对 $w, b$ 求导.
+求解 $w, b$ ， 使 $E\_{(w,b)} = \sum\_{i=1}^m (y_i - w x_i -b)^2$ 最小，可分别对 $w, b$ 求导.
 ![-w605](https://i.loli.net/2019/03/17/5c8e5c2141ea1.jpg)
 然后令两个式子等于零，即可得到$w$和$b$的最小二乘解。
 ![-w605](https://i.loli.net/2019/03/17/5c8e5c21432a4.jpg)
@@ -83,7 +83,9 @@ $f(\boldsymbol{x}_i) = \boldsymbol{w}^{\top} \boldsymbol{x}_i + \boldsymbol{b}$�
 
 样本标记的向量为 $\boldsymbol{y} = (y_1;y_2;\cdots;y_m)$ 。则最优化的目标函数为
 ![-w600](https://i.loli.net/2019/03/17/5c8e5c0f52c06.jpg)
-令$E_{\hat{\boldsymbol{w}}} = (\boldsymbol{y} - \mathbf{X} \hat{\boldsymbol{w}})^{\top}(\boldsymbol{y} - \mathbf{X} \hat{\boldsymbol{w}})$，对$\hat{\boldsymbol{w}}$求导得
+令$E_{\hat{\boldsymbol{w}}} = (\boldsymbol{y} - \mathbf{X} \hat{\boldsymbol{w}})^{\top}(\boldsymbol{y} - \mathbf{X} \hat{\boldsymbol{w}})$，
+
+对$\hat{\boldsymbol{w}}$求导得
 
 ![-w589](https://i.loli.net/2019/03/17/5c8e5c0f51bc8.jpg)
 

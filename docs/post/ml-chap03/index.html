@@ -219,7 +219,7 @@ $f(\boldsymbol{x}_i) = \boldsymbol{w}^{\top} \boldsymbol{x}_i + \boldsymbol{b}$�
 
 <ul>
 <li>数据集 $D = {(\boldsymbol{x}_1,y_1), (\boldsymbol{x}_2,y_2), \cdots, (\boldsymbol{x}_m,y_m)}$.</li>
-<li>样本 $\boldsymbol{x}<em>i = ( x</em>{i1}; x<em>{i2}; \cdots; x</em>{id})$，每个样本有$d$个属性.</li>
+<li>样本 $\boldsymbol{x}_i = (x_{i1}; x_{i2}; \cdots; x_{id})$，每个样本有$d$个属性.</li>
 <li>样本标记$y_i \in \mathbb{R}$.</li>
 </ul>
 
@@ -242,7 +242,7 @@ $f(\boldsymbol{x}_i) = \boldsymbol{w}^{\top} \boldsymbol{x}_i + \boldsymbol{b}$�
 <p>最小二乘法：找到一条直线，使所有样本到直线上的欧氏距离之和最小。</p>
 </blockquote>
 
-<p>求解 $w, b$ ， 使 $E<em>{(w,b)} = \sum</em>{i=1}^m (y_i - w x_i -b)^2$ 最小，可分别对 $w, b$ 求导.
+<p>求解 $w, b$ ， 使 $E_{(w,b)} = \sum_{i=1}^m (y_i - w x_i -b)^2$ 最小，可分别对 $w, b$ 求导.
 <img src="https://i.loli.net/2019/03/17/5c8e5c2141ea1.jpg" alt="-w605" />
 然后令两个式子等于零，即可得到$w$和$b$的最小二乘解。
 <img src="https://i.loli.net/2019/03/17/5c8e5c21432a4.jpg" alt="-w605" /></p>
@@ -268,7 +268,9 @@ $f(\boldsymbol{x}_i) = \boldsymbol{w}^{\top} \boldsymbol{x}_i + \boldsymbol{b}$�
 
 <p>样本标记的向量为 $\boldsymbol{y} = (y_1;y_2;\cdots;y<em>m)$ 。则最优化的目标函数为
 <img src="https://i.loli.net/2019/03/17/5c8e5c0f52c06.jpg" alt="-w600" />
-令$E</em>{\hat{\boldsymbol{w}}} = (\boldsymbol{y} - \mathbf{X} \hat{\boldsymbol{w}})^{\top}(\boldsymbol{y} - \mathbf{X} \hat{\boldsymbol{w}})$，对$\hat{\boldsymbol{w}}$求导得</p>
+令$E</em>{\hat{\boldsymbol{w}}} = (\boldsymbol{y} - \mathbf{X} \hat{\boldsymbol{w}})^{\top}(\boldsymbol{y} - \mathbf{X} \hat{\boldsymbol{w}})$，</p>
+
+<p>对$\hat{\boldsymbol{w}}$求导得</p>
 
 <p><img src="https://i.loli.net/2019/03/17/5c8e5c0f51bc8.jpg" alt="-w589" /></p>
 
