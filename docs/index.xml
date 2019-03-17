@@ -83,10 +83,10 @@ jupyter notebook --generate-config  注意： 这条命令虽然可以用于查�
     
     <item>
       <title>Mac下matlab2014b安装libsvm</title>
-      <link>https://octemull.github.io/personal-site/post/mac-livsvm/</link>
+      <link>https://octemull.github.io/personal-site/post/mac-libsvm/</link>
       <pubDate>Thu, 22 Mar 2018 20:56:49 +0800</pubDate>
       
-      <guid>https://octemull.github.io/personal-site/post/mac-livsvm/</guid>
+      <guid>https://octemull.github.io/personal-site/post/mac-libsvm/</guid>
       <description>环境&amp;amp;软件说明  系统：macOS High Sierra 10.13.3 matlab版本：matlab2014b xcode版本：Xcode9.1， SDK版本10.13 （必须要有xcode才行） libsvm版本：libsvm3.22  下载libsvm 1）在libsvm主页下载最新的libsvm
 2）直接在Downloads下解压
 3）将解压后的文件夹复制到/Applications/MATLAB_R2014b.app/toolbox/下 （P.S. 从Finder中的Application里找到Matlab，右键显示包内容）
@@ -100,6 +100,30 @@ xcode-select --install  然后点击安装，等待下载安装即可。
   打开matlab，在command window中输入  edit ([matlabroot &#39;/bin/maci64/mexopts/clang_maci64.xml&#39;])  查找&amp;quot;10.9&amp;quot;关键词，得到例如：
 &amp;lt;dirExists name=&amp;quot; /Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk&amp;quot;/&amp;gt;&amp;lt;cmdReturnsname=&amp;quot;find/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk&amp;quot;/&amp;gt;&amp;lt;cmdReturnsname=&amp;quot;find -name MacOSX10.9.sdk&amp;quot; /&amp;gt;  在下面依次的加入10.12，10.13加好之后应该是这个样子的
 &amp;lt;/XCODE_AGREED_VERSION&amp;gt; &amp;lt;ISYSROOT&amp;gt; &amp;lt;and&amp;gt; &amp;lt;cmdReturns name=&amp;quot;xcode-select -print-path&amp;quot;/&amp;gt; &amp;lt;or&amp;gt; &amp;lt;dirExists name=&amp;quot;$$/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk&amp;quot; /&amp;gt; &amp;lt;dirExists name=&amp;quot;$$/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.10.sdk&amp;quot; /&amp;gt; &amp;lt;dirExists name=&amp;quot;$$/Platforms/MacOSX.</description>
+    </item>
+    
+    <item>
+      <title>目录 周志华机器学习笔记</title>
+      <link>https://octemull.github.io/personal-site/post/ml-contents/</link>
+      <pubDate>Sun, 19 Nov 2017 15:59:40 +0800</pubDate>
+      
+      <guid>https://octemull.github.io/personal-site/post/ml-contents/</guid>
+      <description> 目录  chap 01 - 绪论 chap 02 - 模型评估与选择 chap 03 - 线性模型 | Linear Model chap 04 - 决策树 | Decision Tree chap 05 - 神经网络 | Neural Network chap 06 - 支持向量机 | Support Vector Machine,SVM chap 07 - 贝叶斯分类器 | Bayesian Classifier chap 08 - 集成学习 | Ensemble learning chap 09 - 聚类 | Clustering chap 10 - 降维与度量学习 chap 11 - 特征选择（特征选取） 与 稀疏学习  </description>
+    </item>
+    
+    <item>
+      <title>chap 03 - 线性模型 | Linear Model</title>
+      <link>https://octemull.github.io/personal-site/post/ml-chap03/</link>
+      <pubDate>Fri, 10 Nov 2017 15:59:40 +0800</pubDate>
+      
+      <guid>https://octemull.github.io/personal-site/post/ml-chap03/</guid>
+      <description>3.1 基本形式 给定由$d$个属性描述的样本$\boldsymbol{x}=(x_1,x_2,\cdots,x_d)^{\top}$，其中$x_i$是$\boldsymbol{x}$在第$i$个属性上的取值，线性模型视图习得一个通过属性的线性组合来进行预测的函数，即 $$f(\boldsymbol{x}) = w_1 x_1 + w_2 x_2 + \cdots + w_d x_d +b$$ 用向量形式表示为 $$f(\boldsymbol{x}) = \boldsymbol{w}^{\top} \boldsymbol{x} + \boldsymbol{b}$$ 其中，$\boldsymbol{w} = (w_1,w_2,\cdots, w_d)^{\top}$。模型由$ \boldsymbol{w}$和$ \boldsymbol{b}$确定。
+特点：
+ 形式简单，易于建模，但蕴含着机器学习中一些重要的基本思想； 许多功能强大的非线性模型(nonlinear model)可在线性模型的基础上引入层级结构或者高维映射得到； ω直观表示出各属性的重要性，易于解释（有很好的可解释性 comprehensibility）。  例子：若在西瓜问题中学得“f好瓜(x) = 0.2 • x色泽+ 0.5 • x根蒂+ 0.3 • x敲声+ 1”，则意味着可通过综合考虑色泽、根蒂和敲声来判断瓜好不好，其中根蒂最要紧，而敲声比 色泽更重要.
+3.2 线性回归 linear regression 目的：
+习得一个线性模型尽可能准确的预测实值输出标记，即 $f(\boldsymbol{x}_i) = \boldsymbol{w}^{\top} \boldsymbol{x}_i + \boldsymbol{b}$，使$f(\boldsymbol{x})_i \simeq y_i $
+符号说明：
+ 数据集 $D = {(\boldsymbol{x}_1,y_1), (\boldsymbol{x}_2,y_2), \cdots, (\boldsymbol{x}_m,y_m)}$.</description>
     </item>
     
     <item>
@@ -118,7 +142,8 @@ xcode-select --install  然后点击安装，等待下载安装即可。
 “测试误差”近似“泛化误差” 概念： * 测试集 testing set：从样本真实分布中独立同分布采样得到的样本的集合。
  注意：测试集应尽量与训练集互斥，即测试集中应尽量不出现训练集中已有的样本。 原因：测试集越是和训练集接近，其测试效果越没有说服力。如，老师上课讲了10道例题，考试时考的就是这10道原封不动的例题，自然没有办法测试出学生的真实水平，反映不出学生学得好不好。训练样本相当于练习题、例题，测试样本相当于考试题。老师都希望学生在学习上能够“举一反三”，就像我们希望训练的模型泛化能力强一样。
   测试误差 testing error：训练好的学习器对测试集中样本的预测值与测试集样本的真实值的误差。  但是，实际情况中，我们往往只有一个数据集。若全用来训练学习器，就没有多余的数据用来测试。同时，我们也很难保证在一样的条件下在总体中重新采样，获得新的样本。为了解决既要训练又要测试的问题，我们通常用一定的方法将数据集D划分为训练集S和测试集T，用于训练和测试模型。
-2.2.1 留出法 hold-out 方法： * 直接将数据集D划分为两个互斥的集合，训练集S和测试集T。 * T ∪ S = D 且，T ∩ S = ∅。</description>
+2.2.1 留出法 hold-out 方法：
+ 直接将数据集D划分为两个互斥的集合，训练集S和测试集T。 T ∪ S = D 且，T ∩ S = ∅。  举🌰： 以二分类任务为例，假定D包含1000个样本，将其划分为S包含700个样本，T包含300个样本。用S进行训练后，如果模型在T上有90个样本分类错误，那么其错误率为$(90&amp;frasl;300)×100%=30%$，相应的，精确度为$1-30%=70%$。</description>
     </item>
     
     <item>

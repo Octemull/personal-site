@@ -13,10 +13,10 @@
     
     <item>
       <title>Mac下matlab2014b安装libsvm</title>
-      <link>https://octemull.github.io/personal-site/post/mac-livsvm/</link>
+      <link>https://octemull.github.io/personal-site/post/mac-libsvm/</link>
       <pubDate>Thu, 22 Mar 2018 20:56:49 +0800</pubDate>
       
-      <guid>https://octemull.github.io/personal-site/post/mac-livsvm/</guid>
+      <guid>https://octemull.github.io/personal-site/post/mac-libsvm/</guid>
       <description>环境&amp;amp;软件说明  系统：macOS High Sierra 10.13.3 matlab版本：matlab2014b xcode版本：Xcode9.1， SDK版本10.13 （必须要有xcode才行） libsvm版本：libsvm3.22  下载libsvm 1）在libsvm主页下载最新的libsvm
 2）直接在Downloads下解压
 3）将解压后的文件夹复制到/Applications/MATLAB_R2014b.app/toolbox/下 （P.S. 从Finder中的Application里找到Matlab，右键显示包内容）

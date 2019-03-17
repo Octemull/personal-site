@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Contents on Octemull&#39;s Personal Site</title>
+    <link>https://octemull.github.io/personal-site/tags/contents/</link>
+    <description>Recent content in Contents on Octemull&#39;s Personal Site</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 19 Nov 2017 15:59:40 +0800</lastBuildDate>
+    
+	<atom:link href="https://octemull.github.io/personal-site/tags/contents/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>目录 周志华机器学习笔记</title>
+      <link>https://octemull.github.io/personal-site/post/ml-contents/</link>
+      <pubDate>Sun, 19 Nov 2017 15:59:40 +0800</pubDate>
+      
+      <guid>https://octemull.github.io/personal-site/post/ml-contents/</guid>
+      <description> 目录  chap 01 - 绪论 chap 02 - 模型评估与选择 chap 03 - 线性模型 | Linear Model chap 04 - 决策树 | Decision Tree chap 05 - 神经网络 | Neural Network chap 06 - 支持向量机 | Support Vector Machine,SVM chap 07 - 贝叶斯分类器 | Bayesian Classifier chap 08 - 集成学习 | Ensemble learning chap 09 - 聚类 | Clustering chap 10 - 降维与度量学习 chap 11 - 特征选择（特征选取） 与 稀疏学习  </description>
+    </item>
+    
+  </channel>
+</rss>
