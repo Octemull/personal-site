@@ -308,6 +308,41 @@ xcode-select --install  然后点击安装，等待下载安装即可。
 
     <article class="post">
   <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/personal-site/post/ml-chap04/">chap 04 - 决策树 | Decision Tree</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 13 Nov 17 15:59 CST </span>
+      <div class="post-category">
+          <a href="/personal-site/categories/machine-learning/"> Machine Learning </a>
+          </div>
+        <span class="more-meta"> 402 words </span>
+        <span class="more-meta"> 2 mins read </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      4.1 基本流程 适用任务：分类，以二分类为例
+什么是决策树：
+ 基于树形结构来进行决策的一种处理过程； 经过该处理过程后形成的“决策树”，即决策流程。  决策树分解：
+ 先判断什么（父决策），后判断什么（子决策），最后导向什么（最终决策，对应判断结果）； 属性划分：每个“决策问题”都是对样本“属性”的划分； 范围缩小：每个“决策结果”导出的下一步决策都在上一决策的范围内； 举一个🌰，挑西瓜的决策树   如图，一棵决策树包含
+ 一个根结点——第一个决策问题，包含全部样本 若干内部结点——决策问题，包含经根节点划分后的部分样本 若干叶结点——决策结果，包含的部分样本均属于同一类别  从根节点到每个叶节点的路径对应了一个判定测试序列。
+原则： 分而治之 divide-and-conquer
+基本流程：
+ 说明： 14. 从A中去掉a*
+ 递归返回情形：
+ (1)【Step 03】当前结点包含的样本均属于同一类，无需划分； (2)【Step 06】当前属性集为空(属性都用完了)，或者所有样本在属性集中取值相同，无法划分； (3)【Step 12】当前结点包含的样本集合为空，不能划分。  举🌰：挑西瓜，样本{色泽；根蒂；敲声；甜度；纹理；触感；……)
+ (1) 常见 (2) 属性用完：当前结点的样本均为{色泽=青绿；根蒂=蜷缩；敲声=浊响}，类别为(好,坏,好,好,好,坏)，N(好)&gt;N(坏)，则划分为“好瓜”。 取值相同：当前结点的样本{色泽=青绿；根蒂=(蜷缩, 蜷缩,蜷缩,蜷缩 )| (好,坏,好,好)}，划分属性A为“根蒂”，样本D在A上的属性值均为“蜷缩”，N(好)&gt;N(坏)，所以均划分为“好”。 (3)上一步结点样本{色泽=青绿；根蒂=(蜷缩, 蜷缩,蜷缩)| (好，坏，好)}，原A={色泽，根蒂}，且在上一步已使用“色泽”属性划分，此时用“根蒂”划分，根蒂={硬挺, 蜷缩, 稍蜷}  情形2、3的处理：
+ (2)把当前结点标记为叶结点，类别设定为该结点所含样本最多的类别. (3)把当前结点标记为叶结点，类别设定为其父节点所含类别最多的类别.  情形2、3的区别：
+ (2) 利用当前结点的后验分布. (3) 把父节点的样本分布作为当前结点的先验分布.  4.
+    </div>
+    <div class="read-more">
+      <a href="/personal-site/post/ml-chap04/" class="read-more-link">Read more..</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/personal-site/post/ml-chap03/">chap 03 - 线性模型 | Linear Model</a></h1>
     <div class="post-meta">
       <span class="post-time"> 10 Nov 17 15:59 CST </span>
@@ -369,36 +404,14 @@ xcode-select --install  然后点击安装，等待下载安装即可。
   </div>
 </article>
 
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/personal-site/post/ml-chap01/">chap 01 - 绪论</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 06 Nov 17 15:59 CST </span>
-      <div class="post-category">
-          <a href="/personal-site/categories/machine-learning/"> Machine Learning </a>
-          </div>
-        <span class="more-meta"> 261 words </span>
-        <span class="more-meta"> 2 mins read </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      1.1 引言——什么是“机器学习”（machine learning）  走在街上看天气、买西瓜的一天 —— 我们根据自己的经验对未知的事情做出了预测或判断 机器学习——将信息输入机器，由机器产生模型，从而对未知的事情做出预判 机器学习是研究“学习算法”的学问  1.2 基本术语 关于数据样本
- 数据集 data set：一组描述不同个体的各种属性信息的集合 示例 instance / 样本 sample：一个个体、事件、对象。如，一个西瓜，一个机场。 属性 attribute / 特征 feature：反映事件或对象在某方面的表现或者性质的事项。如，色泽，敲声，是否成熟。 属性值 attribute value：属性的取值。如，颜色——红、黄、蓝&hellip; 属性空间 attribute space / 样本空间 sample space / 输入空间：属性张成的空间。如，把西瓜的“色泽”“根蒂”“敲声”作为三个坐标轴，则它们张成一个用于描述西瓜的三维空间。 特征向量 feature vector：示例在属性空间中的另一种叫法。续上，在该三维空间中，每个西瓜都可以用一个向量表示，空间中每一个点都对应一个向量坐标，即“特征向量”。 维数 dimensionality：在某数据集中，一个对象的属性的个数。续上上，西瓜数据集的维数 = 3，因为有三个不同的属性。  关于模型习得
- 学习 learning / 训练 training：从数据中学习，通过某种算法得到模型的过程。如，从西瓜的特征里学习，得到预测西瓜是不是好瓜的模型。 训练数据 training data：输入进机器，用来得到模型的数据。如上，一些西瓜的“色泽”“根蒂”“敲声”属性及其取值。 训练样本 training sample：训练数据中的每一个样本。如上，每一个西瓜都是一个训练样本。 训练集 training set：训练样本组成的集合。如上，一堆西瓜。 假设 hypothesis：学得模型对应了关于数据的某种潜在规律。如，学得的模型可以通过西瓜的某些特征，判断西瓜是不是好瓜。 真相/真实 ground-truth：续上，事物的潜在规律本身。如，好瓜的真实规律。 学习器 learner：习得的模型的另一称呼。  关于预测 ( prediction )模型
-    </div>
-    <div class="read-more">
-      <a href="/personal-site/post/ml-chap01/" class="read-more-link">Read more..</a>
-    </div>
-  </div>
-</article>
-
     </section>
   
   <nav class="pagination">
     
-    
+    <a class="next" href="/personal-site/page/2/">
+        <span class="next-text">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
   </nav>
         </div>
         

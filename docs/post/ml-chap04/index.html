@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>chap 04 - 决策树 | Decision Tree - Octemull&#39;s Personal Site</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Octemull" /><meta name="description" content="4.1 基本流程 适用任务：分类，以二分类为例
+什么是决策树：
+ 基于树形结构来进行决策的一种处理过程； 经过该处理过程后形成的“决策树”，即决策流程。  决策树分解：
+ 先判断什么（父决策），后判断什么（子决策），最后导向什么（最终决策，对应判断结果）； 属性划分：每个“决策问题”都是对样本“属性”的划分； 范围缩小：每个“决策结果”导出的下一步决策都在上一决策的范围内； 举一个🌰，挑西瓜的决策树   如图，一棵决策树包含
+ 一个根结点——第一个决策问题，包含全部样本 若干内部结点——决策问题，包含经根节点划分后的部分样本 若干叶结点——决策结果，包含的部分样本均属于同一类别  从根节点到每个叶节点的路径对应了一个判定测试序列。
+原则： 分而治之 divide-and-conquer
+基本流程：
+ 说明： 14. 从A中去掉a*
+ 递归返回情形：
+ (1)【Step 03】当前结点包含的样本均属于同一类，无需划分； (2)【Step 06】当前属性集为空(属性都用完了)，或者所有样本在属性集中取值相同，无法划分； (3)【Step 12】当前结点包含的样本集合为空，不能划分。  举🌰：挑西瓜，样本{色泽；根蒂；敲声；甜度；纹理；触感；……)
+ (1) 常见 (2) 属性用完：当前结点的样本均为{色泽=青绿；根蒂=蜷缩；敲声=浊响}，类别为(好,坏,好,好,好,坏)，N(好)&amp;gt;N(坏)，则划分为“好瓜”。 取值相同：当前结点的样本{色泽=青绿；根蒂=(蜷缩, 蜷缩,蜷缩,蜷缩 )| (好,坏,好,好)}，划分属性A为“根蒂”，样本D在A上的属性值均为“蜷缩”，N(好)&amp;gt;N(坏)，所以均划分为“好”。 (3)上一步结点样本{色泽=青绿；根蒂=(蜷缩, 蜷缩,蜷缩)| (好，坏，好)}，原A={色泽，根蒂}，且在上一步已使用“色泽”属性划分，此时用“根蒂”划分，根蒂={硬挺, 蜷缩, 稍蜷}  情形2、3的处理：
+ (2)把当前结点标记为叶结点，类别设定为该结点所含样本最多的类别. (3)把当前结点标记为叶结点，类别设定为其父节点所含类别最多的类别.  情形2、3的区别：
+ (2) 利用当前结点的后验分布. (3) 把父节点的样本分布作为当前结点的先验分布.  4." /><meta name="keywords" content="Blog" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.53 with even 4.0.0" />
+
+
+<link rel="canonical" href="https://octemull.github.io/personal-site/post/ml-chap04/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/personal-site/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/personal-site/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/personal-site/favicon-16x16.png">
+<link rel="manifest" href="/personal-site/manifest.json">
+<link rel="mask-icon" href="/personal-site/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/personal-site/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="chap 04 - 决策树 | Decision Tree" />
+<meta property="og:description" content="4.1 基本流程 适用任务：分类，以二分类为例
+什么是决策树：
+ 基于树形结构来进行决策的一种处理过程； 经过该处理过程后形成的“决策树”，即决策流程。  决策树分解：
+ 先判断什么（父决策），后判断什么（子决策），最后导向什么（最终决策，对应判断结果）； 属性划分：每个“决策问题”都是对样本“属性”的划分； 范围缩小：每个“决策结果”导出的下一步决策都在上一决策的范围内； 举一个🌰，挑西瓜的决策树   如图，一棵决策树包含
+ 一个根结点——第一个决策问题，包含全部样本 若干内部结点——决策问题，包含经根节点划分后的部分样本 若干叶结点——决策结果，包含的部分样本均属于同一类别  从根节点到每个叶节点的路径对应了一个判定测试序列。
+原则： 分而治之 divide-and-conquer
+基本流程：
+ 说明： 14. 从A中去掉a*
+ 递归返回情形：
+ (1)【Step 03】当前结点包含的样本均属于同一类，无需划分； (2)【Step 06】当前属性集为空(属性都用完了)，或者所有样本在属性集中取值相同，无法划分； (3)【Step 12】当前结点包含的样本集合为空，不能划分。  举🌰：挑西瓜，样本{色泽；根蒂；敲声；甜度；纹理；触感；……)
+ (1) 常见 (2) 属性用完：当前结点的样本均为{色泽=青绿；根蒂=蜷缩；敲声=浊响}，类别为(好,坏,好,好,好,坏)，N(好)&gt;N(坏)，则划分为“好瓜”。 取值相同：当前结点的样本{色泽=青绿；根蒂=(蜷缩, 蜷缩,蜷缩,蜷缩 )| (好,坏,好,好)}，划分属性A为“根蒂”，样本D在A上的属性值均为“蜷缩”，N(好)&gt;N(坏)，所以均划分为“好”。 (3)上一步结点样本{色泽=青绿；根蒂=(蜷缩, 蜷缩,蜷缩)| (好，坏，好)}，原A={色泽，根蒂}，且在上一步已使用“色泽”属性划分，此时用“根蒂”划分，根蒂={硬挺, 蜷缩, 稍蜷}  情形2、3的处理：
+ (2)把当前结点标记为叶结点，类别设定为该结点所含样本最多的类别. (3)把当前结点标记为叶结点，类别设定为其父节点所含类别最多的类别.  情形2、3的区别：
+ (2) 利用当前结点的后验分布. (3) 把父节点的样本分布作为当前结点的先验分布.  4." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://octemull.github.io/personal-site/post/ml-chap04/" /><meta property="article:published_time" content="2017-11-13T15:59:40&#43;08:00"/>
+<meta property="article:modified_time" content="2019-03-18T15:59:40&#43;08:00"/>
+
+<meta itemprop="name" content="chap 04 - 决策树 | Decision Tree">
+<meta itemprop="description" content="4.1 基本流程 适用任务：分类，以二分类为例
+什么是决策树：
+ 基于树形结构来进行决策的一种处理过程； 经过该处理过程后形成的“决策树”，即决策流程。  决策树分解：
+ 先判断什么（父决策），后判断什么（子决策），最后导向什么（最终决策，对应判断结果）； 属性划分：每个“决策问题”都是对样本“属性”的划分； 范围缩小：每个“决策结果”导出的下一步决策都在上一决策的范围内； 举一个🌰，挑西瓜的决策树   如图，一棵决策树包含
+ 一个根结点——第一个决策问题，包含全部样本 若干内部结点——决策问题，包含经根节点划分后的部分样本 若干叶结点——决策结果，包含的部分样本均属于同一类别  从根节点到每个叶节点的路径对应了一个判定测试序列。
+原则： 分而治之 divide-and-conquer
+基本流程：
+ 说明： 14. 从A中去掉a*
+ 递归返回情形：
+ (1)【Step 03】当前结点包含的样本均属于同一类，无需划分； (2)【Step 06】当前属性集为空(属性都用完了)，或者所有样本在属性集中取值相同，无法划分； (3)【Step 12】当前结点包含的样本集合为空，不能划分。  举🌰：挑西瓜，样本{色泽；根蒂；敲声；甜度；纹理；触感；……)
+ (1) 常见 (2) 属性用完：当前结点的样本均为{色泽=青绿；根蒂=蜷缩；敲声=浊响}，类别为(好,坏,好,好,好,坏)，N(好)&gt;N(坏)，则划分为“好瓜”。 取值相同：当前结点的样本{色泽=青绿；根蒂=(蜷缩, 蜷缩,蜷缩,蜷缩 )| (好,坏,好,好)}，划分属性A为“根蒂”，样本D在A上的属性值均为“蜷缩”，N(好)&gt;N(坏)，所以均划分为“好”。 (3)上一步结点样本{色泽=青绿；根蒂=(蜷缩, 蜷缩,蜷缩)| (好，坏，好)}，原A={色泽，根蒂}，且在上一步已使用“色泽”属性划分，此时用“根蒂”划分，根蒂={硬挺, 蜷缩, 稍蜷}  情形2、3的处理：
+ (2)把当前结点标记为叶结点，类别设定为该结点所含样本最多的类别. (3)把当前结点标记为叶结点，类别设定为其父节点所含类别最多的类别.  情形2、3的区别：
+ (2) 利用当前结点的后验分布. (3) 把父节点的样本分布作为当前结点的先验分布.  4.">
+
+
+<meta itemprop="datePublished" content="2017-11-13T15:59:40&#43;08:00" />
+<meta itemprop="dateModified" content="2019-03-18T15:59:40&#43;08:00" />
+<meta itemprop="wordCount" content="402">
+
+
+
+<meta itemprop="keywords" content="Notes," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="chap 04 - 决策树 | Decision Tree"/>
+<meta name="twitter:description" content="4.1 基本流程 适用任务：分类，以二分类为例
+什么是决策树：
+ 基于树形结构来进行决策的一种处理过程； 经过该处理过程后形成的“决策树”，即决策流程。  决策树分解：
+ 先判断什么（父决策），后判断什么（子决策），最后导向什么（最终决策，对应判断结果）； 属性划分：每个“决策问题”都是对样本“属性”的划分； 范围缩小：每个“决策结果”导出的下一步决策都在上一决策的范围内； 举一个🌰，挑西瓜的决策树   如图，一棵决策树包含
+ 一个根结点——第一个决策问题，包含全部样本 若干内部结点——决策问题，包含经根节点划分后的部分样本 若干叶结点——决策结果，包含的部分样本均属于同一类别  从根节点到每个叶节点的路径对应了一个判定测试序列。
+原则： 分而治之 divide-and-conquer
+基本流程：
+ 说明： 14. 从A中去掉a*
+ 递归返回情形：
+ (1)【Step 03】当前结点包含的样本均属于同一类，无需划分； (2)【Step 06】当前属性集为空(属性都用完了)，或者所有样本在属性集中取值相同，无法划分； (3)【Step 12】当前结点包含的样本集合为空，不能划分。  举🌰：挑西瓜，样本{色泽；根蒂；敲声；甜度；纹理；触感；……)
+ (1) 常见 (2) 属性用完：当前结点的样本均为{色泽=青绿；根蒂=蜷缩；敲声=浊响}，类别为(好,坏,好,好,好,坏)，N(好)&gt;N(坏)，则划分为“好瓜”。 取值相同：当前结点的样本{色泽=青绿；根蒂=(蜷缩, 蜷缩,蜷缩,蜷缩 )| (好,坏,好,好)}，划分属性A为“根蒂”，样本D在A上的属性值均为“蜷缩”，N(好)&gt;N(坏)，所以均划分为“好”。 (3)上一步结点样本{色泽=青绿；根蒂=(蜷缩, 蜷缩,蜷缩)| (好，坏，好)}，原A={色泽，根蒂}，且在上一步已使用“色泽”属性划分，此时用“根蒂”划分，根蒂={硬挺, 蜷缩, 稍蜷}  情形2、3的处理：
+ (2)把当前结点标记为叶结点，类别设定为该结点所含样本最多的类别. (3)把当前结点标记为叶结点，类别设定为其父节点所含类别最多的类别.  情形2、3的区别：
+ (2) 利用当前结点的后验分布. (3) 把父节点的样本分布作为当前结点的先验分布.  4."/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/personal-site/" class="logo">Octemull</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/personal-site/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/personal-site/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/personal-site/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/personal-site/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/personal-site/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/personal-site/" class="logo">Octemull</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/personal-site/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/personal-site/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/personal-site/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/personal-site/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/personal-site/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">chap 04 - 决策树 | Decision Tree</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 13 Nov 17 15:59 CST </span>
+        <div class="post-category">
+            <a href="/personal-site/categories/machine-learning/"> Machine Learning </a>
+            </div>
+          <span class="more-meta"> 402 words </span>
+          <span class="more-meta"> 2 mins read </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#4-1-基本流程">4.1 基本流程</a></li>
+<li><a href="#4-2-划分选择">4.2 划分选择</a>
+<ul>
+<li><a href="#4-2-1-信息增益">4.2.1 信息增益</a></li>
+<li><a href="#4-2-2-增益率-gain-ratio">4.2.2 增益率 gain ratio</a></li>
+<li><a href="#4-2-3-基尼系数-gini-index">4.2.3 基尼系数 Gini index</a></li>
+</ul></li>
+<li><a href="#4-3-剪枝-pruning-处理">4.3 剪枝 pruning 处理</a>
+<ul>
+<li><a href="#4-3-1-预剪枝-pre-pruning">4.3.1 预剪枝 pre-pruning</a></li>
+<li><a href="#4-3-2-后剪枝-post-pruning">4.3.2 后剪枝 post-pruning</a></li>
+</ul></li>
+<li><a href="#4-4-连续与缺失值">4.4 连续与缺失值</a>
+<ul>
+<li><a href="#4-4-1-连续值处理">4.4.1 连续值处理</a></li>
+<li><a href="#4-4-2-缺失值处理">4.4.2 缺失值处理</a></li>
+</ul></li>
+<li><a href="#4-5-多变量决策树">4.5 多变量决策树</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      
+
+<p><img src="https://i.loli.net/2019/03/18/5c8f915862a5e.png" alt="0733B5E4-6912-404A-88B3-0A11815A324A" /></p>
+
+<h2 id="4-1-基本流程">4.1 基本流程</h2>
+
+<p><strong>适用任务：</strong>分类，以二分类为例</p>
+
+<p><strong>什么是决策树：</strong></p>
+
+<ul>
+<li>基于树形结构来进行决策的一种处理过程；</li>
+<li>经过该处理过程后形成的“决策树”，即决策流程。</li>
+</ul>
+
+<p><strong>决策树分解：</strong></p>
+
+<ul>
+<li>先判断什么（父决策），后判断什么（子决策），最后导向什么（最终决策，对应判断结果）；</li>
+<li><strong>属性划分</strong>：每个“决策问题”都是对样本“属性”的划分；</li>
+<li><strong>范围缩小</strong>：每个“决策结果”导出的下一步决策都在上一决策的范围内；</li>
+<li>举一个🌰，挑西瓜的决策树
+<img src="https://i.loli.net/2019/03/18/5c8f9146d1a84.jpg" alt="-w645" /></li>
+</ul>
+
+<p>如图，一棵决策树包含</p>
+
+<ul>
+<li>一个根结点——第一个决策问题，包含全部样本</li>
+<li>若干内部结点——决策问题，包含经根节点划分后的部分样本</li>
+<li>若干叶结点——决策结果，包含的部分样本均属于同一类别</li>
+</ul>
+
+<p>从根节点到每个叶节点的路径对应了一个判定测试序列。</p>
+
+<p><strong>原则：</strong> 分而治之 divide-and-conquer</p>
+
+<p><strong>基本流程：</strong></p>
+
+<p><img src="https://i.loli.net/2019/03/18/5c8f915868a2a.jpg" alt="-w629" /></p>
+
+<blockquote>
+<p>说明： 14. 从A中去掉a*</p>
+</blockquote>
+
+<p><strong>递归返回情形：</strong></p>
+
+<ul>
+<li>(1)【Step 03】当前结点包含的样本均属于同一类，无需划分；</li>
+<li>(2)【Step 06】当前属性集为空(属性都用完了)，或者所有样本在属性集中取值相同，无法划分；</li>
+<li>(3)【Step 12】当前结点包含的样本集合为空，不能划分。</li>
+</ul>
+
+<p>举🌰：挑西瓜，样本{色泽；根蒂；敲声；甜度；纹理；触感；……)</p>
+
+<ul>
+<li>(1) 常见</li>
+<li>(2) 属性用完：当前结点的样本均为{色泽=青绿；根蒂=蜷缩；敲声=浊响}，类别为(好,坏,好,好,好,坏)，N(好)&gt;N(坏)，则划分为“好瓜”。</li>
+<li>取值相同：当前结点的样本{色泽=青绿；根蒂=(蜷缩, 蜷缩,蜷缩,蜷缩 )| (好,坏,好,好)}，划分属性A为“根蒂”，样本D在A上的属性值均为“蜷缩”，N(好)&gt;N(坏)，所以均划分为“好”。</li>
+<li>(3)上一步结点样本{色泽=青绿；根蒂=(蜷缩, 蜷缩,蜷缩)| (好，坏，好)}，原A={色泽，根蒂}，且在上一步已使用“色泽”属性划分，此时用“根蒂”划分，根蒂={硬挺, 蜷缩, 稍蜷}</li>
+</ul>
+
+<p>情形2、3的处理：</p>
+
+<ul>
+<li>(2)把当前结点标记为叶结点，类别设定为该结点所含样本最多的类别.</li>
+<li>(3)把当前结点标记为叶结点，类别设定为其父节点所含类别最多的类别.</li>
+</ul>
+
+<p>情形2、3的区别：</p>
+
+<ul>
+<li>(2) 利用当前结点的后验分布.</li>
+<li>(3) 把父节点的样本分布作为当前结点的先验分布.</li>
+</ul>
+
+<h2 id="4-2-划分选择">4.2 划分选择</h2>
+
+<p><strong>决策树学习的关键：</strong></p>
+
+<p>如何确定最优划分属性？（使分支结点样本的“纯度”purity 高，即，使它们尽量属于同一类别）</p>
+
+<h3 id="4-2-1-信息增益">4.2.1 信息增益</h3>
+
+<p><strong>1️⃣ 信息熵 information entropy</strong></p>
+
+<p><strong>Def</strong>：度量样本集合纯度的最常用的一种指标。</p>
+
+<p>假定当前样本集合D中第k类样本所占比例为pk(k=1,2,&hellip;,|γ|)，则D的信息熵定义为
+<img src="https://i.loli.net/2019/03/18/5c8f9140bb64c.jpg" alt="-w608" />
+<strong>判断方法</strong>：Ent(D)的值越小，则D的纯度越高。</p>
+
+<p><strong>2️⃣ 信息增益 information gain</strong></p>
+
+<p><strong>Def</strong>：选择最佳划分属性的依据之一（对应图4.2的Step8），分支前后的信息熵的减小值。</p>
+
+<p><strong>代表方法</strong>：ID3决策树算法[Quinlan, 1986]</p>
+
+<p><strong>概念、假设提要：</strong></p>
+
+<ol>
+<li><strong>离散</strong>属性$a$有$V$个取值，记做${a^1,a^2,&hellip;,a^V}$；</li>
+<li>用属性$a$划分样本集$D$产生$V$个结点，其中第$v$个分支结点包含了$D$中所有在属性$a$上取值为$a^v$的样本，记为$D^v$；</li>
+<li>给分支节点赋予权重$|D^v|/|D|$（考虑不同的分支结点包含的样本数不同，<strong>样本数越多的分支结点的影响越大</strong>）</li>
+</ol>
+
+<p>用属性$a$对样本集$D$进行划分所得“信息增益”如下：
+<img src="https://i.loli.net/2019/03/18/5c8f9140dd9a5.jpg" alt="-w602" /></p>
+
+<p><strong>判断方法：</strong>Gain(D, a)的值越大，则用属性a划分样本集D带来的纯度提升越大。</p>
+
+<p><strong>具体操作：</strong>在图4.2中的Step8采取$a<em>* = {\arg \max}</em>{a \in A} \mathit{Gain}(D,a)$选择划分属性。</p>
+
+<p>举一个例子🌰：
+<img src="https://i.loli.net/2019/03/18/5c8f915875460.jpg" alt="-w618" /></p>
+
+<p>以表4.1中的西瓜数据集2.0为例，该数据集包含17个训练样例，用以学习一棵能预测没剖开的是不是好瓜的决策树．显然$|\mathcal{Y}|=2$．在决策树学习开始时，根结点包含$D$中的所有样例，其中正例占$p_1 = 8.17$，反例占$p_2=<sup>9</sup>&frasl;<sub>17</sub>$．于是，根据式（4.1)可计算出根结点的信息嫡为
+<img src="https://i.loli.net/2019/03/18/5c8f91410ae35.jpg" alt="-w598" />
+然后，我们要计算出当前属性集合<code>｛色泽，根蒂，敲声，纹理，脐部，触感｝</code> 中每个属性的信息增益．以属性“色泽”为例，它有3个可能的取值：｛青绿，乌 黑，浅白｝．若使用该属性对$D$进行划分，则可得到3个子集，分别记为：$D^1$（色 泽＝青绿）,$D^2$（色泽＝乌黑）,$D^3$（色泽＝浅白）. 子集$D^1$包含编号为｛{1, 4, 6, 10, 13, 17｝的6个样例，其中正例占$p_1=<sup>3</sup>&frasl;<sub>6</sub>$， 反例占$p_2=<sup>3</sup>&frasl;<sub>6</sub>$；$D^2$包含编号为｛2,3,7,8,9,15｝的6个样例，其中正、反例分别占$p_1=<sup>4</sup>&frasl;<sub>6</sub>, p_2=<sup>2</sup>&frasl;<sub>6</sub>$；$D^3$包含编号为｛5, 11, 12, 14, 16｝的5个样例，其中正、反例分别占$p_1=<sup>1</sup>&frasl;<sub>5</sub>, p_2=<sup>4</sup>&frasl;<sub>5</sub>$．根据式（4.1）可计算出用“色泽”划分之后所获得 的3个分支结点的信息嫡为
+<img src="https://i.loli.net/2019/03/18/5c8f9146d399d.jpg" alt="-w598" /></p>
+
+<p>于是，根据式（4.2）可计算出属性“色泽”的信息增益为</p>
+
+<p><img src="https://i.loli.net/2019/03/18/5c8f9146be275.jpg" alt="-w591" />
+类似的，我们可计算出其他属性的信息增益：</p>
+
+<p><img src="https://i.loli.net/2019/03/18/5c8f9146bff03.jpg" alt="-w612" /></p>
+
+<p>显然，属性“纹理”的信息增益最大，于是它被选为划分属性．图4.3给出了基于“纹理”对根结点进行划分的结果，各分支结点所包含的样例子集显示在结点中．</p>
+
+<p><img src="https://i.loli.net/2019/03/18/5c8f914f096be.jpg" alt="-w592" /></p>
+
+<p>然后，决策树学习算法将对每个分支结点做进一步划分．以图4.3中第一个分支结点（“纹理=清晰”）为例，该结点包含的样例集合$D^1$中有编号为｛1, 2, 3, 4, 5, 6, 8, 10, 15｝的9个样例，可用属性集合为｛色泽，根蒂，敲声，脐部， 触感｝．基于$D^1$计算出各属性的信息增益：</p>
+
+<p><img src="https://i.loli.net/2019/03/18/5c8f9146c1909.jpg" alt="-w599" /></p>
+
+<p>“根蒂”、“脐部”、“触感”3个属性均取得了最大的信息增益，可<strong>任选其中之一</strong>作为划分属性．类似的，对每个分支结点进行上述操作，最终得到的决策树如图4.4所示．</p>
+
+<p><img src="https://i.loli.net/2019/03/18/5c8f91582cf0f.jpg" alt="-w601" /></p>
+
+<h3 id="4-2-2-增益率-gain-ratio">4.2.2 增益率 gain ratio</h3>
+
+<p><strong>Def：</strong></p>
+
+<p><img src="https://i.loli.net/2019/03/18/5c8f9140df746.jpg" alt="-w608" /></p>
+
+<p><strong>符号说明：</strong></p>
+
+<ol>
+<li>$IV(a)$ ：属性a的固有值 intrinsic value，$a$的可能取值数目越多($V$越大)，$IV(a)$越大；</li>
+<li>$Gain(D, a)$：用属性$a$对样本集$D$进行划分所得“信息增益”。</li>
+</ol>
+
+<p><strong>以前方法缺陷：</strong></p>
+
+<p>信息增益偏好<strong>“可取值数目较多”</strong>的属性，（如，若将编号也纳入可选属性，则决策树会产生17个分支，每个分支都在训练集上绝对正确。得出的决策树不具备泛化能力！）</p>
+
+<p><strong>代表方法：</strong> C4.5决策树算法[Quinlan, 1993]</p>
+
+<p><strong>注意：</strong> 增益率准则偏好<strong>可取值数目较少的属性</strong>，增加了属性取值数目的惩罚项。</p>
+
+<p><strong>具体操作：</strong></p>
+
+<p>C4.5算法并不是直接选取增益率最大的属性，而是使用了一个<strong>启发式</strong>：先从候选划分属性中找出信息增益高于平均水平的属性，再从中选择增益率最高的。<strong>（高于平均中选最高）</strong></p>
+
+<p><strong>例子🌰：</strong></p>
+
+<p>对表4.1的西瓜数据集2.0，有
+IV(触感)=0.874（V=2），IV(色泽)=1.580（V=3），IV(编号)=4.088（V=17）</p>
+
+<h3 id="4-2-3-基尼系数-gini-index">4.2.3 基尼系数 Gini index</h3>
+
+<p><strong>代表方法：</strong> CART (Classification and Regression Tree)决策树算法 [Breiman et al., 1993]</p>
+
+<p><strong>符号说明：</strong>
+1. 基尼值：衡量数据集$D$的纯度指标，$Gini(D)$越小，数据集$D$纯度越高。
+<img src="https://i.loli.net/2019/03/18/5c8f9141112c7.jpg" alt="-w607" />
+1. 属性$a$的基尼指数：
+<img src="https://i.loli.net/2019/03/18/5c8f91410eb2e.jpg" alt="-w606" /></p>
+
+<p><strong>具体操作：</strong></p>
+
+<p>在候选属性集A中，选择使划分后Gini<em>index最小的属性$a^*$作为最优划分属性，即$a</em>* = {\arg \min}_{a \in A} \mathit{Gini_index} (D,a)$</p>
+
+<h2 id="4-3-剪枝-pruning-处理">4.3 剪枝 pruning 处理</h2>
+
+<ul>
+<li><strong>def(剪枝)</strong>：决策树算法对抗<code>“过拟合”</code>的主要手段。训练中不断产生的分支可能不仅学到了样本集的一般性质，还学到了特殊性质，所以通过主动去掉一些分支来降低过拟合风险。</li>
+</ul>
+
+<p><strong>基本策略：[Quinlan, 1993]</strong></p>
+
+<ol>
+<li><strong>预剪枝 pre-pruning</strong>：在决策树生成过程中，每生成一个新的分支就判断其能否增强决策树的泛化能力，不能则停止划分并标记当前节点为叶结点。</li>
+<li><strong>后剪枝 post-pruning</strong>：先用训练集生成一棵完整的决策树，然后自底向上考察每一个节点，若将该节点对应的子树替换为叶结点（就像是剪断树枝的一个分叉点，就剪掉了一丛树枝）能提升泛化能力，则进行替换。</li>
+</ol>
+
+<p><strong>如何判断“泛化性能提升”——性能评估法(2.2节)：</strong></p>
+
+<ul>
+<li>本节采取留出法，预留一部分数据作为“验证集”进行评估。</li>
+</ul>
+
+<p>例如对表4.1的西瓜数据集2.0，我们将其随机划分为两部分，如表4.2所示，编号为｛1,2,3,6,7, 10, 14, 15, 16, 17｝的样例组成训练集，编号为 {4, 5, 8, 9, 11, 12, 13｝的样例组成验证集．</p>
+
+<p><img src="https://i.loli.net/2019/03/18/5c8f915873964.jpg" alt="-w560" /></p>
+
+<p>假定我们采用4.2.1节的信息增益准则来进行划分属性选择，则从表4.2的训练集将会生成一棵如图4.5所示的决策树．为便于讨论，我们对图中的部分结点做了编号．</p>
+
+<p>以下均以此例说明：</p>
+
+<h3 id="4-3-1-预剪枝-pre-pruning">4.3.1 预剪枝 pre-pruning</h3>
+
+<p><strong>优点：</strong></p>
+
+<ul>
+<li>决策树很多分支都没有展开，降低过拟合风险，显著减少训练时间开销；</li>
+</ul>
+
+<p><strong>缺点：</strong></p>
+
+<ul>
+<li>未展开的分支虽不能提升决策树泛化性能，但在其基础上进行的后续划分可能导致性能显著提高，预剪枝使我们失去了这样的机会；</li>
+<li>基于“贪心”本质禁止分支展开，带来了“欠拟合”风险。</li>
+</ul>
+
+<p><strong>步骤演示：</strong></p>
+
+<p><img src="https://i.loli.net/2019/03/18/5c8f914f6b191.jpg" alt="-w666" /></p>
+
+<ol>
+<li>基于信息增益准则，应选取属性“脐部”对训练集划分，产生3个分支，如图4.6。</li>
+<li>预剪枝判断是否应进行分割①：
+
+<ul>
+<li>（1）若不划分，根据图4.2决策树学习基本算法，标记根节点为叶结点，类别为样例最多类别，因为N(正)=N(反)，假设将此结点标记为“好瓜”。用表4.2的验证集评估，{4,5,8}分类正确，验证集精度为3/7 × 100% = 42.9%。</li>
+<li>（2）若划分，图4.6中结点②、③、④分别包含编号为{1,2,3,14}、{6,7,15,17}、{10,16}的训练样本，三个结点依次被标记为“好瓜”、“好瓜”、“坏瓜”。{4,5,8,11,12}分类正确，验证集精度为5/7 × 100% = 71.4% 。</li>
+<li>（3）判断，验证集精度71.4%&gt; 42.9%，确定用“脐部”属性划分。</li>
+</ul></li>
+<li>依次对结点②、③、④进行预剪枝判断：
+
+<ul>
+<li>（1）②：基于信息增益准则，选取属性“色泽”；但划分后，样本{5}分类结果由正确转为错误，验证集精度下降至57.1%；禁止划分。</li>
+<li>（2）③：基于信息增益准则，选取属性“根蒂”；但划分后，验证集精度仍为71.4%，没有提高；禁止划分。</li>
+<li>（3）④：所含训练样例已属于同一类；不再划分。</li>
+</ul></li>
+<li>得出决策树如图4.6所示，验证集精度为71.4%。这是一颗只有一层划分的决策树，亦称<strong>“决策树桩”(decision stump)</strong>。</li>
+</ol>
+
+<h3 id="4-3-2-后剪枝-post-pruning">4.3.2 后剪枝 post-pruning</h3>
+
+<p><strong>优点：</strong></p>
+
+<ul>
+<li>一般情况下，后剪枝决策树欠拟合风险小，泛化性能由于预剪枝决策树。</li>
+</ul>
+
+<p><strong>缺点：</strong></p>
+
+<ul>
+<li>相比预剪枝保留了更多分支，且要先生成完全决策树，再自底向上一一考察结点，因此训练时间开销&gt;&gt;未剪枝决策树、预剪枝决策树。</li>
+</ul>
+
+<p><strong>步骤演示：</strong></p>
+
+<ol>
+<li><p>从训练集生成一棵完整的决策树，如图4.5，其验证集精度为42.9%；
+<img src="https://i.loli.net/2019/03/18/5c8f914f7a5c2.jpg" alt="-w656" /></p></li>
+
+<li><p>从底向上考察结点，先考察⑥：</p>
+
+<ul>
+<li>（1）若将其领衔的分支剪除，即把⑥结点替换为叶结点，则替换后的结点包含{7,15}训练样本，该叶结点被标记为“好瓜”；</li>
+<li>（2）判断精度，此时精度提高到57.1%，所以确定剪除⑥。</li>
+</ul></li>
+
+<li><p>再考察⑤：</p>
+
+<ul>
+<li>（1）若把⑤结点替换为叶结点，则替换后的叶结点包含{6,7,15}训练样本，被标记为“好瓜”；</li>
+<li>（2）判断精度，此时精度仍为57.1%，可以不剪除⑤。</li>
+<li><em>注：根据奥卡姆剃刀原则，应予剪枝。为了绘图方便，采取了不剪枝的保守策略。</em></li>
+</ul></li>
+
+<li><p>考察结点②：</p>
+
+<ul>
+<li>（1）若把②结点替换为叶结点，则替换后的叶结点包含{1,2,3,14}训练样本，被标记为“好瓜”；</li>
+<li>（2）判断精度，此时精度提高至71.4%，剪除②。</li>
+</ul></li>
+
+<li><p>考察结点③和①：</p>
+
+<ul>
+<li>（1）若把③或①结点替换为叶结点，则……；</li>
+<li>（2）判断精度，此时精度分别为71.4%与42.9%，均未提高，保留③和①。</li>
+</ul></li>
+</ol>
+
+<p><img src="https://i.loli.net/2019/03/18/5c8f914f741aa.jpg" alt="-w651" /></p>
+
+<p>注：④已经是叶结点，不用后剪枝判断。</p>
+
+<h2 id="4-4-连续与缺失值">4.4 连续与缺失值</h2>
+
+<h3 id="4-4-1-连续值处理">4.4.1 连续值处理</h3>
+
+<p><strong>连续属性的特点：</strong></p>
+
+<ul>
+<li>可取值数目无限，不能逐一划分。</li>
+<li>要进行离散化处理。</li>
+</ul>
+
+<p><strong>最简单策略：</strong>二分法 bi-partition</p>
+
+<p><strong>算法代表：</strong>C4.5决策树算法 [Quinlan, 1993]</p>
+
+<p><strong>与离散属性的区别：</strong>若当前节点划分属性为连续属性，该属性还可以作为其后代节点的划分属性。即，<strong>可“重复”使用</strong>。</p>
+
+<p><strong>操作过程：</strong></p>
+
+<p>给定样本集$D$、连续属性$a，假设$a$在$D$上有$n$个不同取值。</p>
+
+<ol>
+<li>将$a$的$n$个取值从小到大排序，记为${a^1,a^2, &hellip; ,a^n}$；</li>
+
+<li><p>考察包含$n-1$个元素的候选划分点集合，把区间$[a^i,a^{i+1})$的中位点$\frac{a^i + a^{i+1}}{2}$作为候选划分点
+<img src="https://i.loli.net/2019/03/18/5c8f9140e6086.jpg" alt="-w663" /></p></li>
+
+<li><p>类似离散属性值，考察划分点，选取最优划分点对样本集合进行划分。如，考察
+<img src="https://i.loli.net/2019/03/18/5c8f914113e2c.jpg" alt="-w630" />
+其中$Gain(D, a, t)$是样本集$D$基于划分点$t$二分后的信息增益。选择使$Gain(D, a, t)$最大化的划分点。</p></li>
+</ol>
+
+<blockquote>
+<p>给定样本集$D$和连续属性$a$，假定$a$在$D$上出现了$n$个不同的取值，将这些值从小到大进行排序，记为${a^1,a^2,\cdots,a^n}$．基于划分点$t$可将$D$分为子集$D_t^+$和$D_t^-$，其中$D_t^+$包含那些在属性$a$上取值不大于$t$的样本，而$D_t^-$才则包含那些在属性$a$上取值大于$t$的样本．显然，对相邻的属性取值$a^i$来说，$t$在区间$[a^i,a^{i+1})$中取任意值所产生的划分结果相同．</p>
+</blockquote>
+
+<p>举个例子🌰：</p>
+
+<p><img src="https://i.loli.net/2019/03/18/5c8f915879beb.jpg" alt="-w634" /></p>
+
+<p>作为一个例子，我们在表4.1的西瓜数据集2.0上增加两个连续属性“密度”和“含糖率”，得到表4.3所示的西瓜数据集3.0. 下面我们用这个数据集来生成一棵决策树．</p>
+
+<p>对属性“密度”，在决策树学习开始时，根结点包含的17个训练样本在该属性上取值均不同．根据式（4.7)，该属性的候选划分点集合 包含16个候选值：$T_{密度}$＝{0.244, 0.294, 0.351, 0.381, 0.420, 0.459, 0.518, 0.574, 0.600, 0.621, 0.636, 0.648, 0.661, 0.681, 0.708, 0.746}．由式（4.8）可计算出属性“密度”的信息增益为0.262，对应于划分点0.381.</p>
+
+<p>对属性“含糖率”，其候选划分点集合也包含16个候选值：$T_{含糖率}$＝ {0 .049, 0.074,0.095,0.101,0.126, 0.155,0.179, 0.204, 0.213,0.226, 0.250, 0.265, 0.292, 0.344, 0.373, 0.418}．类似的，根据式（4.8）可计算出其信息增益为0.349, 对应于划分点0.126.</p>
+
+<p>再由4.2.1节可知，表4.3的数据上各属性的信息增益为</p>
+
+<p><img src="https://i.loli.net/2019/03/18/5c8f914f2bd1b.jpg" alt="-w621" /></p>
+
+<p>于是，“纹理”被选作根结点划分属性，此后结点划分过程递归进行，最终 生成如图4.8所示的决策树．</p>
+
+<p><img src="https://i.loli.net/2019/03/18/5c8f914f4b386.jpg" alt="-w633" /></p>
+
+<h3 id="4-4-2-缺失值处理">4.4.2 缺失值处理</h3>
+
+<p><strong>背景问题：</strong></p>
+
+<ul>
+<li>现实中样本缺失属性很常见（如由于诊测成本、隐私保护等因素，患者的医疗数据在某些属性上的取值（如HIV测试结果）未知）；</li>
+<li>样本属性较多时，往往会有大量样本出现缺失值；</li>
+<li>直接放弃不完整样本只研究完整样本是对数据信息的极大浪费。</li>
+</ul>
+
+<p><strong>举一个例子🌰：</strong></p>
+
+<p>表4.4中，共有17个样本，其中仅有4个样本没有缺失值。
+<img src="https://i.loli.net/2019/03/18/5c8f91586fac6.jpg" alt="-w635" /></p>
+
+<p><strong>待解决的两个问题：</strong></p>
+
+<ul>
+<li>（1）如何在属性值缺失的情况下进行划分属性选择？</li>
+<li>（2）给定划分属性，若样本在该属性上的值缺失，如何对样本进行划分？</li>
+</ul>
+
+<p><strong>符号及假设：</strong></p>
+
+<ul>
+<li>训练集$D$，属性$a$；</li>
+<li>$\tilde{D}$表示$D$中在属性$a$上没有缺失的样本子集；</li>
+<li>$\tilde{D}^v$表示$\tilde{D}$中在属性$a$上取值为$a^v$的样本子集；</li>
+<li>$\tilde{D}<em>k$表示$\tilde{D}$中属于第$k$类$(k=1,2,\cdots, |\mathcal{Y}|)$的样本子集，则显然有$\tilde{D} = \cup</em>{k=1}^{\mathcal{Y}} \tilde{D}<em>k$，$\tilde{D} = \cup</em>{v=1}^V \tilde{D}^v$，</li>
+</ul>
+
+<p><strong>问题1️⃣：</strong> 仅可根据$\tilde{D}$来判断属性$a$的优劣。</p>
+
+<ol>
+<li><p>假定对每个样本$x$赋予权重$w_x$，并定义：
+<img src="https://i.loli.net/2019/03/18/5c8f914f49707.jpg" alt="-w628" /></p></li>
+
+<li><p>基于上述定义，把信息增益推广为：
+<img src="https://i.loli.net/2019/03/18/5c8f9146a5010.jpg" alt="-w638" />
+其中，由式（4.1），有
+<img src="https://i.loli.net/2019/03/18/5c8f9140efacb.jpg" alt="-w609" /></p></li>
+</ol>
+
+<p><strong>问题2️⃣：</strong></p>
+
+<ul>
+<li>若样本$x$在划分属性$a$上的取值已知，则将$x$划入与其取值对应的子节点，且样本权值在子节点中保持为$w_x$；</li>
+<li>若样本x在划分属性a上的趋势位置，则<strong>将x同时划入所有子节点</strong>，且<strong>样本权值在与属性值$a^v$对应的子节点中调整为</strong> $\tilde{r}_v \cdot w_x$（直观上看，就是让同一个样本以不同概率划到不同的子节点中去）。</li>
+</ul>
+
+<p>举一个例子🌰：</p>
+
+<p><img src="https://i.loli.net/2019/03/18/5c8f91586ead0.jpg" alt="-w628" /></p>
+
+<p>C4.5算法使用了上述解决方案[Quinlan, 1993]．下面我们以表4.4的数据集为例来生成一棵决策树．在学习开始时，根结点包含样本集$D$中全部$17$个样例，各样例的权值均为$1$．以属性“色泽”为例，该属性上无缺失值的样例子集$\tilde{D}$包含编号为 {2,3,4,6,7,8,9, 10, 11, 12,14, 15, 16, 17｝的14个样例．显然，$\tilde{D}$的信息嫡为
+<img src="https://i.loli.net/2019/03/18/5c8f9141181d4.jpg" alt="-w585" />
+令$\tilde{D}^1$，$\tilde{D}^2$与$\tilde{D}^3$分别表示在属性“色泽”上取值为“青绿”“乌黑”以及“浅白”的样本子集，有
+<img src="https://i.loli.net/2019/03/18/5c8f9146dfe4a.jpg" alt="-w610" />
+因此，样本子集$\tilde{D}$上属性“色泽”的信息增益为</p>
+
+<p><img src="https://i.loli.net/2019/03/18/5c8f9146cb08c.jpg" alt="-w607" /></p>
+
+<p>于是，样本集D上属性“色泽”的信息增益为</p>
+
+<p><img src="https://i.loli.net/2019/03/18/5c8f9146a34f9.jpg" alt="-w605" /></p>
+
+<p>类似地可计算出所有属性在D上的信息增益：</p>
+
+<p><img src="https://i.loli.net/2019/03/18/5c8f9146d9540.jpg" alt="-w603" /></p>
+
+<p>“纹理”在所有属性中取得了最大的信息增益，被用于对根结点进行划分．划分结果是使编号为｛1,2,3,4,5,6,15｝的样本进入“纹理＝清晰”分支，编号为｛7, 9, 13, 14, 17｝的样本进入“纹理＝稍糊”分支，而编号为｛11, 12, 16｝的样本进入“纹理＝模糊”分支，且样本在各子结点中的权重保持为1．需注意的是，编号为｛8}的样本在属性“纹理”上出现了缺失值，因此它将同时进入三个分支中，但权重在三个子结点中分别调整为$<sup>7</sup>&frasl;<sub>15</sub>$、$<sup>5</sup>&frasl;<sub>15</sub>$和$<sup>3</sup>&frasl;<sub>15</sub>$．编号为{10}的样本有类似划分结果．</p>
+
+<p>上述结点划分过程递归执行，最终生成的决策树如图4.9所示．</p>
+
+<p><img src="https://i.loli.net/2019/03/18/5c8f91583e080.jpg" alt="-w628" /></p>
+
+<h2 id="4-5-多变量决策树">4.5 多变量决策树</h2>
+
+<p><strong>从多维空间看决策树划分样本：</strong></p>
+
+<ul>
+<li>若我们把每个属性视为坐标空间中的一个坐标轴，则d个属性描述的样本就对应了d维空间中的一个数据点，对样本分类则意味着在这个坐标空间中寻找不同样本之间的分类边界。</li>
+<li>决策树形成的边界有一个明显特点：轴平行 axis-parallel，即它的分类边界由若干个与坐标轴平行的分段组成。</li>
+</ul>
+
+<p><strong>举一个例子🌰：</strong>
+<img src="https://i.loli.net/2019/03/18/5c8f914f63ae1.jpg" alt="-w543" /></p>
+
+<p>以表4.5中的西瓜数据3.0α为例，将它作为训练集可习得图4.10所示决策树，决策树对应的分类边界如图4.11所示。</p>
+
+<p><img src="https://i.loli.net/2019/03/18/5c8f915831a4f.jpg" alt="-w615" /></p>
+
+<ul>
+<li>若使用“斜”的划分边界，如图4.12中的红色线段所示，则决策树模型将会大为简化。——“多变量决策树”multivariate decision tree 可以实现，甚至更复杂的划分。</li>
+</ul>
+
+<p><img src="https://i.loli.net/2019/03/18/5c8f914f2c9ac.jpg" alt="-w625" /></p>
+
+<blockquote>
+<p>这样的多变量决策树亦称“斜决策树” oblique decision tree.</p>
+</blockquote>
+
+<p>以实现斜划分的多变量决策树为例，在此类决策中，非叶结点不再是仅针对某个属性，而是对属性的线性组合进行测试；换言之，每个非叶节点是一个形如$\sum_{i=1}^d w_i a_i =t$的分类器，其中$w_i$是属性$a_i$的权重，$w_i$和$t$可在该结点所含样本集合属性集上学得。</p>
+
+<p>与传统“单变量决策树”univariate decision tree不同，多变量决策树在学习过程中不是为每个非叶结点寻找一个最优划分属性，而是试图建立一个合适的线性分类器。</p>
+
+<p>举一个例子🌰：</p>
+
+<p>例如对西瓜数据3.0α，我们可学得图4.13这样的多变量决策树，其分类边界如图4.14所示。</p>
+
+<p><img src="https://i.loli.net/2019/03/18/5c8f914f3ee1a.jpg" alt="-w527" /></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">Octemull</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">18 Mar 19 15:59 CST</span>
+  </p>
+  
+  
+</div><footer class="post-footer">
+      <div class="post-tags">
+          <a href="/personal-site/tags/notes/">Notes</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/personal-site/post/ml-contents/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">目录 周志华机器学习笔记</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/personal-site/post/ml-chap03/">
+            <span class="next-text nav-default">chap 03 - 线性模型 | Linear Model</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        id: '2017-11-13 15:59:40 \x2b0800 CST',
+        title: 'chap 04 - 决策树 | Decision Tree',
+        clientID: 'ce8007fddcb901cf8139',
+        clientSecret: '25db834f14aadc3708bf0c8eeb5c10127a9f5a22',
+        repo: 'personal-site-comment',
+        owner: 'Octemull',
+        admin: ['Octemull'],
+        body: decodeURI(location.href)
+      });
+      gitalk.render('gitalk-container');
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript>
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:yyear103@outlook.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/Octemull" class="iconfont icon-github" title="github"></a>
+  <a href="https://octemull.github.io/personal-site/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Octemull</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/personal-site/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/personal-site/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?41497b30235376fbac44b6375248dcd8";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+
+
+
+
+
+</body>
+</html>

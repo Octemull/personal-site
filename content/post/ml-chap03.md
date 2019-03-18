@@ -1,7 +1,7 @@
 ---
 title: "chap 03 - 线性模型 | Linear Model"
 date: 2017-11-10T15:59:40+08:00
-lastmod: 2018-03-06T15:59:40+08:00
+lastmod: 2019-03-17T15:59:40+08:00
 draft: false
 show_comments: true
 keywords: []
