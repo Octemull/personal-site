@@ -44,7 +44,7 @@
 <meta property="og:description" content="Personal site of Octemull." />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://octemull.github.io/personal-site/" />
-<meta property="og:updated_time" content="2017-11-06T15:59:40&#43;08:00"/>
+<meta property="og:updated_time" content="2017-11-07T15:59:40&#43;08:00"/>
 
 <meta itemprop="name" content="Octemull&#39;s Personal Site">
 <meta itemprop="description" content="Personal site of Octemull.">
@@ -118,9 +118,43 @@
           <section id="posts" class="posts">
     <article class="post">
   <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/personal-site/post/ml-chap02/">chap 02 - 模型评估与选择</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2017-11-07 </span>
+      <div class="post-category">
+          <a href="/personal-site/categories/machine-learning/"> Machine Learning </a>
+          </div>
+        <span class="more-meta"> 580 words </span>
+        <span class="more-meta"> 3 mins read </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      2.1 经验误差与过拟合 基本概念：
+ 错误率 error rate：分类错误的样本数占总样本数的比例。如，在m个样本中有a个样本分类错误，则错误率E=a/m。 精度 accuracy：精度=1-错误率。如，续上，精度=1 - a/m。 误差 error：学习器的实际预测输出与样本真实值之间的差异。 训练误差 training error / 经验误差 empirical error：学习器在训练集上的误差。 泛化误差 generalization error：学习器在新样本（除训练集之外的样本）上的误差。
+ 过拟合 overfitting / 过配：学习器把训练样本学得“太好”了，很可能把训练样本特有的性质当做所有潜在样本具有的一般性质，以致于泛化性能下降。学习器学习能力过于强大。
+ 欠拟合 underfitting / 欠配：学习器对样本的普遍性质尚未学习完全。学习器的学习能力不足。
+  机器学习的目标： * 学习的泛化误差小，即学习器对新样本的预测效果好。
+过拟合是机器学习面临的关键障碍，只能“缓解”不可“避免” 过拟合是机器学习面临的关键障碍，各类学习算法都带有一些针对过拟合的措施；然而必须认识到，过拟合无法彻底避免，我们能做的只是“缓解”，或者说减小其风险。关于这一点，可以大致这样理解：机器学习面临的问题通常是NP难甚至更难，而有效的学习算法必然是在多项式时间内运行完成的，若可彻底避免过拟合，则通过经验误差最小化就能获得最优解，这就意味着我们构造性地证明了“P=NP”；因此，只要相信“P≠NP”，过拟合就不可避免。
+2.2 评估方法 在现实任务中，我们往往有多种算法可以选择，甚至对同一个算法，当使用不同的参数配置时，也会产生不同的模型。“选什么样的模型、使用哪种参数配置？”就是机器学习中的“模型选择”( model selection )问题。自然地，理想的解决方案是对不同算法、不同参数配置的模型进行评估，选择泛化误差最小的那个模型。但泛化误差无法直接获取，而经验误差由于过拟合的存在不适合作为评判标准。那么，在现实任务中应该如何选择呢？
+“测试误差”近似“泛化误差” 概念： * 测试集 testing set：从样本真实分布中独立同分布采样得到的样本的集合。
+ 注意：测试集应尽量与训练集互斥，即测试集中应尽量不出现训练集中已有的样本。 原因：测试集越是和训练集接近，其测试效果越没有说服力。如，老师上课讲了10道例题，考试时考的就是这10道原封不动的例题，自然没有办法测试出学生的真实水平，反映不出学生学得好不好。训练样本相当于练习题、例题，测试样本相当于考试题。老师都希望学生在学习上能够“举一反三”，就像我们希望训练的模型泛化能力强一样。
+  测试误差 testing error：训练好的学习器对测试集中样本的预测值与测试集样本的真实值的误差。  但是，实际情况中，我们往往只有一个数据集。若全用来训练学习器，就没有多余的数据用来测试。同时，我们也很难保证在一样的条件下在总体中重新采样，获得新的样本。为了解决既要训练又要测试的问题，我们通常用一定的方法将数据集D划分为训练集S和测试集T，用于训练和测试模型。
+2.2.1 留出法 hold-out 方法：
+ 直接将数据集D划分为两个互斥的集合，训练集S和测试集T。 T ∪ S = D 且，T ∩ S = ∅。  举🌰： 以二分类任务为例，假定D包含1000个样本，将其划分为S包含700个样本，T包含300个样本。用S进行训练后，如果模型在T上有90个样本分类错误，那么其错误率为$(90&frasl;300)×100%=30%$，相应的，精确度为$1-30%=70%$。
+    </div>
+    <div class="read-more">
+      <a href="/personal-site/post/ml-chap02/" class="read-more-link">Read more..</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/personal-site/post/ml-chap01/">chap 01 - 绪论</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 06 Nov 17 15:59 CST </span>
+      <span class="post-time"> 2017-11-06 </span>
       <div class="post-category">
           <a href="/personal-site/categories/machine-learning/"> Machine Learning </a>
           </div>
@@ -184,6 +218,8 @@
     <span class="author">Octemull</span>
   </span>
 </div>
+
+
     </footer>
 
     <div class="back-to-top" id="back-to-top">

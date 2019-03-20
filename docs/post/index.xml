@@ -94,6 +94,26 @@ xcode-select --install  然后点击安装，等待下载安装即可。
     </item>
     
     <item>
+      <title>chap 05 - 神经网络 | Neural Network</title>
+      <link>https://octemull.github.io/personal-site/post/ml-chap05/</link>
+      <pubDate>Tue, 21 Nov 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://octemull.github.io/personal-site/post/ml-chap05/</guid>
+      <description>5.1 神经元模型 神经网络 neureal networks：
+神经网络是由具有适应性的简单单元组成的广泛并行互联网络，它的组织能够模拟生物神经系统对真实世界物体所作出的交互反应 [Kohonen, 1988]。
+机器学习中的神经网络指“神经网络学习”，或者说，是机器学习与神经网络这两个学科领域的交叉部分。
+M-P神经元模型： 概念：
+ 神经元 neuron：神经网络中最基本的成分是神经元模型，即上述定义中的“简单单元”。在生物神经网络中，每个神经元与其他神经元相连。 阈值 threshold：当神经元兴奋时，就会向相连的神经元发送化学物质，从而改变这些神经元内的电位；如果某神经元的电位超过了一定的“阈值”（在“平静”状态下，神经元也是有电位的，受刺激后其电位会发生变化，可能上升也可能下降），那么它就会被激活，即“兴奋”起来，向其他神经元发送化学物质。 连接 connection：每个神经元接受与其相连神经元传递的信号时，要通过一个个带权重的连接进行传递。 激活函数 activation function： （1）神经元收到的总输入值与其阈值进行比较，再通过“激活函数”处理产生神经元的输出。 （2）最理想的激活函数是“阶跃函数”，它将输入值映射为输出为“0”或“1”；“1”对应于神经元兴奋，“0”对应于神经元抑制。但阶跃函数不连续、不光滑，实际中常用“Sigmoid函数”（亦称挤压函数 squashing function）作为激活函数。  把许多个神经元按照一定层次结构连接起来，就得到了神经网络。
+  “模拟生物神经网络”是认知科学技术对神经网络所做的一个类比阐释。 例如10个神经元两两连接，则有100个参数；90个连接权和10个阈值。（注意连接是有方向的。每个神经元和其他9个神经元连接，共有9*10=90个连接权；每个神经元接受来自其他9个神经元的信号，其自身有1个阈值，共有1*10个阈值。）   5.2 感知机 perceptron 与多层网络 1️⃣感知机：—— 解决线性可分问题
+由两层神经元组成，如图5.3所示，输入层的两个神经元（不是M-P神经元，非功能性神经元，没有激活函数）接受外界输入信号后传递给输出层，输出层是M-P神经元（亦称“阈值逻辑单元” threshold logic unit）。
+功能神经元：有激活函数的神经元。
+感知机实现逻辑运算“与”、“或”、“非”：
+注意到$y=f(\sum_i w_i x_i - \theta)$，假定$f$是图5.2中的阶跃函数，有
+感知机学习规则（权重$w_i$及阈值$θ$的学习方法）：
+ 统一权重及阈值：阈值θ可看做一个固定输入为$-1.0$的“哑结点” (dummy node)所对应的连接权重$w_n+1$。 规则：对训练样例$(\boldsymbol{x}, y)$，若当前感知机的输出为$\hat{y}$，则感知机权重将做如下调整： 若感知机对训练样例$(\boldsymbol{x}, y)$预测正确，即$y=\hat{y}$，则感知机不发生变化；否则，根据错误程度进行权重调整。 符号：  $\mu \in (0,1)$ ，学习率 learning rate，通常设置为一个小正数，如$0.1$； $x_i$是$\boldsymbol{x}$对应于第$i$个输入神经元的分量。   感知机的特性：</description>
+    </item>
+    
+    <item>
       <title>目录 周志华机器学习笔记</title>
       <link>https://octemull.github.io/personal-site/post/ml-contents/</link>
       <pubDate>Sun, 19 Nov 2017 15:59:40 +0800</pubDate>
@@ -105,7 +125,7 @@ xcode-select --install  然后点击安装，等待下载安装即可。
     <item>
       <title>chap 04 - 决策树 | Decision Tree</title>
       <link>https://octemull.github.io/personal-site/post/ml-chap04/</link>
-      <pubDate>Mon, 13 Nov 2017 15:59:40 +0800</pubDate>
+      <pubDate>Mon, 13 Nov 2017 00:00:00 +0000</pubDate>
       
       <guid>https://octemull.github.io/personal-site/post/ml-chap04/</guid>
       <description>4.1 基本流程 适用任务：分类，以二分类为例

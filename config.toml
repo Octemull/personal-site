@@ -72,7 +72,7 @@ copyright = "Octemull"    # default: author.name          # 默认为下面配�
   showArchiveCount = false
 
   # The date format to use; for a list of valid formats, see https://gohugo.io/functions/format/
-  dateFormatToUse = "02 Jan 06 15:04 MST"
+  dateFormatToUse = "2006-01-02"
 
   # show word count and read time ?                       # 是否显示字数统计与阅读时间
   moreMeta = true
@@ -202,3 +202,4 @@ copyright = "Octemull"    # default: author.name          # 默认为下面配�
 #  section = ["HTML", "RSS"]
 #  taxonomy = ["HTML", "RSS"]
 #  taxonomyTerm = ["HTML"]
+

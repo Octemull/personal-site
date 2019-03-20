@@ -120,7 +120,7 @@
   <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/personal-site/post/w3-china_singles_day/">What Singles Day can tell us about how retail is changing in China</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 20 Jan 19 11:52 CST </span>
+      <span class="post-time"> 2019-01-20 </span>
       <div class="post-category">
           <a href="/personal-site/categories/marketing/"> Marketing </a>
           </div>
@@ -143,7 +143,7 @@
   <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/personal-site/post/w3-sequence-purchase/">Sequences of purchases in credit card data reveal lifestyles in urban populations</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 19 Jan 19 10:51 CST </span>
+      <span class="post-time"> 2019-01-19 </span>
       <div class="post-category">
           <a href="/personal-site/categories/marketing/"> Marketing </a>
           </div>
@@ -166,7 +166,7 @@
   <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/personal-site/post/hugo/">Detecting influenza epidemics using search engine query data</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 18 Jan 19 11:37 CST </span>
+      <span class="post-time"> 2019-01-18 </span>
       <div class="post-category">
           <a href="/personal-site/categories/data-mining/"> Data Mining </a>
           </div>
@@ -190,7 +190,7 @@
   <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/personal-site/post/jupyter-skills/">Jupyter notebook使用技巧 &#43; nbextentions</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 30 Oct 18 22:14 CST </span>
+      <span class="post-time"> 2018-10-30 </span>
       <div class="post-category">
           <a href="/personal-site/categories/python/"> Python </a>
           </div>
@@ -227,7 +227,7 @@ jupyter notebook --generate-config  注意： 这条命令虽然可以用于查�
   <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/personal-site/post/svm-3d-boundary/">在Matlab下利用Libsvm的输出模型画SVM三维特征的二分类曲面</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 27 Sep 18 19:18 CST </span>
+      <span class="post-time"> 2018-09-27 </span>
       <div class="post-category">
           <a href="/personal-site/categories/matlab/"> Matlab </a>
           <a href="/personal-site/categories/machine-learning/"> Machine Learning </a>
@@ -252,7 +252,7 @@ jupyter notebook --generate-config  注意： 这条命令虽然可以用于查�
   <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/personal-site/post/mac-libsvm/">Mac下matlab2014b安装libsvm</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 22 Mar 18 20:56 CST </span>
+      <span class="post-time"> 2018-03-22 </span>
       <div class="post-category">
           <a href="/personal-site/categories/machine-learning/"> Machine Learning </a>
           </div>
@@ -285,9 +285,43 @@ xcode-select --install  然后点击安装，等待下载安装即可。
 
     <article class="post">
   <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/personal-site/post/ml-chap05/">chap 05 - 神经网络 | Neural Network</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2017-11-21 </span>
+      <div class="post-category">
+          <a href="/personal-site/categories/machine-learning/"> Machine Learning </a>
+          </div>
+        <span class="more-meta"> 555 words </span>
+        <span class="more-meta"> 3 mins read </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      5.1 神经元模型 神经网络 neureal networks：
+神经网络是由具有适应性的简单单元组成的广泛并行互联网络，它的组织能够模拟生物神经系统对真实世界物体所作出的交互反应 [Kohonen, 1988]。
+机器学习中的神经网络指“神经网络学习”，或者说，是机器学习与神经网络这两个学科领域的交叉部分。
+M-P神经元模型： 概念：
+ 神经元 neuron：神经网络中最基本的成分是神经元模型，即上述定义中的“简单单元”。在生物神经网络中，每个神经元与其他神经元相连。 阈值 threshold：当神经元兴奋时，就会向相连的神经元发送化学物质，从而改变这些神经元内的电位；如果某神经元的电位超过了一定的“阈值”（在“平静”状态下，神经元也是有电位的，受刺激后其电位会发生变化，可能上升也可能下降），那么它就会被激活，即“兴奋”起来，向其他神经元发送化学物质。 连接 connection：每个神经元接受与其相连神经元传递的信号时，要通过一个个带权重的连接进行传递。 激活函数 activation function： （1）神经元收到的总输入值与其阈值进行比较，再通过“激活函数”处理产生神经元的输出。 （2）最理想的激活函数是“阶跃函数”，它将输入值映射为输出为“0”或“1”；“1”对应于神经元兴奋，“0”对应于神经元抑制。但阶跃函数不连续、不光滑，实际中常用“Sigmoid函数”（亦称挤压函数 squashing function）作为激活函数。  把许多个神经元按照一定层次结构连接起来，就得到了神经网络。
+  “模拟生物神经网络”是认知科学技术对神经网络所做的一个类比阐释。 例如10个神经元两两连接，则有100个参数；90个连接权和10个阈值。（注意连接是有方向的。每个神经元和其他9个神经元连接，共有9*10=90个连接权；每个神经元接受来自其他9个神经元的信号，其自身有1个阈值，共有1*10个阈值。）   5.2 感知机 perceptron 与多层网络 1️⃣感知机：—— 解决线性可分问题
+由两层神经元组成，如图5.3所示，输入层的两个神经元（不是M-P神经元，非功能性神经元，没有激活函数）接受外界输入信号后传递给输出层，输出层是M-P神经元（亦称“阈值逻辑单元” threshold logic unit）。
+功能神经元：有激活函数的神经元。
+感知机实现逻辑运算“与”、“或”、“非”：
+注意到$y=f(\sum_i w_i x_i - \theta)$，假定$f$是图5.2中的阶跃函数，有
+感知机学习规则（权重$w_i$及阈值$θ$的学习方法）：
+ 统一权重及阈值：阈值θ可看做一个固定输入为$-1.0$的“哑结点” (dummy node)所对应的连接权重$w_n+1$。 规则：对训练样例$(\boldsymbol{x}, y)$，若当前感知机的输出为$\hat{y}$，则感知机权重将做如下调整： 若感知机对训练样例$(\boldsymbol{x}, y)$预测正确，即$y=\hat{y}$，则感知机不发生变化；否则，根据错误程度进行权重调整。 符号：  $\mu \in (0,1)$ ，学习率 learning rate，通常设置为一个小正数，如$0.1$； $x_i$是$\boldsymbol{x}$对应于第$i$个输入神经元的分量。   感知机的特性：
+    </div>
+    <div class="read-more">
+      <a href="/personal-site/post/ml-chap05/" class="read-more-link">Read more..</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/personal-site/post/ml-contents/">目录 周志华机器学习笔记</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 19 Nov 17 15:59 CST </span>
+      <span class="post-time"> 2017-11-19 </span>
       <div class="post-category">
           <a href="/personal-site/categories/machine-learning/"> Machine Learning </a>
           </div>
@@ -310,7 +344,7 @@ xcode-select --install  然后点击安装，等待下载安装即可。
   <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/personal-site/post/ml-chap04/">chap 04 - 决策树 | Decision Tree</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 13 Nov 17 15:59 CST </span>
+      <span class="post-time"> 2017-11-13 </span>
       <div class="post-category">
           <a href="/personal-site/categories/machine-learning/"> Machine Learning </a>
           </div>
@@ -345,7 +379,7 @@ xcode-select --install  然后点击安装，等待下载安装即可。
   <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/personal-site/post/ml-chap03/">chap 03 - 线性模型 | Linear Model</a></h1>
     <div class="post-meta">
-      <span class="post-time"> 10 Nov 17 15:59 CST </span>
+      <span class="post-time"> 2017-11-10 </span>
       <div class="post-category">
           <a href="/personal-site/categories/machine-learning/"> Machine Learning </a>
           </div>
@@ -366,40 +400,6 @@ xcode-select --install  然后点击安装，等待下载安装即可。
     </div>
     <div class="read-more">
       <a href="/personal-site/post/ml-chap03/" class="read-more-link">Read more..</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/personal-site/post/ml-chap02/">chap 02 - 模型评估与选择</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 07 Nov 17 15:59 CST </span>
-      <div class="post-category">
-          <a href="/personal-site/categories/machine-learning/"> Machine Learning </a>
-          </div>
-        <span class="more-meta"> 580 words </span>
-        <span class="more-meta"> 3 mins read </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      2.1 经验误差与过拟合 基本概念：
- 错误率 error rate：分类错误的样本数占总样本数的比例。如，在m个样本中有a个样本分类错误，则错误率E=a/m。 精度 accuracy：精度=1-错误率。如，续上，精度=1 - a/m。 误差 error：学习器的实际预测输出与样本真实值之间的差异。 训练误差 training error / 经验误差 empirical error：学习器在训练集上的误差。 泛化误差 generalization error：学习器在新样本（除训练集之外的样本）上的误差。
- 过拟合 overfitting / 过配：学习器把训练样本学得“太好”了，很可能把训练样本特有的性质当做所有潜在样本具有的一般性质，以致于泛化性能下降。学习器学习能力过于强大。
- 欠拟合 underfitting / 欠配：学习器对样本的普遍性质尚未学习完全。学习器的学习能力不足。
-  机器学习的目标： * 学习的泛化误差小，即学习器对新样本的预测效果好。
-过拟合是机器学习面临的关键障碍，只能“缓解”不可“避免” 过拟合是机器学习面临的关键障碍，各类学习算法都带有一些针对过拟合的措施；然而必须认识到，过拟合无法彻底避免，我们能做的只是“缓解”，或者说减小其风险。关于这一点，可以大致这样理解：机器学习面临的问题通常是NP难甚至更难，而有效的学习算法必然是在多项式时间内运行完成的，若可彻底避免过拟合，则通过经验误差最小化就能获得最优解，这就意味着我们构造性地证明了“P=NP”；因此，只要相信“P≠NP”，过拟合就不可避免。
-2.2 评估方法 在现实任务中，我们往往有多种算法可以选择，甚至对同一个算法，当使用不同的参数配置时，也会产生不同的模型。“选什么样的模型、使用哪种参数配置？”就是机器学习中的“模型选择”( model selection )问题。自然地，理想的解决方案是对不同算法、不同参数配置的模型进行评估，选择泛化误差最小的那个模型。但泛化误差无法直接获取，而经验误差由于过拟合的存在不适合作为评判标准。那么，在现实任务中应该如何选择呢？
-“测试误差”近似“泛化误差” 概念： * 测试集 testing set：从样本真实分布中独立同分布采样得到的样本的集合。
- 注意：测试集应尽量与训练集互斥，即测试集中应尽量不出现训练集中已有的样本。 原因：测试集越是和训练集接近，其测试效果越没有说服力。如，老师上课讲了10道例题，考试时考的就是这10道原封不动的例题，自然没有办法测试出学生的真实水平，反映不出学生学得好不好。训练样本相当于练习题、例题，测试样本相当于考试题。老师都希望学生在学习上能够“举一反三”，就像我们希望训练的模型泛化能力强一样。
-  测试误差 testing error：训练好的学习器对测试集中样本的预测值与测试集样本的真实值的误差。  但是，实际情况中，我们往往只有一个数据集。若全用来训练学习器，就没有多余的数据用来测试。同时，我们也很难保证在一样的条件下在总体中重新采样，获得新的样本。为了解决既要训练又要测试的问题，我们通常用一定的方法将数据集D划分为训练集S和测试集T，用于训练和测试模型。
-2.2.1 留出法 hold-out 方法：
- 直接将数据集D划分为两个互斥的集合，训练集S和测试集T。 T ∪ S = D 且，T ∩ S = ∅。  举🌰： 以二分类任务为例，假定D包含1000个样本，将其划分为S包含700个样本，T包含300个样本。用S进行训练后，如果模型在T上有90个样本分类错误，那么其错误率为$(90&frasl;300)×100%=30%$，相应的，精确度为$1-30%=70%$。
-    </div>
-    <div class="read-more">
-      <a href="/personal-site/post/ml-chap02/" class="read-more-link">Read more..</a>
     </div>
   </div>
 </article>
@@ -447,6 +447,8 @@ xcode-select --install  然后点击安装，等待下载安装即可。
     <span class="author">Octemull</span>
   </span>
 </div>
+
+
     </footer>
 
     <div class="back-to-top" id="back-to-top">

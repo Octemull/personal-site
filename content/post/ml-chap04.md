@@ -1,7 +1,7 @@
 ---
 title: "chap 04 - 决策树 | Decision Tree"
-date: 2017-11-13T15:59:40+08:00
-lastmod: 2019-03-18T15:59:40+08:00
+date: 2017-11-13
+lastmod: 2019-03-18
 draft: false
 show_comments: true
 keywords: []
