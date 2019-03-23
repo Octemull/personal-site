@@ -10,6 +10,10 @@ tags: [Contents]
 categories: [Machine Learning]
 ---
 
+# 写在前面
+
+最近搭建了自己的个人主页，以前一直用印象笔记做学习笔记。现在决定整理一部分笔记放在个人网站上，与大家一起交流学习，就从机器学习相关笔记开始吧。
+
 # 目录
 
 1. [chap 01 - 绪论](https://octemull.github.io/personal-site/post/ml-chap01/)
