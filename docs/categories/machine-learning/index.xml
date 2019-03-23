@@ -43,6 +43,41 @@ xcode-select --install  然后点击安装，等待下载安装即可。
     </item>
     
     <item>
+      <title>目录 周志华机器学习笔记</title>
+      <link>https://octemull.github.io/personal-site/post/ml-contents/</link>
+      <pubDate>Tue, 19 Dec 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://octemull.github.io/personal-site/post/ml-contents/</guid>
+      <description> 目录  chap 01 - 绪论 chap 02 - 模型评估与选择 chap 03 - 线性模型 | Linear Model chap 04 - 决策树 | Decision Tree chap 05 - 神经网络 | Neural Network chap 06 - 支持向量机 | Support Vector Machine,SVM chap 07 - 贝叶斯分类器 | Bayesian Classifier chap 08 - 集成学习 | Ensemble learning  chap 09 - 聚类 | Clustering chap 10 - 降维与度量学习 chap 11 - 特征选择（特征选取） 与 稀疏学习  </description>
+    </item>
+    
+    <item>
+      <title>chap 08 - 集成学习 | Ensemble learning</title>
+      <link>https://octemull.github.io/personal-site/post/ml-chap08/</link>
+      <pubDate>Mon, 11 Dec 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://octemull.github.io/personal-site/post/ml-chap08/</guid>
+      <description>8.1 个体与集成 def【集成学习】：
+通过构建并结合多个学习器来完成学习任务，有时也被称作“多分类器系统”(multi-classifier system)、“基于委员会的学习”(committee-based learning)等。
+集成学习的一般结构：
+先生成一组“个体学习器”，然后用某种方法把它们结合起来，最后输出结果。
+个体学习器：
+通常采用现有的方法，如，C4.5决策树算法、BP神经网络算法。
+个体学习器的分类：
+ 同质 homogenous：个体学习器采用的方法相同。如，“神经网络集成”中全是神经网络、“决策树集成”中全是决策树。此时，个体学习器对应的算法称为“基学习算法”(base learning algorithm)。 异质 heterogenous：个体学习器采用的方法不同。如，同时包含决策树和神经网络。此时，个体学习器称为“组件学习器”(component learner)或直接称为个体学习器。  集成学习的性能：
+ 集成学习通过结合多个学习器，其泛化性能常优于单个学习器。  弱学习器【常指泛化性能略优于随机猜测的学习器。如，在二分类问题上精度略高于50%的学习器。】的集成效应尤其明显，很多集成学习的理论研究都是针对弱学习器进行的。基学习器有时也被称作弱学习器。 理论上，弱学习器集成可获得较好的泛化性能。但是实际中，为了使用较少的个体学习器、或重用关于常见学习器的经验，人们通常选用较强的学习器、  如何获得比单一学习器更优的泛化性能？  方法：选用“投票法” voting （少数服从多数）产生。 要求：个体学习器有一定的“准确性”（学习器不能太坏），且“多样性”diversity（学习器要有差异）。   举一个例子🌰：
+在二分类任务中，假定三个分类器在三个测试样本上的表现如图8.2所示，其中√表示分类正确，×表示分类错误。集成学习的结果采用“投票法”产生。
+ 在图8.2(a)中，每个分类器都只有66.6%的精度，但集成学习的精度达到100%； 在图8.2(b)中，三个分类器无差别，集成后性能没有提高； 在图8.2&amp;copy;中，每个分类器的精度为33.3%，集成学习的结果更糟。  分析：
+考虑二分类问题$y \in {-1, +1}$和真实函数$f$，假定基分类器的错误率为$\epsilon$，即对每个基分类器，有
+假设集成通过简单投票法结合$T$个基分类器，若有超过半数的基分类器正确，则集成分类就正确：
+假设基分类器的错误率相互独立，则由Hoeffding不等式可知，集成的错误率为
+上式表明，随着集成中个体分类器数目T的增大，集成的错误率将指数级下降，最终趋向于零。
+基学习器的误差独立性：
+1. 基学习器是为了解决同一个问题训练出来的，显然不互相独立； 2. 个体学习器的“准确性”和“多样性”本身存在冲突（一般，准确性高时，增加多样性就会牺牲准确性）； 3. 如何产生并结合“好而不同”的个体学习器，是集成学习研究的核心。  集成学习方法分类：
+ 序列化方法：  个体学习器间存在强依赖关系、必须串行生成。 代表方法：Boosting。  并行化方法：  个体学习器间不存在强依赖关系、可同时生成。 代表方法：Bagging，随机森林 Random Forest。   8.</description>
+    </item>
+    
+    <item>
       <title>chap 05 - 神经网络 | Neural Network</title>
       <link>https://octemull.github.io/personal-site/post/ml-chap05/</link>
       <pubDate>Tue, 21 Nov 2017 00:00:00 +0000</pubDate>
@@ -60,15 +95,6 @@ M-P神经元模型： 概念：
 注意到$y=f(\sum_i w_i x_i - \theta)$，假定$f$是图5.2中的阶跃函数，有
 感知机学习规则（权重$w_i$及阈值$θ$的学习方法）：
  统一权重及阈值：阈值θ可看做一个固定输入为$-1.0$的“哑结点” (dummy node)所对应的连接权重$w_n+1$。 规则：对训练样例$(\boldsymbol{x}, y)$，若当前感知机的输出为$\hat{y}$，则感知机权重将做如下调整： 若感知机对训练样例$(\boldsymbol{x}, y)$预测正确，即$y=\hat{y}$，则感知机不发生变化；否则，根据错误程度进行权重调整。 符号：  $\mu \in (0,1)$ ，学习率 learning rate，通常设置为一个小正数，如$0.1$； $x_i$是$\boldsymbol{x}$对应于第$i$个输入神经元的分量。   感知机的特性：</description>
-    </item>
-    
-    <item>
-      <title>目录 周志华机器学习笔记</title>
-      <link>https://octemull.github.io/personal-site/post/ml-contents/</link>
-      <pubDate>Sun, 19 Nov 2017 15:59:40 +0800</pubDate>
-      
-      <guid>https://octemull.github.io/personal-site/post/ml-contents/</guid>
-      <description> 目录  chap 01 - 绪论 chap 02 - 模型评估与选择 chap 03 - 线性模型 | Linear Model chap 04 - 决策树 | Decision Tree chap 05 - 神经网络 | Neural Network chap 06 - 支持向量机 | Support Vector Machine,SVM chap 07 - 贝叶斯分类器 | Bayesian Classifier chap 08 - 集成学习 | Ensemble learning chap 09 - 聚类 | Clustering chap 10 - 降维与度量学习 chap 11 - 特征选择（特征选取） 与 稀疏学习  </description>
     </item>
     
     <item>

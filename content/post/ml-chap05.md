@@ -1,7 +1,7 @@
 ---
 title: "chap 05 - 神经网络 | Neural Network"
 date: 2017-11-21
-lastmod: 2018-03-06
+lastmod: 2019-03-20
 draft: false
 show_comments: true
 keywords: []

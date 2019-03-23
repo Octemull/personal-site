@@ -52,15 +52,22 @@
   </url>
   
   <url>
-    <loc>https://octemull.github.io/personal-site/post/ml-chap05/</loc>
-    <lastmod>2018-03-06T00:00:00+00:00</lastmod>
+    <loc>https://octemull.github.io/personal-site/post/ml-contents/</loc>
+    <lastmod>2017-12-19T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://octemull.github.io/personal-site/post/ml-contents/</loc>
-    <lastmod>2017-11-19T15:59:40+08:00</lastmod>
+    <loc>https://octemull.github.io/personal-site/post/ml-chap08/</loc>
+    <lastmod>2018-04-17T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://octemull.github.io/personal-site/post/ml-chap05/</loc>
+    <lastmod>2019-03-20T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -107,7 +114,7 @@
   
   <url>
     <loc>https://octemull.github.io/personal-site/tags/contents/</loc>
-    <lastmod>2017-11-19T15:59:40+08:00</lastmod>
+    <lastmod>2017-12-19T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>
@@ -216,7 +223,7 @@
   
   <url>
     <loc>https://octemull.github.io/personal-site/tags/</loc>
-    <lastmod>2017-11-19T15:59:40+08:00</lastmod>
+    <lastmod>2017-12-19T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0</priority>
   </url>

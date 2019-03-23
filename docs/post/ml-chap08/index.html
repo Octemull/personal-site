@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>chap 08 - 集成学习 | Ensemble learning - Octemull&#39;s Personal Site</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Octemull" /><meta name="description" content="8.1 个体与集成 def【集成学习】：
+通过构建并结合多个学习器来完成学习任务，有时也被称作“多分类器系统”(multi-classifier system)、“基于委员会的学习”(committee-based learning)等。
+集成学习的一般结构：
+先生成一组“个体学习器”，然后用某种方法把它们结合起来，最后输出结果。
+个体学习器：
+通常采用现有的方法，如，C4.5决策树算法、BP神经网络算法。
+个体学习器的分类：
+ 同质 homogenous：个体学习器采用的方法相同。如，“神经网络集成”中全是神经网络、“决策树集成”中全是决策树。此时，个体学习器对应的算法称为“基学习算法”(base learning algorithm)。 异质 heterogenous：个体学习器采用的方法不同。如，同时包含决策树和神经网络。此时，个体学习器称为“组件学习器”(component learner)或直接称为个体学习器。  集成学习的性能：
+ 集成学习通过结合多个学习器，其泛化性能常优于单个学习器。  弱学习器【常指泛化性能略优于随机猜测的学习器。如，在二分类问题上精度略高于50%的学习器。】的集成效应尤其明显，很多集成学习的理论研究都是针对弱学习器进行的。基学习器有时也被称作弱学习器。 理论上，弱学习器集成可获得较好的泛化性能。但是实际中，为了使用较少的个体学习器、或重用关于常见学习器的经验，人们通常选用较强的学习器、  如何获得比单一学习器更优的泛化性能？  方法：选用“投票法” voting （少数服从多数）产生。 要求：个体学习器有一定的“准确性”（学习器不能太坏），且“多样性”diversity（学习器要有差异）。   举一个例子🌰：
+在二分类任务中，假定三个分类器在三个测试样本上的表现如图8.2所示，其中√表示分类正确，×表示分类错误。集成学习的结果采用“投票法”产生。
+ 在图8.2(a)中，每个分类器都只有66.6%的精度，但集成学习的精度达到100%； 在图8.2(b)中，三个分类器无差别，集成后性能没有提高； 在图8.2&amp;copy;中，每个分类器的精度为33.3%，集成学习的结果更糟。  分析：
+考虑二分类问题$y \in {-1, &#43;1}$和真实函数$f$，假定基分类器的错误率为$\epsilon$，即对每个基分类器，有
+假设集成通过简单投票法结合$T$个基分类器，若有超过半数的基分类器正确，则集成分类就正确：
+假设基分类器的错误率相互独立，则由Hoeffding不等式可知，集成的错误率为
+上式表明，随着集成中个体分类器数目T的增大，集成的错误率将指数级下降，最终趋向于零。
+基学习器的误差独立性：
+1. 基学习器是为了解决同一个问题训练出来的，显然不互相独立； 2. 个体学习器的“准确性”和“多样性”本身存在冲突（一般，准确性高时，增加多样性就会牺牲准确性）； 3. 如何产生并结合“好而不同”的个体学习器，是集成学习研究的核心。  集成学习方法分类：
+ 序列化方法：  个体学习器间存在强依赖关系、必须串行生成。 代表方法：Boosting。  并行化方法：  个体学习器间不存在强依赖关系、可同时生成。 代表方法：Bagging，随机森林 Random Forest。   8." /><meta name="keywords" content="Blog" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.53 with even 4.0.0" />
+
+
+<link rel="canonical" href="https://octemull.github.io/personal-site/post/ml-chap08/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/personal-site/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/personal-site/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/personal-site/favicon-16x16.png">
+<link rel="manifest" href="/personal-site/manifest.json">
+<link rel="mask-icon" href="/personal-site/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/personal-site/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="chap 08 - 集成学习 | Ensemble learning" />
+<meta property="og:description" content="8.1 个体与集成 def【集成学习】：
+通过构建并结合多个学习器来完成学习任务，有时也被称作“多分类器系统”(multi-classifier system)、“基于委员会的学习”(committee-based learning)等。
+集成学习的一般结构：
+先生成一组“个体学习器”，然后用某种方法把它们结合起来，最后输出结果。
+个体学习器：
+通常采用现有的方法，如，C4.5决策树算法、BP神经网络算法。
+个体学习器的分类：
+ 同质 homogenous：个体学习器采用的方法相同。如，“神经网络集成”中全是神经网络、“决策树集成”中全是决策树。此时，个体学习器对应的算法称为“基学习算法”(base learning algorithm)。 异质 heterogenous：个体学习器采用的方法不同。如，同时包含决策树和神经网络。此时，个体学习器称为“组件学习器”(component learner)或直接称为个体学习器。  集成学习的性能：
+ 集成学习通过结合多个学习器，其泛化性能常优于单个学习器。  弱学习器【常指泛化性能略优于随机猜测的学习器。如，在二分类问题上精度略高于50%的学习器。】的集成效应尤其明显，很多集成学习的理论研究都是针对弱学习器进行的。基学习器有时也被称作弱学习器。 理论上，弱学习器集成可获得较好的泛化性能。但是实际中，为了使用较少的个体学习器、或重用关于常见学习器的经验，人们通常选用较强的学习器、  如何获得比单一学习器更优的泛化性能？  方法：选用“投票法” voting （少数服从多数）产生。 要求：个体学习器有一定的“准确性”（学习器不能太坏），且“多样性”diversity（学习器要有差异）。   举一个例子🌰：
+在二分类任务中，假定三个分类器在三个测试样本上的表现如图8.2所示，其中√表示分类正确，×表示分类错误。集成学习的结果采用“投票法”产生。
+ 在图8.2(a)中，每个分类器都只有66.6%的精度，但集成学习的精度达到100%； 在图8.2(b)中，三个分类器无差别，集成后性能没有提高； 在图8.2&copy;中，每个分类器的精度为33.3%，集成学习的结果更糟。  分析：
+考虑二分类问题$y \in {-1, &#43;1}$和真实函数$f$，假定基分类器的错误率为$\epsilon$，即对每个基分类器，有
+假设集成通过简单投票法结合$T$个基分类器，若有超过半数的基分类器正确，则集成分类就正确：
+假设基分类器的错误率相互独立，则由Hoeffding不等式可知，集成的错误率为
+上式表明，随着集成中个体分类器数目T的增大，集成的错误率将指数级下降，最终趋向于零。
+基学习器的误差独立性：
+1. 基学习器是为了解决同一个问题训练出来的，显然不互相独立； 2. 个体学习器的“准确性”和“多样性”本身存在冲突（一般，准确性高时，增加多样性就会牺牲准确性）； 3. 如何产生并结合“好而不同”的个体学习器，是集成学习研究的核心。  集成学习方法分类：
+ 序列化方法：  个体学习器间存在强依赖关系、必须串行生成。 代表方法：Boosting。  并行化方法：  个体学习器间不存在强依赖关系、可同时生成。 代表方法：Bagging，随机森林 Random Forest。   8." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://octemull.github.io/personal-site/post/ml-chap08/" /><meta property="article:published_time" content="2017-12-11T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2018-04-17T00:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="chap 08 - 集成学习 | Ensemble learning">
+<meta itemprop="description" content="8.1 个体与集成 def【集成学习】：
+通过构建并结合多个学习器来完成学习任务，有时也被称作“多分类器系统”(multi-classifier system)、“基于委员会的学习”(committee-based learning)等。
+集成学习的一般结构：
+先生成一组“个体学习器”，然后用某种方法把它们结合起来，最后输出结果。
+个体学习器：
+通常采用现有的方法，如，C4.5决策树算法、BP神经网络算法。
+个体学习器的分类：
+ 同质 homogenous：个体学习器采用的方法相同。如，“神经网络集成”中全是神经网络、“决策树集成”中全是决策树。此时，个体学习器对应的算法称为“基学习算法”(base learning algorithm)。 异质 heterogenous：个体学习器采用的方法不同。如，同时包含决策树和神经网络。此时，个体学习器称为“组件学习器”(component learner)或直接称为个体学习器。  集成学习的性能：
+ 集成学习通过结合多个学习器，其泛化性能常优于单个学习器。  弱学习器【常指泛化性能略优于随机猜测的学习器。如，在二分类问题上精度略高于50%的学习器。】的集成效应尤其明显，很多集成学习的理论研究都是针对弱学习器进行的。基学习器有时也被称作弱学习器。 理论上，弱学习器集成可获得较好的泛化性能。但是实际中，为了使用较少的个体学习器、或重用关于常见学习器的经验，人们通常选用较强的学习器、  如何获得比单一学习器更优的泛化性能？  方法：选用“投票法” voting （少数服从多数）产生。 要求：个体学习器有一定的“准确性”（学习器不能太坏），且“多样性”diversity（学习器要有差异）。   举一个例子🌰：
+在二分类任务中，假定三个分类器在三个测试样本上的表现如图8.2所示，其中√表示分类正确，×表示分类错误。集成学习的结果采用“投票法”产生。
+ 在图8.2(a)中，每个分类器都只有66.6%的精度，但集成学习的精度达到100%； 在图8.2(b)中，三个分类器无差别，集成后性能没有提高； 在图8.2&copy;中，每个分类器的精度为33.3%，集成学习的结果更糟。  分析：
+考虑二分类问题$y \in {-1, &#43;1}$和真实函数$f$，假定基分类器的错误率为$\epsilon$，即对每个基分类器，有
+假设集成通过简单投票法结合$T$个基分类器，若有超过半数的基分类器正确，则集成分类就正确：
+假设基分类器的错误率相互独立，则由Hoeffding不等式可知，集成的错误率为
+上式表明，随着集成中个体分类器数目T的增大，集成的错误率将指数级下降，最终趋向于零。
+基学习器的误差独立性：
+1. 基学习器是为了解决同一个问题训练出来的，显然不互相独立； 2. 个体学习器的“准确性”和“多样性”本身存在冲突（一般，准确性高时，增加多样性就会牺牲准确性）； 3. 如何产生并结合“好而不同”的个体学习器，是集成学习研究的核心。  集成学习方法分类：
+ 序列化方法：  个体学习器间存在强依赖关系、必须串行生成。 代表方法：Boosting。  并行化方法：  个体学习器间不存在强依赖关系、可同时生成。 代表方法：Bagging，随机森林 Random Forest。   8.">
+
+
+<meta itemprop="datePublished" content="2017-12-11T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2018-04-17T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="543">
+
+
+
+<meta itemprop="keywords" content="Notes," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="chap 08 - 集成学习 | Ensemble learning"/>
+<meta name="twitter:description" content="8.1 个体与集成 def【集成学习】：
+通过构建并结合多个学习器来完成学习任务，有时也被称作“多分类器系统”(multi-classifier system)、“基于委员会的学习”(committee-based learning)等。
+集成学习的一般结构：
+先生成一组“个体学习器”，然后用某种方法把它们结合起来，最后输出结果。
+个体学习器：
+通常采用现有的方法，如，C4.5决策树算法、BP神经网络算法。
+个体学习器的分类：
+ 同质 homogenous：个体学习器采用的方法相同。如，“神经网络集成”中全是神经网络、“决策树集成”中全是决策树。此时，个体学习器对应的算法称为“基学习算法”(base learning algorithm)。 异质 heterogenous：个体学习器采用的方法不同。如，同时包含决策树和神经网络。此时，个体学习器称为“组件学习器”(component learner)或直接称为个体学习器。  集成学习的性能：
+ 集成学习通过结合多个学习器，其泛化性能常优于单个学习器。  弱学习器【常指泛化性能略优于随机猜测的学习器。如，在二分类问题上精度略高于50%的学习器。】的集成效应尤其明显，很多集成学习的理论研究都是针对弱学习器进行的。基学习器有时也被称作弱学习器。 理论上，弱学习器集成可获得较好的泛化性能。但是实际中，为了使用较少的个体学习器、或重用关于常见学习器的经验，人们通常选用较强的学习器、  如何获得比单一学习器更优的泛化性能？  方法：选用“投票法” voting （少数服从多数）产生。 要求：个体学习器有一定的“准确性”（学习器不能太坏），且“多样性”diversity（学习器要有差异）。   举一个例子🌰：
+在二分类任务中，假定三个分类器在三个测试样本上的表现如图8.2所示，其中√表示分类正确，×表示分类错误。集成学习的结果采用“投票法”产生。
+ 在图8.2(a)中，每个分类器都只有66.6%的精度，但集成学习的精度达到100%； 在图8.2(b)中，三个分类器无差别，集成后性能没有提高； 在图8.2&copy;中，每个分类器的精度为33.3%，集成学习的结果更糟。  分析：
+考虑二分类问题$y \in {-1, &#43;1}$和真实函数$f$，假定基分类器的错误率为$\epsilon$，即对每个基分类器，有
+假设集成通过简单投票法结合$T$个基分类器，若有超过半数的基分类器正确，则集成分类就正确：
+假设基分类器的错误率相互独立，则由Hoeffding不等式可知，集成的错误率为
+上式表明，随着集成中个体分类器数目T的增大，集成的错误率将指数级下降，最终趋向于零。
+基学习器的误差独立性：
+1. 基学习器是为了解决同一个问题训练出来的，显然不互相独立； 2. 个体学习器的“准确性”和“多样性”本身存在冲突（一般，准确性高时，增加多样性就会牺牲准确性）； 3. 如何产生并结合“好而不同”的个体学习器，是集成学习研究的核心。  集成学习方法分类：
+ 序列化方法：  个体学习器间存在强依赖关系、必须串行生成。 代表方法：Boosting。  并行化方法：  个体学习器间不存在强依赖关系、可同时生成。 代表方法：Bagging，随机森林 Random Forest。   8."/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/personal-site/" class="logo">Octemull</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/personal-site/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/personal-site/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/personal-site/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/personal-site/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/personal-site/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/personal-site/" class="logo">Octemull</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/personal-site/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/personal-site/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/personal-site/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/personal-site/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/personal-site/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">chap 08 - 集成学习 | Ensemble learning</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2017-12-11 </span>
+        <div class="post-category">
+            <a href="/personal-site/categories/machine-learning/"> Machine Learning </a>
+            </div>
+          <span class="more-meta"> 543 words </span>
+          <span class="more-meta"> 3 mins read </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#8-1-个体与集成">8.1 个体与集成</a></li>
+<li><a href="#8-2-boosting">8.2 Boosting</a></li>
+<li><a href="#8-3-bagging与随机森林">8.3 Bagging与随机森林</a>
+<ul>
+<li><a href="#8-3-1-bagging">8.3.1 Bagging</a></li>
+<li><a href="#8-3-2-随机森林-random-forest-rf">8.3.2 随机森林 Random Forest, RF</a></li>
+</ul></li>
+<li><a href="#8-4-结合策略">8.4 结合策略</a>
+<ul>
+<li><a href="#8-4-1-平均法-averaging">8.4.1 平均法 averaging</a></li>
+<li><a href="#8-4-2-投票法-voting">8.4.2 投票法 voting</a></li>
+<li><a href="#8-4-3-学习法">8.4.3 学习法</a></li>
+</ul></li>
+<li><a href="#8-5-多样性">8.5 多样性</a>
+<ul>
+<li><a href="#8-5-1-误差-分歧分解">8.5.1 误差-分歧分解</a></li>
+<li><a href="#8-5-2-多样性度量-差异性度量">8.5.2 多样性度量 / 差异性度量</a></li>
+<li><a href="#8-5-3-多样性增强">8.5.3 多样性增强</a>
+<ul>
+<li><a href="#1-数据样本扰动-简单高效-使用最广">1️⃣ 数据样本扰动（简单高效、使用最广）</a></li>
+<li><a href="#2-输入属性扰动">2️⃣ 输入属性扰动</a></li>
+<li><a href="#3-输出表示扰动">3️⃣ 输出表示扰动</a></li>
+<li><a href="#4-算法参数扰动">4️⃣ 算法参数扰动</a></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      
+
+<p><img src="https://i.loli.net/2019/03/23/5c95eede645ea.png" alt="集成学习" /></p>
+
+<h2 id="8-1-个体与集成">8.1 个体与集成</h2>
+
+<p><strong>def【集成学习】：</strong></p>
+
+<p>通过构建并结合多个学习器来完成学习任务，有时也被称作“多分类器系统”(multi-classifier system)、“基于委员会的学习”(committee-based learning)等。</p>
+
+<p><strong>集成学习的一般结构：</strong></p>
+
+<p>先生成一组“个体学习器”，然后用某种方法把它们结合起来，最后输出结果。</p>
+
+<p><img src="https://i.loli.net/2019/03/23/5c95eee90aba4.png" alt="3F39DD12-B8ED-48DB-8B8F-2263746F83A0" /></p>
+
+<p><strong>个体学习器：</strong></p>
+
+<p>通常采用现有的方法，如，C4.5决策树算法、BP神经网络算法。</p>
+
+<p><strong>个体学习器的分类：</strong></p>
+
+<ul>
+<li><strong>同质 homogenous</strong>：个体学习器采用的方法相同。如，“神经网络集成”中全是神经网络、“决策树集成”中全是决策树。此时，个体学习器对应的算法称为<strong>“基学习算法”(base learning algorithm)</strong>。</li>
+<li><strong>异质 heterogenous</strong>：个体学习器采用的方法不同。如，同时包含决策树和神经网络。此时，个体学习器称为<strong>“组件学习器”(component learner)</strong>或直接称为个体学习器。</li>
+</ul>
+
+<p><strong>集成学习的性能：</strong></p>
+
+<ol>
+<li>集成学习通过结合多个学习器，其泛化性能常优于单个学习器。
+
+<ul>
+<li>弱学习器【常指泛化性能略优于随机猜测的学习器。如，在二分类问题上精度略高于50%的学习器。】的集成效应尤其明显，很多集成学习的理论研究都是针对弱学习器进行的。基学习器有时也被称作弱学习器。</li>
+<li>理论上，弱学习器集成可获得较好的泛化性能。但是实际中，为了使用较少的个体学习器、或重用关于常见学习器的经验，人们通常选用较强的学习器、</li>
+</ul></li>
+<li>如何获得比单一学习器更优的泛化性能？
+
+<ul>
+<li><strong>方法</strong>：选用“投票法” voting （少数服从多数）产生。</li>
+<li><strong>要求</strong>：个体学习器有一定的“准确性”（学习器不能太坏），且“多样性”diversity（学习器要有差异）。</li>
+</ul></li>
+</ol>
+
+<p>举一个例子🌰：</p>
+
+<p>在二分类任务中，假定三个分类器在三个测试样本上的表现如图8.2所示，其中√表示分类正确，×表示分类错误。集成学习的结果采用“投票法”产生。</p>
+
+<ul>
+<li>在图8.2(a)中，每个分类器都只有66.6%的精度，但集成学习的精度达到100%；</li>
+<li>在图8.2(b)中，三个分类器无差别，集成后性能没有提高；</li>
+<li>在图8.2&copy;中，每个分类器的精度为33.3%，集成学习的结果更糟。</li>
+</ul>
+
+<p><img src="https://i.loli.net/2019/03/23/5c95eeefabdf3.png" alt="E474526B-4DCE-43CB-9AE9-55F5495687AD" /></p>
+
+<p><strong>分析：</strong></p>
+
+<p>考虑二分类问题$y \in {-1, +1}$和真实函数$f$，假定基分类器的错误率为$\epsilon$，即对每个基分类器，有</p>
+
+<p><img src="https://i.loli.net/2019/03/23/5c95eed2e922e.png" alt="126530E7-C0CC-439C-8885-7379E386AFBF" /></p>
+
+<p>假设集成通过简单投票法结合$T$个基分类器，若有超过半数的基分类器正确，则集成分类就正确：</p>
+
+<p><img src="https://i.loli.net/2019/03/23/5c95eed31a84f.png" alt="BE7841BB-F499-47AF-A6AA-564A257A0B11" /></p>
+
+<p><strong>假设基分类器的错误率相互独立</strong>，则由Hoeffding不等式可知，集成的错误率为</p>
+
+<p><img src="https://i.loli.net/2019/03/23/5c95eed850a92.png" alt="7F1A613E-BEF2-4E3C-8C0F-61B0605F97E2" /></p>
+
+<p>上式表明，<strong>随着集成中个体分类器数目T的增大，集成的错误率将指数级下降，最终趋向于零</strong>。</p>
+
+<p><strong>基学习器的误差独立性：</strong></p>
+
+<pre><code>1. 基学习器是为了解决同一个问题训练出来的，显然不互相独立；
+2. 个体学习器的“准确性”和“多样性”本身存在冲突（一般，准确性高时，增加多样性就会牺牲准确性）；
+3. 如何产生并结合“好而不同”的个体学习器，是集成学习研究的核心。
+</code></pre>
+
+<p><strong>集成学习方法分类：</strong></p>
+
+<ol>
+<li>序列化方法：
+
+<ul>
+<li>个体学习器间存在强依赖关系、必须串行生成。</li>
+<li>代表方法：Boosting。</li>
+</ul></li>
+<li>并行化方法：
+
+<ul>
+<li>个体学习器间不存在强依赖关系、可同时生成。</li>
+<li>代表方法：Bagging，随机森林 Random Forest。</li>
+</ul></li>
+</ol>
+
+<h2 id="8-2-boosting">8.2 Boosting</h2>
+
+<p>Boosting是一族可将弱学习器提升为强学习器的算法。</p>
+
+<p><strong>基本步骤：</strong></p>
+
+<ol>
+<li>从初始训练集训练出$1$个基学习器；</li>
+<li>根据基学习器的表现对样本分布进行调整，使先前基学习器做错的训练样本在后续受到更多关注；</li>
+<li>基于调整后的样本分布训练下一个基学习器；</li>
+<li>重复上述步骤，直至基学习器<strong>数目</strong>达到事先指定值$T$；</li>
+<li>将得到的$T$个基学习器进行加权结合。</li>
+</ol>
+
+<p><strong>Adaboost [Freund and Schapire,1997]：Boosting族算法的最著名代表</strong></p>
+
+<ul>
+<li>算法描述：其中$y \in {-1, +1}$，真实函数为$f$。</li>
+</ul>
+
+<p><img src="https://i.loli.net/2019/03/23/5c95eeefc1912.png" alt="05EF5330-FF1B-482B-B869-A26350DB0BF1" />
+说明：
+1：初始化样本权值分布；
+2、3：基于分布$D_t$从数据集$D$中训练处分类器$h_t$；
+4：估计$h_t$的误差；
+6：确定分类器$h_t$的权值$\alpha_t$；
+7：更新样本分布，其中$Z<em>t$是规范化因子，以确保$D</em>{t+1}$是一个分布。</p>
+
+<p><strong>推导过程：</strong></p>
+
+<ul>
+<li>基于“加性模型”(additive model)迭代式优化（最小化）指数损失函数(exponential loss function)[Friedman et al., 2000]</li>
+</ul>
+
+<p>即，用基学习器的线性组合</p>
+
+<p><img src="https://i.loli.net/2019/03/23/5c95eed2ef548.png" alt="9AD8ECF9-7C81-4F4A-A96B-5A655B07F13A" /></p>
+
+<p>来最小化指数损失函数</p>
+
+<p><img src="https://i.loli.net/2019/03/23/5c95eed2ed950.png" alt="9422E28E-507D-4277-A7CB-AC58B1BD2FBE" /></p>
+
+<p><strong>1️⃣求让指数损失函数最小的基学习器的线性组合H(x)</strong></p>
+
+<p>若$H(x)$能令指数损失函数最小化，则考虑式(8.5)对$H(x)$的偏导</p>
+
+<p><img src="https://i.loli.net/2019/03/23/5c95eee1af57f.png" alt="BBDF1AE2-C09B-4423-BBB2-1483EA4F77E5" /></p>
+
+<p>令式(8.6)为零可解得</p>
+
+<p><img src="https://i.loli.net/2019/03/23/5c95eed31fa90.png" alt="F9A60C5B-D500-44CB-AAA4-79CC6BD3704" /></p>
+
+<p>因此，有</p>
+
+<p><img src="https://i.loli.net/2019/03/23/5c95eee9161e1.png" alt="4AA0A90F-10CB-40C2-BA4A-CCF492FD151" /></p>
+
+<blockquote>
+<p>这里忽略了$P(f(x)=1|x)=P(f(x)=-1|x)$的情形。</p>
+</blockquote>
+
+<p>这意味着$sign(H(x))$达到了贝叶斯最优错误率。
+换言之，若指数损失函数最小化，则分类错误率也将最小化；说明指数损失函数是分类任务原本0/1损失函数的一致(consistent)的替代损失函数。指数损失函数具有更好的数学性质，如，连续可微，用其替代0/1损失函数作为优化目标。</p>
+
+<p><strong>2️⃣求权重αt更新公式</strong></p>
+
+<p>第一个基分类器$h_1$是通过直接将及学习算法用于初始数据分布而得；此后迭代地生成$h_t$和$\alpha_t$，当基分类器$h_t$基于分布$D_t$产生后，该基分类器的权重应使得$\alpha_t h_t$最小化指数损失函数</p>
+
+<p><img src="https://i.loli.net/2019/03/23/5c95eee908c9f.png" alt="3766A3F1-2A35-4500-9169-E9736C6168E2" /></p>
+
+<p>其中$\epsilon<em>t = P</em>{x \sim D_t} (h_t(x) \neq f(x))$.考虑指数损失函数的导数</p>
+
+<p><img src="https://i.loli.net/2019/03/23/5c95eee1938a7.png" alt="802F5B3B-6F06-45BD-A15D-048BAEA78DC" /></p>
+
+<p>令式(8.10)为零可解得</p>
+
+<p><img src="https://i.loli.net/2019/03/23/5c95eee195361.png" alt="C543A744-EC32-4636-9201-265FE430" /></p>
+
+<p>上式即为图8.3中算法第6行的分类器权重更新公式。</p>
+
+<p><strong>3️⃣调整样本分布$D_t$</strong></p>
+
+<p>获得$H_{t-1}$之后样本分布将进行调整，使下一轮的基学习器$h<em>t$能纠正$H</em>{t-1}$的一些错误。理想的$h<em>t$能纠正$H</em>{t-1}$的全部错误，即最小化</p>
+
+<p><img src="https://i.loli.net/2019/03/23/5c95eed83f275.png" alt="42446F37-44BF-4C15-872E-64F3A542400B" /></p>
+
+<p>注意到$f^2(x) = h_l^2(x) = 1$，式(8.12)可使用的泰勒展式近似为</p>
+
+<p><img src="https://i.loli.net/2019/03/23/5c95eee8ed291.png" alt="A3F3DB0C-BFBF-4AE0-8420-930EA6FC67B7" /></p>
+
+<p>于是，理想的基学习器</p>
+
+<p><img src="https://i.loli.net/2019/03/23/5c95eeef92880.png" alt="8A3A3FCB-EDC3-4520-9843-DA970124" /></p>
+
+<p>注意到$\mathbb{E}<em>{x \sim D} [e^{-f(x) H</em>{t-1}(x)}]$是一个常数。令$D_t$表示一个分布</p>
+
+<p><img src="https://i.loli.net/2019/03/23/5c95eee196fbc.png" alt="1A3B6EDB-0BAA-4917-939B-F80093DD336B" /></p>
+
+<p>则根据数学期望的定义，这等价于令</p>
+
+<p><img src="https://i.loli.net/2019/03/23/5c95eed85966c.png" alt="BDAC1015-DA69-4890-B16D-A93B8387CB99" /></p>
+
+<p>由$f(x), h(x) \in {-1,+1}$有</p>
+
+<p><img src="https://i.loli.net/2019/03/23/5c95eee179453.png" alt="BB28193C-D6AA-477B-81DC-C1B2DAC771" /></p>
+
+<p>则理想的基学习器</p>
+
+<p><img src="https://i.loli.net/2019/03/23/5c95eee1b15fc.png" alt="07228CB1-A4CF-46DE-93A7-2A8EB58CBE85" /></p>
+
+<p>由此可见，理想的$h_t$将在分布$D_t$下最小化分类误差。因此，弱分类器将基于分布$D_t$来训练，且针对$$D_t$的分类误差应小于$0.5$。这在一定程度上类似“残差逼近”的思想。考虑到$D<em>t$和$D</em>{t+1}$的关系，有</p>
+
+<p><img src="https://i.loli.net/2019/03/23/5c95eeefbf854.png" alt="A2D67995-1F26-4A18-9D44-8631807BDE26" /></p>
+
+<p>以上为图8.3中算法第7行的样本分布更新公式。</p>
+
+<p><strong>学习特定的数据分布</strong></p>
+
+<p>Boosting算法要求基学习器能对特定的数据分布进行学习。</p>
+
+<p><strong>方法：</strong></p>
+
+<ul>
+<li><strong>重赋权法 re-weighting</strong>：在训练过程的每一轮中，根据样本分布为每个训练样本重新赋予一个权重。</li>
+<li><strong>重采样法 re-sampling</strong>：若基学习算法无法接受赋权，则可在每一轮学习中，根据样本分布对训练集重新进行采样，再用重采样而得的样本集对基学习器进行训练。</li>
+</ul>
+
+<p><strong>注意：</strong></p>
+
+<ul>
+<li>两种方法一般没有显著差别；</li>
+<li>“重采样法”可获得“<strong>重启动</strong>”机会避免训练过早停止[Kohavi and Wolpert, 1996]。</li>
+</ul>
+
+<p>Boosting算法在训练的每一轮都会检查当前生成的基学习器是否满足基本条件（如，图8.3的第5行，检查当前基分类器是否优于随机猜测模型），一旦不满足，则抛弃当前基学习器，学习过程停止。在这种情况下，初始设置的学习轮数T也许还远未达到，可能导致最终集成中值包含很少的基学习器而集成性能不佳。若采用“重采样法”，在抛弃不满足条件的当前基学习器之后，可根据当前分布重新对训练样本进行采样，再基于新的采样结果重新训练处基学习器，使学习过程可以持续到预设的T轮完成。</p>
+
+<p><strong><a href="https://octemull.github.io/personal-site/post/ml-chap02/">偏差-方差分解</a></strong></p>
+
+<p>Boosting主要关注降低偏差，因此可以基于泛化性能相当弱的学习器构建出很强的集成。</p>
+
+<p><strong>举一个例子🌰：</strong></p>
+
+<p>以决策树桩（单层决策树）为基学习器，在表4.5的西瓜数据集3.0α上运行AdaBoost算法，不同规模size（集成中包含的个体学习器的数目）的集成及其学习器所对应的分类边界如图8.4所示。</p>
+
+<p><img src="https://i.loli.net/2019/03/23/5c95eef7a87fd.png" alt="505CDE5C-5C6A-49BC-8819-751435EFF0F8" /></p>
+
+<h2 id="8-3-bagging与随机森林">8.3 Bagging与随机森林</h2>
+
+<p>现实中无法做到“独立”，但可以使基学习器尽可能具有较大差异。</p>
+
+<p>给定一个训练数据集，一种可能的做法是对训练样本进行采样，产生出若干个不同的子集，再用每个子集训练出一个基学习器。由于数据不同，产生的基学习器可能具有较大差异。</p>
+
+<p>为了获得较好的集成效果，还希望个体学习器不能太差。如果采样出的每个自己都完全不同，则每个基学习器只用到了一小部分训练数据，甚至不足以进行有效学习，这显然无法确保产生较好的基学习器。</p>
+
+<p>为解决该问题，可以考虑<strong>使用相互有交叠的子集</strong>。</p>
+
+<h3 id="8-3-1-bagging">8.3.1 Bagging</h3>
+
+<p><strong>由来：</strong> Boostrap AGGregatING</p>
+
+<p><strong>基础方法</strong>：<a href="https://octemull.github.io/personal-site/post/ml-chap02/">自助采样法(bootstrap sampling)</a></p>
+
+<p><strong>基本流程：</strong></p>
+
+<ol>
+<li>用自助采样法产生T个含m个训练样本的采样集；</li>
+<li>基于每个采样集训练出一个基学习器；</li>
+<li>将这些基学习器结合
+
+<ul>
+<li>分类：简单投票法，票数相等随机选择、或考察学习器的置信度；</li>
+<li>回归：简单平均法。</li>
+</ul></li>
+</ol>
+
+<p><strong>算法描述：</strong>
+<img src="https://i.loli.net/2019/03/23/5c95eeef8cdfe.png" alt="95AB4167-1AD4-4887-B425-CB8C306059B6" /></p>
+
+<p>2：$D_{bs}$是自助采样产生的样本分布。</p>
+
+<p><strong>优点：</strong></p>
+
+<ul>
+<li><strong>高效、算法复杂度与直接训练一个基学习器的复杂度同阶</strong></li>
+</ul>
+
+<p>（假定基学习器的计算复杂度为O(m)，则Bgging的复杂度大致为T(O(m)+O(s))。考虑到采样与投票/平均过程的复杂度O(s)很小，而T通常是一个不太大的常数。）</p>
+
+<ul>
+<li><p><strong>可直接用于多分类、回归任务，不用修改</strong>
+（标准AdaBoost算法只适用于二分类任务）</p></li>
+
+<li><p><strong>剩余样本可对泛化性能进行“<a href="https://octemull.github.io/personal-site/post/ml-chap02/">包外估计</a>”(out-of-bag estimate)</strong>
+（每个基学习器值使用了初始训练集中约63.2%的样本，剩余约36.8%的样本可用作验证集。为此需记录每个基学习器所使用的训练样本。不妨令$D_t$表示$h_t$实际使用的训练样本集，令$H^{oob(x)}$表示对样本$x$的包外预测，即仅考虑哪些未使用$x$训练的基学习器在$x$上的预测，有</p></li>
+</ul>
+
+<p><img src="https://i.loli.net/2019/03/23/5c95eee8b8261.png" alt="10CF8EA0-7ECA-4B8F-861C-6E30D527B4EE" /></p>
+
+<p>则Bagging的泛化误差的外包估计为</p>
+
+<p><img src="https://i.loli.net/2019/03/23/5c95eee8a9664.png" alt="285FA9E7-66AB-4429-9894-29F8FE3E890A" /></p>
+
+<p>）</p>
+
+<p><strong>包外样本的其他用途——例子🌰：</strong></p>
+
+<ul>
+<li>当基学习器是决策树时，可使用包外样本来辅助剪枝，或用于估计决策树中各节点的后验概率以辅助对零训练样本节点的处理；</li>
+<li>当基学习器是神经网络时，可使用包外样本来辅助早期停止以减小过拟合风险。</li>
+</ul>
+
+<p><strong>偏差-方差分解：</strong></p>
+
+<p>Bagging主要关注降低方差。因此，它在不剪枝决策树、神经网络等易受样本扰动的学习器上效用更为明显。</p>
+
+<p><strong>举一个例子🌰：</strong></p>
+
+<p>以基于信息增益划分的决策树为基学习器，在表4.5的西瓜数据集3.0α上运行Bagging算法，不同规模的集成及其基学习器所对应的分类边界如图8.6所示。</p>
+
+<p><img src="https://i.loli.net/2019/03/23/5c95eeefbad44.png" alt="58733FC3-9DF5-414E-BDA7-4BD26C09D832" /></p>
+
+<h3 id="8-3-2-随机森林-random-forest-rf">8.3.2 随机森林 Random Forest, RF</h3>
+
+<p><strong>与Bagging的关系：</strong></p>
+
+<p>是Bagging的一个扩展变体。RF在以决策树为基学习器构建Bagging集成的基础上，进一步在决策树训练过程中引入了随机属性选择。</p>
+
+<p><strong>RF随机选择的操作：</strong></p>
+
+<ul>
+<li>传统决策树在选择划分属性时，是在当前节点的属性集合（假设有$d$个属性）中选择一个最优属性；</li>
+<li>RF对基决策树的每个节点，先从该节点的属性集合中随机选择一个包含$k$个属性的子集，再从该子集中选择最优划分属性。</li>
+</ul>
+
+<p><strong>k——随机性的引入程度：</strong></p>
+
+<ul>
+<li>若令$k=d$，则基决策树的构建与传统决策树相同；</li>
+<li>若令$k=1$，则基决策树随机选择一个属性用于划分；</li>
+<li>一般，推荐值为$k=\log_2 d$ [Breiman, 2001a]。</li>
+</ul>
+
+<p><strong>优点：</strong></p>
+
+<ul>
+<li>简单、易实现、计算开销小；</li>
+<li>在很多任务中展现出强大的性能，被誉为“代表集成学习技术水平的方法”。</li>
+</ul>
+
+<p><strong>与Bagging的差别：</strong></p>
+
+<ul>
+<li><strong>多样性：</strong>
+
+<ul>
+<li>Bagging中基学习器的“多样性”仅通过<strong>样本扰动</strong>得到；</li>
+<li>RF中的基学习器的“多样性”不仅来自于<strong>样本扰动</strong>，还来自于<strong>属性扰动</strong>。因此，RF最终集成的泛化性能可通过个体学习去之间的差异度的增加而进一步提升。
+*** 训练效率：**RF &gt; Bagging（通常）</li>
+<li>Bagging使用“<strong>确定型</strong>”决策树，在选择划分属性时要考虑结点的全部属性；</li>
+<li>RF使用“<strong>随机型</strong>”决策树，只需考察一个属性子集。</li>
+</ul></li>
+</ul>
+
+<p><strong>RF的收敛性：</strong></p>
+
+<p>与Bagging相似。如图8.7所示，RF的起始性能往往较差（引入属性扰动，往往使RF中个体学习器的性能有所下降），尤其当集成中只包含一个基学习器时。然而，随着个体学习器数目的增加，RF常会收敛到更低的泛化误差。</p>
+
+<p><img src="https://i.loli.net/2019/03/23/5c95eeefd8c35.png" alt="0AC3129A-E2E2-4168-81D9-898C0421DA81" /></p>
+
+<h2 id="8-4-结合策略">8.4 结合策略</h2>
+
+<p><strong>结合策略的好处：</strong></p>
+
+<ol>
+<li><strong>统计的原因</strong>：由于学习任务的<strong>假设空间往往很大，可能有多个假设在训练集上达到同等性能</strong>，此时若使用单学习器可能因误选而导致泛化性能不佳，结合多个学习器会减小这一风险。</li>
+<li><strong>计算的原因</strong>：学习算法往往会陷入局部极小，而有的局部极小点对应的泛化性能可能很糟糕，而通过多次运行之后进行结合，<strong>可降低陷入糟糕局部极小点的风险</strong>。</li>
+<li><strong>表示的原因</strong>：某些学习任务的<strong>真实假设可能不在当前学习算法考虑的假设空间当中</strong>，此时若使用单学习器则肯定无效，而结合多个学习器，由于相应的假设空间有所扩大，有可能学得更好的近似。</li>
+</ol>
+
+<p><img src="https://i.loli.net/2019/03/23/5c95eeefbd3f2.png" alt="20801572-84CF-412A-827D-C5B473FD6855" /></p>
+
+<p><strong>符号：</strong></p>
+
+<p>假定集成包含$T$个基学习器${h_1, h_2, \cdots, h_T}$，其中$h_i$在示例$x$上的输出为$h_i (x)$。以下介绍对$h_i$进行结合的常见策略。</p>
+
+<h3 id="8-4-1-平均法-averaging">8.4.1 平均法 averaging</h3>
+
+<p><strong>输出：</strong>数值型$h_i(x) \in \mathbb{R}$，最常见策略</p>
+
+<p><strong>1️⃣简单平均法 simple averaging</strong></p>
+
+<p><img src="https://i.loli.net/2019/03/23/5c95eed32bd1a.png" alt="C1AD4D91-5BCC-4371-A6ED-963C0FE60183" /></p>
+
+<p><strong>2️⃣加权平均法 weighted averaging</strong></p>
+
+<p><img src="https://i.loli.net/2019/03/23/5c95eed32da43.jpg" alt="-w611" />
+其中$w_i$是个体学习器$h_i$的权重，通常要求$w<em>i \geq 0, \sum</em>{i=1}^T w_i = 1$.</p>
+
+<blockquote>
+<p>Breiman[1996b]在研究Stacking回归时发现，必须使用非负权重才能确保集成性能由于单一最佳个体学习器，因此在集成学习中一般对学习器的权重施以非负约束。</p>
+</blockquote>
+
+<p><strong>注意：</strong></p>
+
+<ul>
+<li>简单平均法是加权平均法令的特例。</li>
+<li>集成学习中各种结合方法都可看做加权平均法的特例或变体。不同的集成学习方法可视为通过不同的方式来确定加权平均法中的基学习器的权重。</li>
+<li>习得的权重不一定可靠，若权重过多则易造成过拟合。</li>
+</ul>
+
+<p>加权平均法的权重一般从训练数据中学习而得，现实任务中的训练样本通常不充分或存在噪声，这使学出的权重不完全可靠。特别是对规模较大的集成而言，要学习的权重过多，容易造成过拟合。</p>
+
+<blockquote>
+<p>例如估计出个体学习器的误差，然后令权重大小与误差大小成反比。</p>
+</blockquote>
+
+<ul>
+<li>实验和应用均显示，<strong>加权平均法未必一定优于简单平均法</strong>。</li>
+<li>一般而言，在个体学习器<strong>性能相差较大时宜使用加权平均</strong>法，而在个体学习器<strong>性能相近时宜使用简单平均法</strong>。</li>
+</ul>
+
+<h3 id="8-4-2-投票法-voting">8.4.2 投票法 voting</h3>
+
+<p><strong>任务类型：</strong>分类</p>
+
+<p><strong>符号：</strong></p>
+
+<ul>
+<li>$h_i$：学习器；</li>
+<li>${c_1, c_2, \cdots, c_N}$：类别标记集合；</li>
+<li>$(h_i^1(\boldsymbol{x});h_i^2(\boldsymbol{x});\cdots;h_i^N(\boldsymbol{x}))$：$N$维向量，表示$h_i$在样本$\boldsymbol{x}$上的预测输出，其中$h_i^j(\boldsymbol{x})$是$h_i$在类别标记$c_j$上的输出。</li>
+</ul>
+
+<p>对分类任务来说，学习器$h_i$将从类别标记集合${c_1, c_2, \cdots, c_N}$中预测出一个标记。</p>
+
+<p><strong>1️⃣绝对多数投票法 majority voting</strong></p>
+
+<p><img src="https://i.loli.net/2019/03/23/5c95eed848ad8.png" alt="42A540C2-158C-4610-BE08-95D9F73D8BB8" /></p>
+
+<p><strong>判断标准：</strong></p>
+
+<ul>
+<li>若某标记得票过半数，则预测为该标记；</li>
+<li>否则<strong>拒绝预测</strong>。</li>
+</ul>
+
+<p><strong>2️⃣相对多数投票法 plurality voting</strong></p>
+
+<p><img src="https://i.loli.net/2019/03/23/5c95eed32f4a1.png" alt="B4ABC5D9-65E8-4D0C-A7BE-A3A4E3ACEAF5" /></p>
+
+<p><strong>判断标准：</strong></p>
+
+<ul>
+<li>预测为得票最多的标记（二分类问题下与绝对多数投票法相同）；</li>
+<li>若同时有多个标记获得最高票，则从中随机选取一个、</li>
+</ul>
+
+<p><strong>3️⃣加权投票法 weighted voting</strong></p>
+
+<p><img src="https://i.loli.net/2019/03/23/5c95eed331088.png" alt="7201AEF7-FBC6-47CF-9300-4A17DA5B7928" /></p>
+
+<p><strong>判断标准：</strong></p>
+
+<ul>
+<li>类似加权平均法，$w_i$是$h_i$的权重，通常$w<em>i \geq 0, \sum</em>{i=1}^T w_i = 1$</li>
+</ul>
+
+<p><strong>说明：</strong></p>
+
+<ul>
+<li>绝对多数投票法的“拒绝预测”选项在可靠性要求较高的学习任务中是一个很好的机制。但若学习任务要求必须提供预测结果，则绝对多数投票 法将退化为相对多数投票法。因此，在不允许拒绝预测的任务中，前两种方法统称为“多数投票法”。</li>
+</ul>
+
+<blockquote>
+<p>“多数投票法”的英文术语使用不太一致：有文献称为majority voting，也有直接称为voting。</p>
+</blockquote>
+
+<p><strong>输出值类型：</strong></p>
+
+<ul>
+<li>类标记：$h_i^j (\boldsymbol{x}) \in  {0,1}$，若$h_i$将样本$\boldsymbol{x}$预测为类别$c_i$则取值为$1$，否则为$0$. 使用类别标记的投票亦称“硬投票”(hard voting)。</li>
+<li>类概率：$h_i^j (\boldsymbol{x}) \in  [0,1]$，相当于对后验概率$P(c_j|\boldsymbol{x})$的一个估计。使用类概率的投票亦称“软投票”(soft voting)。</li>
+</ul>
+
+<p><strong>注意：</strong></p>
+
+<ul>
+<li><strong>不同类型的</strong> $h_i^j (\boldsymbol{x})$ <strong>值不能混用</strong>。对一些能在预测出类别标记的同时产生分类置信度的学习器，其分类置信度可转化为类概率使用。</li>
+</ul>
+
+<blockquote>
+<p>若此类值未进行规范化，例如SVM的分类间隔值，则必须使用一些技术如Platt缩放(Platt scalinf)[Platt, 2000]、等分回归(isotonic regression)[Zadrozny and Elkan, 2001]等进行“校准”(calibration)后才能作为类概率使用。</p>
+</blockquote>
+
+<ul>
+<li><strong>若基学习器的类型不同</strong>（如，异质集成中不同类型的个体学习器），<strong>则其类概率值不能直接进行比较</strong>；此时，通常可将类概率输出转化为类标记输出（例如，将类概率输出最大的$h_i^j (\boldsymbol{x})$设为1，其他设为0）然后再投票。</li>
+<li>虽然分类器估计出的类概率值一般都不太准确，但<strong>基于类概率进行结合却往往比直接基于类别标记进行结合性能更好</strong>。</li>
+</ul>
+
+<h3 id="8-4-3-学习法">8.4.3 学习法</h3>
+
+<p><strong>学习法：</strong> 当训练数据很多时，通过另一个学习器来进行结合的结合策略。</p>
+
+<p><strong>典型代表：</strong> Stacking [Wolpert, 1992; Breiman, 1996b]</p>
+
+<blockquote>
+<p>Stacking本身是一种著名的集成学习方法，且有不少集成学习算法可视为其变体或特例。它也可看做一种特殊的结合策略。</p>
+</blockquote>
+
+<p><strong>定义：</strong></p>
+
+<ul>
+<li>初级学习器：个体学习器；</li>
+<li>次级学习器 / 元学习器(meta-learner)：用于结合的学习器。</li>
+</ul>
+
+<p><strong>基本思路：</strong></p>
+
+<ol>
+<li>从初始数据集训练出初级学习器；</li>
+<li>将初级学习器的输出当做样例输入特征、初始样本标记仍当做样例标记，生成新数据集；</li>
+<li>用新数据集训练次级学习器。</li>
+</ol>
+
+<p><strong>算法描述：</strong></p>
+
+<p>假设初级集成是异质的（也可同质）。</p>
+
+<p><img src="https://i.loli.net/2019/03/23/5c95eeefc94d3.png" alt="F652F675-9C33-4E3F-81C1-56CE33EF208A" /></p>
+
+<p>1：使用初级学习算法𝔏𝑡产生初级学习器ℎ𝑡。
+4：生成次级训练集。
+11：在$D&rsquo;$上用次级学习算法𝔏产生次级学习器ℎ&rsquo;。</p>
+
+<p><strong>说明：</strong></p>
+
+<p>若直接用初级学习器的训练集来产生次级训练集，则过拟合风险会较大；因此，一般通过<strong>CV</strong>或<strong>LOO</strong>的方式，用训练初级学习器<strong>未使用的样本</strong>来产生次级学习器的训练样本。</p>
+
+<p><strong>举一个例子🌰：</strong></p>
+
+<p>以$k$折交叉验证为例，初始训练集$D$被随机划分为$k$个大小相似的集合${D_1, D_2, \cdots, D_k}$。令$D_j$和$\bar{D}_j=D\backslash D_j$分别表示第$j$折的测试集和训练集。给定$T$个初级学习算法，初级学习器$h_t^{(j)}$通过在$\bar{D}_j$上使用第$t$个学习算法而得。对$D_j$中每个样本$\boldsymbol{x}<em>i$，令$z</em>{it} = h_t^{(j)} (\boldsymbol{x}_i)$，则由$\boldsymbol{x}_i$所产生的次级训练样例的示例部分为$z<em>i=(z</em>{i1}; z<em>{i2}; \cdots;  z</em>{iT})$，标记部分为$y_i$。于是，在整个CV过程结束后，从这$T$个初级学习器产生的次级训练集是$D&rsquo;={(z_i, y<em>i)}</em>{i=1}^m$，然后后$D&rsquo;$将用于训练次级学习器。</p>
+
+<p><strong>其他方法：</strong></p>
+
+<p><strong>MLR：</strong></p>
+
+<ul>
+<li><strong>次级学习器的输入属性表示和次级学习算法对Stacking集成的泛化性能有很大影响</strong></li>
+<li>有研究表明，将初级学习器的输出类概率作为次级学习器的输入属性，用多响应线性回归(Multi-response Linear Regression, MLR)作为次级学习算法效果较好[Ting and Witten, 1999]，在MLR中使用不同的属性集更佳[Seewald, 2002]。</li>
+</ul>
+
+<blockquote>
+<p>MLR是基于线性回归的分类器，它对每个类分别进行线性回归，属于该类的训练样例所对应的输出被置为1，其他类置为0；测试示例将别分给输出值最大的类。
+WEKA中的StackingC算法就是这样实现的。</p>
+</blockquote>
+
+<p><strong>BMA：</strong></p>
+
+<p>贝叶斯模型平均(Bayes Model Averaging, BMA)基于后验概率来为不同模型赋予权重。与Stacking模型相比[Clarke, 2003]，</p>
+
+<ul>
+<li>理论上，若数据生成模型恰在当前考虑考虑的模型中，且数据噪声很少，则BMA不差于Stacking；</li>
+<li>然而，现实中前一条件无法保证，甚至难以用当前考虑的模型来近似，因此Stacking通常由于BMA。因为Stacking的鲁棒性比BMA更好，且BMA对模型近似误差非常敏感。</li>
+</ul>
+
+<h2 id="8-5-多样性">8.5 多样性</h2>
+
+<h3 id="8-5-1-误差-分歧分解">8.5.1 误差-分歧分解</h3>
+
+<p><strong>“好而不同”的理论分析</strong></p>
+
+<p>假定我们用个体学习器$h_1,h_2, \cdots, h_T$通过加权平均法(8.23)结合产生的集成来完成回归学习任务$f: \mathbb{R}^d \mapsto \mathbb{R}$. 对示例$\boldsymbol{x}$，定义学习器$h_i$的“分歧”（ambiguity）为</p>
+
+<p><img src="https://i.loli.net/2019/03/23/5c95eee8cae76.png" alt="D2B1FBAC-E5B2-4E2E-B916-FCB00C211D7B" /></p>
+
+<p>则集成的“分歧”为</p>
+
+<p><img src="https://i.loli.net/2019/03/23/5c95eee8ce547.png" alt="CEE47D28-8359-4C99-9BC3-F95D3EBD4368" /></p>
+
+<p><strong>分歧：</strong></p>
+
+<p><strong>表征了个体学习器在样本𝒙上的不一致性，即在一定程度上反映了个体学习器的多样性。</strong></p>
+
+<p>个体学习器ℎ𝑖和集成𝐻的平方误差分别为</p>
+
+<p><img src="https://i.loli.net/2019/03/23/5c95eee8ccb22.png" alt="65BE2696-68F5-41C1-85E5-F3B0C64803A1" /></p>
+
+<p>令$\bar{E}(h | \boldsymbol{x}) = \sum_{i=1}^T w_i \cdot E(h_i |\boldsymbol{x})$表示个体学习器误差的加权均值，有</p>
+
+<p><img src="https://i.loli.net/2019/03/23/5c95eee8d00e8.png" alt="C7AA0A95-761F-4B3D-B8F7-738148FFCB20" /></p>
+
+<p>式(8.31)对所有样本$\boldsymbol{x}$均成立，令𝑝(𝒙)表示样本的概率密度，则在全样本上有</p>
+
+<p><img src="https://i.loli.net/2019/03/23/5c95eed861e5e.png" alt="4C258AA4-DD28-4A03-9ED7-505DB41B4138" /></p>
+
+<p>类似的，个体学习器ℎ𝑖在全样本上的泛化误差和分歧项分别为</p>
+
+<p><img src="https://i.loli.net/2019/03/23/5c95eed843a5f.png" alt="70B8833D-30B0-4AA5-B497-3B73D72D30A5" /></p>
+
+<p>集成的泛化误差为</p>
+
+<p><img src="https://i.loli.net/2019/03/23/5c95eee1a36c6.png" alt="79EEA070-3E12-4A17-A626-2BF973DA7202" /></p>
+
+<p>将式(8.33)~(8.35)代入式(8.32)，再令$\bar{E} = \sum_{i=1}^T w_i E<em>i$表示个体学习器泛化误差的加权均值，$\bar{A} = \sum</em>{i=1}^T w_i A_i$表示个体学习器的加权分歧值，有</p>
+
+<p><img src="https://i.loli.net/2019/03/23/5c95eed31cbaa.png" alt="8BF5BCCF-9B35-4175-9135-3977CFC18011" /></p>
+
+<p>以上即**“误差-分歧分解”(error-ambiguity decomposition) **[Krogh and Vedelsby, 1995]，表明：</p>
+
+<ul>
+<li>个体学习器准确性越高、多样性越大，则集成越好。</li>
+</ul>
+
+<p><strong>问题：</strong></p>
+
+<p>现实任务中很难直接优化$\bar{E} - \bar{A}$</p>
+
+<ul>
+<li>它们定义在整个样本空间上；</li>
+<li>$\bar{A}$不是一个可直接操作的多样性度量，只能在集成构造好后估计。</li>
+</ul>
+
+<blockquote>
+<p>以上推导只适用于回归问题，难以直接推广到分类学习任务中。</p>
+</blockquote>
+
+<h3 id="8-5-2-多样性度量-差异性度量">8.5.2 多样性度量 / 差异性度量</h3>
+
+<p><strong>多样性度量：</strong></p>
+
+<p>度量集成中个体分类器的多样性，即估算个体学习器的多样化程度。典型做法是考虑个体分类器的两两相似/不相似性。</p>
+
+<p>给定数据集$D={(\boldsymbol{x}_1, y_1), (\boldsymbol{x}_2, y_2), \cdots, (\boldsymbol{x}_m, y_m)}$，对二分类任务$y \in {-1, +1}$，分类器$h_i$与$h_j$的预测结果列联表(contigency  table)为</p>
+
+<p><img src="https://i.loli.net/2019/03/23/5c95eed84a782.png" alt="7AFDD865-0F8A-4592-8823-D5ED84684" /></p>
+
+<p>其中，$a$表示$h_i$与$h_j$均预测为正类的样本数目；$b$、$c$、$d$含义由此类推；$a+b+c+d=m$。基于列联表，给出常见的多样性度量如下：</p>
+
+<ul>
+<li><p><strong>不合度量 disagreement measure</strong>
+<img src="https://i.loli.net/2019/03/23/5c95eee1a1a9c.png" alt="55039E0C-CE15-4292-A324-B31E154B0261" />
+$𝑑𝑖𝑠_{𝑖𝑗}$的值域为$[0, 1]$。值越大表示多样性越大。</p></li>
+
+<li><p><strong>相关系数 correlation coefficient</strong></p></li>
+</ul>
+
+<p><img src="https://i.loli.net/2019/03/23/5c95eed847103.png" alt="2F4271E4-9F9B-4DAC-9568-F7B4F24BA463" /></p>
+
+<p>$\rho_{ij}$的值域为$[-1, 1]$。若$h_i$与$h_j$无关，则值为$0$；若正相关，则为正，否则为负。</p>
+
+<ul>
+<li><strong>Q-统计量 Q-statistic</strong></li>
+</ul>
+
+<p><img src="https://i.loli.net/2019/03/23/5c95eed841f95.png" alt="236D4543-903E-4D84-A7CF-6019C55AE66D" /></p>
+
+<p>$Q<em>{ij}$与相关系数的符号相同，且$|𝑄</em>{𝑖𝑗}|≥|𝜌_{𝑖𝑗}|$。</p>
+
+<ul>
+<li><strong>𝜅-统计量 k-statistic</strong></li>
+</ul>
+
+<p><img src="https://i.loli.net/2019/03/23/5c95eee1a4e96.png" alt="8E99D504-6CCC-4199-82BB-7374C197FB2B" /></p>
+
+<p>$p_1$是两个分类器取得一致的概率；$p_2$是两个分类器偶然达成一致的概率。可由数据集D估算：</p>
+
+<p><img src="https://i.loli.net/2019/03/23/5c95eed84552b.png" alt="BC1E0F4A-4726-4823-AECD-F63A1BB64792" /></p>
+
+<p>若$h_i$与$h_j$在$D$上完全一致，则$k=1$；若$h_i$与$h_j$仅是偶然一致，则$k=0$。$k$通常非负，仅在达成一致的概率甚至低于偶然性的情况下取负值。</p>
+
+<p>以上均为“成对型”pairwise多样性度量，可在二维图中绘制出来。</p>
+
+<p><strong>举一个例子：</strong></p>
+
+<p>“k-误差图”就是将每一对分类器作为图上的一个点，横坐标是这对分类器的k值，纵坐标是它们的平均误差，图8.10给出了两个例子。显然，数据点云的位置越高，则个体分类器准确性越低；点云位置越靠右，则个体学习多样性越小。</p>
+
+<p><img src="https://i.loli.net/2019/03/23/5c95eef7a0f2b.png" alt="87C8EA00-8992-45FF-A93B-560C3AB876F3" /></p>
+
+<h3 id="8-5-3-多样性增强">8.5.3 多样性增强</h3>
+
+<p><strong>一般思路</strong>：在学习过程中引入随机性</p>
+
+<p><strong>常见做法：</strong></p>
+
+<h4 id="1-数据样本扰动-简单高效-使用最广">1️⃣ 数据样本扰动（简单高效、使用最广）</h4>
+
+<p><strong>基本思路：</strong></p>
+
+<p>给定初始数据集，从中产生不同的子集，再利用不同的数据子集训练出不同的个体学习器。通常基于采样法。</p>
+
+<p><strong>例子：</strong></p>
+
+<p>Bagging中的自助采样，AdaBoost中使用的序列采样。</p>
+
+<p><strong>适用情况：</strong></p>
+
+<ul>
+<li>对决策树、神经网络等有显著改变，此类学习器是“不稳定基学习器”；</li>
+<li>线性学习器、SVM、NB、k近邻学习器对样本扰动不敏感，它们称作“稳定基学习器”(stable base learner)，不适用样本扰动。</li>
+</ul>
+
+<h4 id="2-输入属性扰动">2️⃣ 输入属性扰动</h4>
+
+<p><strong>基本思路：</strong></p>
+
+<p>从不同的“子空间”（subspace，属性子集）训练个体学习器。</p>
+
+<p><strong>代表方法：</strong>随机子空间算法 (random subspace)</p>
+
+<p>从初始属性集中抽取出若干个属性子集，再基于每个属性子集训练一个基学习器。</p>
+
+<p><img src="https://i.loli.net/2019/03/23/5c95eeefc38c0.png" alt="170E07D9-1456-4C1C-B8AF-5CA75A945637" /></p>
+
+<p>𝑑&rsquo;小于初始属性数𝑑。
+2：𝓕𝑡包含𝑑&rsquo;个随机选取的属性，𝐷𝑡仅保留𝓕𝑡中的属性。</p>
+
+<p><strong>适用情况：</strong></p>
+
+<ul>
+<li>适用于包含大量属性的数据集，不仅能产生多样性大的个体学习器，还能因属性数目的减少而大幅降低时间开销。（由于属性多，减少属性后生成的学习器也不会太差）</li>
+<li>不适用于只包含少量属性、或冗余属性很少的数据。</li>
+</ul>
+
+<h4 id="3-输出表示扰动">3️⃣ 输出表示扰动</h4>
+
+<p><strong>基本思路：</strong></p>
+
+<p>对输出表示进行操纵以增强多样性。</p>
+
+<p><strong>方法：</strong></p>
+
+<ul>
+<li><strong>翻转法 Flipping Output</strong> [Breiman, 2000]：随机改变部分训练样本的标记；</li>
+<li><strong>输出调制法 Output Smearing</strong> [Breiman, 2000]：对输出表示进行转化，将分类输出转化为回归输出后构建个体学习器；</li>
+<li><strong><a href="https://octemull.github.io/personal-site/post/ml-chap03/">ECOC法 [Dietterich and Bakiri, 1995]</a></strong>：利用纠错输出码将多分类任务拆解为一系列二分类任务来训练基学习器。</li>
+</ul>
+
+<h4 id="4-算法参数扰动">4️⃣ 算法参数扰动</h4>
+
+<p><strong>基本思路：</strong></p>
+
+<p>随机设置不同的算法参数。</p>
+
+<p><strong>方法：</strong></p>
+
+<ul>
+<li>**负相关法 (Negative Correlation) **[Liu and Yao, 1999]：显式地通过正则化项来强制个体神经网络使用不同的参数。（如，神经网络的隐层神经元数、初始连接权值等）</li>
+<li>对参数较少的算法，可<strong>将其学习过程中某些环节用其他类似方式代替</strong>。如，将决策树使用的属性学安装机制替换成其他属性选择机制。</li>
+</ul>
+
+<p><strong>注意：</strong></p>
+
+<ul>
+<li>使用单一学习器时，通常需使用CV来确定参数值，实际训练出了有不同参数的学习器，但最后只选择了其中一个。集成学习相当于利用了所有学习器。</li>
+<li>由此可见，集成学习的实际计算开销并不比使用单一学习器大很多。</li>
+</ul>
+
+<blockquote>
+<p><strong>不同的扰动机制可单独使用、亦可同时使用</strong>。如8.3.2中的RF同时使用了数据样本扰动和输入属性扰动，有的方法甚至同时使用了更多机制。</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">Octemull</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">2018-04-17</span>
+  </p>
+  
+  
+</div><footer class="post-footer">
+      <div class="post-tags">
+          <a href="/personal-site/tags/notes/">Notes</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/personal-site/post/ml-contents/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">目录 周志华机器学习笔记</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/personal-site/post/ml-chap05/">
+            <span class="next-text nav-default">chap 05 - 神经网络 | Neural Network</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        id: '2017-12-11 00:00:00 \x2b0000 UTC',
+        title: 'chap 08 - 集成学习 | Ensemble learning',
+        clientID: 'ce8007fddcb901cf8139',
+        clientSecret: '25db834f14aadc3708bf0c8eeb5c10127a9f5a22',
+        repo: 'personal-site-comment',
+        owner: 'Octemull',
+        admin: ['Octemull'],
+        body: decodeURI(location.href)
+      });
+      gitalk.render('gitalk-container');
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript>
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:yyear103@outlook.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/Octemull" class="iconfont icon-github" title="github"></a>
+  <a href="https://octemull.github.io/personal-site/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Octemull</span>
+  </span>
+</div>
+
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/personal-site/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/personal-site/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?41497b30235376fbac44b6375248dcd8";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+
+
+
+
+
+</body>
+</html>
