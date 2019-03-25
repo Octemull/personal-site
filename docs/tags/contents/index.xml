@@ -18,7 +18,7 @@
       
       <guid>https://octemull.github.io/personal-site/post/ml-contents/</guid>
       <description> 写在前面 最近搭建了自己的个人主页，以前一直用印象笔记做学习笔记。现在决定整理一部分笔记放在个人网站上，与大家一起交流学习，就从机器学习相关笔记开始吧。
-目录  chap 01 - 绪论 chap 02 - 模型评估与选择 chap 03 - 线性模型 | Linear Model chap 04 - 决策树 | Decision Tree chap 05 - 神经网络 | Neural Network chap 06 - 支持向量机 | Support Vector Machine,SVM chap 07 - 贝叶斯分类器 | Bayesian Classifier chap 08 - 集成学习 | Ensemble learning  chap 09 - 聚类 | Clustering chap 10 - 降维与度量学习 chap 11 - 特征选择（特征选取） 与 稀疏学习  </description>
+目录  chap 01 - 绪论 chap 01 - ex chap 02 - 模型评估与选择 chap 02 - ex chap 03 - 线性模型 | Linear Model chap 03 - ex chap 04 - 决策树 | Decision Tree chap 04 - ex chap 05 - 神经网络 | Neural Network chap 05 - ex chap 06 - 支持向量机 | Support Vector Machine,SVM chap 06 - ex chap 07 - 贝叶斯分类器 | Bayesian Classifier chap 07 - ex chap 08 - 集成学习 | Ensemble learning  chap 08 - ex chap 09 - 聚类 | Clustering chap 09 - ex chap 10 - 降维与度量学习 chap 10 - ex chap 11 - 特征选择（特征选取） 与 稀疏学习 chap 11 - ex  </description>
     </item>
     
   </channel>
