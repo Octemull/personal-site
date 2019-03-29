@@ -66,6 +66,27 @@
     </item>
     
     <item>
+      <title>chap 06 - 支持向量机 | Support Vector Machine (SVM)</title>
+      <link>https://octemull.github.io/personal-site/post/ml-chap06/</link>
+      <pubDate>Tue, 28 Nov 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://octemull.github.io/personal-site/post/ml-chap06/</guid>
+      <description>6.1 间隔与支持向量 划分：
+给定训练样本集$D = {(x_1, y_1), (x_2, y_2), \cdots, (x_m,y_m)}, \, y_i \in {-1,+1}$，分类学习最基本的想法就是在样本集D所在的样本空间中寻找一个划分超平面，能将不同类别的样本划分开。
+从图6.1中可以看出，存在多个划分超平面能将两类训练样本分开。那么那种最佳？直观上，我们会选择最中间的那个平面，因为：该划分平面对训练样本局部扰动的“容忍”最性好。（泛化能力最强）
+举一个例子，由于训练集的局限性或噪声的因素，训练集外的样本可能比图6.1中的训练样本更接近两个类的分隔界，这将使许多划分超平面对新样本分类错误，而中间的红色超平面受影响最小。换言之，红色划分超平面产生的分类结果是最鲁棒（robust）的，对新样本的泛化能力最强。
+用线性方程描述划分超平面
+在样本空间中，划分超平面可通过如下线性方程来描述： 符号：
+ 法向量：$\boldsymbol{w}=(w_1;w_2;\cdots,w_d)$，决定超平面的方向 位移项：$b$，决定超平面与原点之间的距离 超平面: 被法向量和位移决定，记做$(\boldsymbol{w}, b)$。 样本空间任意点x到超平面$(\boldsymbol{w}, b)$的距离：   假设超平面$(\boldsymbol{w}, b)$能将训练样本正确分类，即对于$(x_i, y_i) \in D$，若$y_i=+1$，则有$\boldsymbol{w}^T \boldsymbol{x}_i +b &amp;gt; 0$；若$y_i=-1$，则有$\boldsymbol{w}^T \boldsymbol{x}_i +b &amp;lt; 0$。令 1️⃣支持向量 support vector：
+如图6.2所示，距离超平面最近的这几个训练样本使(6.3)的等号成立，它们被称作“支持向量”。 2️⃣间隔 margin：
+两个异类支持向量到超平面的距离之和：  每个样本点对应一个特征向量。
+ 3️⃣最大间隔( maximum margin )的划分超平面——SVM基本型：
+找到满足式(6.3)中约束的参数$\boldsymbol{w}$和$b$，使得$\gamma$最大，即 为了最大化间隔$\gamma$，仅需最大化$||\boldsymbol{w}||^{-1}$，等价于最小化$||\boldsymbol{w}||^2$。于是，上述最优化问题可重写为 这就是支持向量机(Support Vector Machine, SVM)的基本型。
+ 间隔貌似仅与w有关，但事实上b通过约束隐式地影响着w的取值，进而对间隔产生影响。
+ 6.2 对偶问题 dual problem——SVM求解 求解式(6.</description>
+    </item>
+    
+    <item>
       <title>chap 05 - 神经网络 | Neural Network</title>
       <link>https://octemull.github.io/personal-site/post/ml-chap05/</link>
       <pubDate>Tue, 21 Nov 2017 00:00:00 +0000</pubDate>

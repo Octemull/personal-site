@@ -26,7 +26,7 @@ categories: [Machine Learning]
 8. chap 04 - ex
 9. [chap 05 - 神经网络 | Neural Network](https://octemull.github.io/personal-site/post/ml-chap05/)
 10. chap 05 - ex
-11. chap 06 - 支持向量机 | Support Vector Machine,SVM
+11. [chap 06 - 支持向量机 | Support Vector Machine,SVM](https://octemull.github.io/personal-site/post/ml-chap06/)
 12. chap 06 - ex
 13. chap 07 - 贝叶斯分类器 | Bayesian Classifier
 14. chap 07 - ex

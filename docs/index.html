@@ -349,6 +349,41 @@ xcode-select --install  然后点击安装，等待下载安装即可。
 
     <article class="post">
   <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/personal-site/post/ml-chap06/">chap 06 - 支持向量机 | Support Vector Machine (SVM)</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2017-11-28 </span>
+      <div class="post-category">
+          <a href="/personal-site/categories/machine-learning/"> Machine Learning </a>
+          </div>
+        <span class="more-meta"> 524 words </span>
+        <span class="more-meta"> 3 mins read </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      6.1 间隔与支持向量 划分：
+给定训练样本集$D = {(x_1, y_1), (x_2, y_2), \cdots, (x_m,y_m)}, \, y_i \in {-1,+1}$，分类学习最基本的想法就是在样本集D所在的样本空间中寻找一个划分超平面，能将不同类别的样本划分开。
+从图6.1中可以看出，存在多个划分超平面能将两类训练样本分开。那么那种最佳？直观上，我们会选择最中间的那个平面，因为：该划分平面对训练样本局部扰动的“容忍”最性好。（泛化能力最强）
+举一个例子，由于训练集的局限性或噪声的因素，训练集外的样本可能比图6.1中的训练样本更接近两个类的分隔界，这将使许多划分超平面对新样本分类错误，而中间的红色超平面受影响最小。换言之，红色划分超平面产生的分类结果是最鲁棒（robust）的，对新样本的泛化能力最强。
+用线性方程描述划分超平面
+在样本空间中，划分超平面可通过如下线性方程来描述： 符号：
+ 法向量：$\boldsymbol{w}=(w_1;w_2;\cdots,w_d)$，决定超平面的方向 位移项：$b$，决定超平面与原点之间的距离 超平面: 被法向量和位移决定，记做$(\boldsymbol{w}, b)$。 样本空间任意点x到超平面$(\boldsymbol{w}, b)$的距离：   假设超平面$(\boldsymbol{w}, b)$能将训练样本正确分类，即对于$(x_i, y_i) \in D$，若$y_i=+1$，则有$\boldsymbol{w}^T \boldsymbol{x}_i +b &gt; 0$；若$y_i=-1$，则有$\boldsymbol{w}^T \boldsymbol{x}_i +b &lt; 0$。令 1️⃣支持向量 support vector：
+如图6.2所示，距离超平面最近的这几个训练样本使(6.3)的等号成立，它们被称作“支持向量”。 2️⃣间隔 margin：
+两个异类支持向量到超平面的距离之和：  每个样本点对应一个特征向量。
+ 3️⃣最大间隔( maximum margin )的划分超平面——SVM基本型：
+找到满足式(6.3)中约束的参数$\boldsymbol{w}$和$b$，使得$\gamma$最大，即 为了最大化间隔$\gamma$，仅需最大化$||\boldsymbol{w}||^{-1}$，等价于最小化$||\boldsymbol{w}||^2$。于是，上述最优化问题可重写为 这就是支持向量机(Support Vector Machine, SVM)的基本型。
+ 间隔貌似仅与w有关，但事实上b通过约束隐式地影响着w的取值，进而对间隔产生影响。
+ 6.2 对偶问题 dual problem——SVM求解 求解式(6.
+    </div>
+    <div class="read-more">
+      <a href="/personal-site/post/ml-chap06/" class="read-more-link">Read more..</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/personal-site/post/ml-chap05/">chap 05 - 神经网络 | Neural Network</a></h1>
     <div class="post-meta">
       <span class="post-time"> 2017-11-21 </span>
@@ -377,41 +412,6 @@ M-P神经元模型： 概念：
     </div>
     <div class="read-more">
       <a href="/personal-site/post/ml-chap05/" class="read-more-link">Read more..</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/personal-site/post/ml-chap04/">chap 04 - 决策树 | Decision Tree</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2017-11-13 </span>
-      <div class="post-category">
-          <a href="/personal-site/categories/machine-learning/"> Machine Learning </a>
-          </div>
-        <span class="more-meta"> 411 words </span>
-        <span class="more-meta"> 2 mins read </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      4.1 基本流程 适用任务：分类，以二分类为例
-什么是决策树：
- 基于树形结构来进行决策的一种处理过程； 经过该处理过程后形成的“决策树”，即决策流程。  决策树分解：
- 先判断什么（父决策），后判断什么（子决策），最后导向什么（最终决策，对应判断结果）； 属性划分：每个“决策问题”都是对样本“属性”的划分； 范围缩小：每个“决策结果”导出的下一步决策都在上一决策的范围内； 举一个🌰，挑西瓜的决策树   如图，一棵决策树包含
- 一个根结点——第一个决策问题，包含全部样本 若干内部结点——决策问题，包含经根节点划分后的部分样本 若干叶结点——决策结果，包含的部分样本均属于同一类别  从根节点到每个叶节点的路径对应了一个判定测试序列。
-原则： 分而治之 divide-and-conquer
-基本流程：
- 说明： 14. 从A中去掉a*
- 递归返回情形：
- (1)【Step 03】当前结点包含的样本均属于同一类，无需划分； (2)【Step 06】当前属性集为空(属性都用完了)，或者所有样本在属性集中取值相同，无法划分； (3)【Step 12】当前结点包含的样本集合为空，不能划分。  举🌰：挑西瓜，样本{色泽；根蒂；敲声；甜度；纹理；触感；……)
- (1) 常见 (2) 属性用完：当前结点的样本均为{色泽=青绿；根蒂=蜷缩；敲声=浊响}，类别为(好,坏,好,好,好,坏)，N(好)&gt;N(坏)，则划分为“好瓜”。 取值相同：当前结点的样本{色泽=青绿；根蒂=(蜷缩, 蜷缩,蜷缩,蜷缩 )| (好,坏,好,好)}，划分属性A为“根蒂”，样本D在A上的属性值均为“蜷缩”，N(好)&gt;N(坏)，所以均划分为“好”。 (3)上一步结点样本{色泽=青绿；根蒂=(蜷缩, 蜷缩,蜷缩)| (好，坏，好)}，原A={色泽，根蒂}，且在上一步已使用“色泽”属性划分，此时用“根蒂”划分，根蒂={硬挺, 蜷缩, 稍蜷}  情形2、3的处理：
- (2)把当前结点标记为叶结点，类别设定为该结点所含样本最多的类别. (3)把当前结点标记为叶结点，类别设定为其父节点所含类别最多的类别.  情形2、3的区别：
- (2) 利用当前结点的后验分布. (3) 把父节点的样本分布作为当前结点的先验分布.  4.
-    </div>
-    <div class="read-more">
-      <a href="/personal-site/post/ml-chap04/" class="read-more-link">Read more..</a>
     </div>
   </div>
 </article>

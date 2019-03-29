@@ -1,7 +1,7 @@
 ---
 title: "chap 05 - 神经网络 | Neural Network"
 date: 2017-11-21
-lastmod: 2019-03-20
+lastmod: 2019-03-29
 draft: false
 show_comments: true
 keywords: []
@@ -10,7 +10,8 @@ tags: [Notes]
 categories: [Machine Learning]
 ---
 
-![神经网络](https://i.loli.net/2019/03/20/5c9250024e917.png)
+![神经网络](https://i.loli.net/2019/03/29/5c9dff8ae86aa.png)
+
 
 ## 5.1 神经元模型
 
