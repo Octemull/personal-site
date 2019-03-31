@@ -66,6 +66,13 @@
   </url>
   
   <url>
+    <loc>https://octemull.github.io/personal-site/post/ml-chap07/</loc>
+    <lastmod>2019-03-31T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
     <loc>https://octemull.github.io/personal-site/post/ml-chap06/</loc>
     <lastmod>2019-03-23T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>

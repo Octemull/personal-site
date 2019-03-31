@@ -28,7 +28,7 @@ categories: [Machine Learning]
 10. chap 05 - ex
 11. [chap 06 - 支持向量机 | Support Vector Machine,SVM](https://octemull.github.io/personal-site/post/ml-chap06/)
 12. chap 06 - ex
-13. chap 07 - 贝叶斯分类器 | Bayesian Classifier
+13. [chap 07 - 贝叶斯分类器 | Bayesian Classifier](https://octemull.github.io/personal-site/post/ml-chap07/)
 14. chap 07 - ex
 15. [chap 08 - 集成学习 | Ensemble learning ](https://octemull.github.io/personal-site/post/ml-chap08/)
 16. chap 08 - ex 

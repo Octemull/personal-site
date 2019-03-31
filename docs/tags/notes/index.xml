@@ -66,6 +66,24 @@
     </item>
     
     <item>
+      <title>chap 07 - 贝叶斯分类器 | Bayesian Classifier</title>
+      <link>https://octemull.github.io/personal-site/post/ml-chap07/</link>
+      <pubDate>Mon, 04 Dec 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://octemull.github.io/personal-site/post/ml-chap07/</guid>
+      <description>7.1 贝叶斯决策论 Bayesian decision theory 定义： 贝叶斯决策论是概率框架下实施决策的基本方法。对分类任务来说，在所有相关概率都已知的理想情形下，贝叶斯决策论考虑如何基于这些概率和误判损失来选择最优类别标记。
+举例：多分类任务 符号：
+ $N$：类别数目，即$\cal{Y} = {c_1,c_2, \cdots, c_N}$； $λ_{ij}$：将真实标记为$c_j$的样本误分类为$c_i$所产生的损失； 样本$\boldsymbol{x}$上的“条件风险”(conditional risk)：基于后验概率$P(c_i|\boldsymbol{x})$可获得将样本分类为$c_i$所产生的期望损失(expected loss)    决策论中将“期望损失”称为“风险”(risk)。
+ 学习目标：
+寻找判定准则$h\, : \, \cal{X} \mapsto \cal{Y}$以最小化总体风险 贝叶斯判定准则Bayes decision rule：
+为最小化总体风险，只需为每个样本选择能使条件风险$R(c|\boldsymbol{x})$最小的类别标记，即 符号：
+ $h^\star$：贝叶斯最优分类器(Bayes optimal classifier)； $R(h^\star)$：与$h^\star$对应的总体风险，贝叶斯风险(Bayes risk)； $1-R(h^\star)$：分类器能达到的最好性能（模型精度的理论上限）。  具体来说，若目标是最小化分类错误率：
+ 误判损失$λ_{ij}$：  条件风险：  最小化分类错误率的贝叶斯最优分类器： 即对每个样本$\boldsymbol{x}$，选择能使后验概率$P(c|\boldsymbol{x})$最大的类别标记。  使用贝叶斯判定准则的第一步：获得后验概率$P(c\, | \, \boldsymbol{x})$
+ 现实任务中常常难以直接获得； 只能基于有限的训练样本集合尽可能准确估计后验概率。  估计后验概率的方法：
+ 判别式模型 discriminative models：给定$\boldsymbol{x}$，通过直接建模$P(c|\boldsymbol{x})$来预测$c$。如，决策树、BP神经网络、支持向量机。 生成式模型 generative models：先对联合概率分布$P(\boldsymbol{x},c)$建模，再由此获得$P(c|\boldsymbol{x})$。考虑 基于贝叶斯定理，$P(c|\boldsymbol{x})$可写为   符号：</description>
+    </item>
+    
+    <item>
       <title>chap 06 - 支持向量机 | Support Vector Machine (SVM)</title>
       <link>https://octemull.github.io/personal-site/post/ml-chap06/</link>
       <pubDate>Tue, 28 Nov 2017 00:00:00 +0000</pubDate>
