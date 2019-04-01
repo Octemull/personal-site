@@ -309,6 +309,41 @@ xcode-select --install  然后点击安装，等待下载安装即可。
 
     <article class="post">
   <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/personal-site/post/ml-chap09/">chap 09 - 聚类 | Clustering</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2017-12-14 </span>
+      <div class="post-category">
+          <a href="/personal-site/categories/machine-learning/"> Machine Learning </a>
+          </div>
+        <span class="more-meta"> 622 words </span>
+        <span class="more-meta"> 3 mins read </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      9.1 聚类任务 clustering 类别：无监督学习 (unsupervised learning)
+常见的无监督学习任务：
+聚类(clustering)、密度估计(density estimation)、异常检测(anomaly detection)
+聚类：将样本集划分为若干个通常是不相交的子集，每个子集称为一个“簇”(cluster)。每个簇可能对应某个潜在（事先不知道，需要聚类后命名）的类别。如对西瓜聚类，可能得到“浅色瓜”“深色瓜”“外地瓜”“本地瓜”等。
+聚类的数学表示：
+假定样本集$D = {\boldsymbol{x}_1, \boldsymbol{x}_2, \cdots, \boldsymbol{x}_m}$包含$m$个无标记样本，每个样本$\boldsymbol{x} = {x_1;x_2; \cdots,x_n }$是一个$n$维特征向量，则聚类算法将样本集$D$划分为$k$个不相交的簇${Cl \, | \, l=1,2,\cdots, k}$其中$C{l&rsquo;} \cap_{l&rsquo; \neq l}Cl = \varnothing$且$D = \cup{l=1}^k C_l$. 相应地，用$\lambda_j \in {1,2,\cdots , k}$表示样本$\boldsymbol{x}_j$的“簇标记”(cluster label)，即$\boldsymbol{x}j \in C{\lambda_j}$.于是，聚类的结果可用包含$m$个元素的簇标记向量$\boldsymbol{\lambda}=(\lambda_1; \lambda_2; \cdots, \lambda_m)$表示。
+聚类的适用场景：
+ 可作为单独过程，寻找数据内在的分布结构； 也可作为分类任务的先驱过程。  举一个例子：
+商业应用中先对顾客进行聚类后，把顾客分为几个类型。然后用分类后的数据做训练集训练分类器，等有新顾客来的时候就能判断新顾客的类型。
+9.2 性能度量 聚类性能度量：有效性指标(validity index)
+好的聚类：“物以类聚”。聚类结果的“簇内相似度”(intra-cluster similarity)高且“簇间相似度”(inter-cluster similarity)低。
+分类：
+ 外部指标 external index：将聚类结果与某个参考模型(reference model)比较【如，将领域专家划分结果作为参考模型】； 内部指标 internal index：直接考察聚类结果。  外部指标 对数据集$D = {\boldsymbol{x}_1, \boldsymbol{x}_2, \cdots, \boldsymbol{x}_m}$，假定通过聚类给出的划分结果为$\cal{C}={C_1, C_2, \cdots, C_k}$, 参考模型给出的簇划分为$\cal{C}^\ast = {C_1^\ast, C_2^\ast, \cdots, C_s^\ast}$.
+    </div>
+    <div class="read-more">
+      <a href="/personal-site/post/ml-chap09/" class="read-more-link">Read more..</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/personal-site/post/ml-chap08/">chap 08 - 集成学习 | Ensemble learning</a></h1>
     <div class="post-meta">
       <span class="post-time"> 2017-12-11 </span>
@@ -375,41 +410,6 @@ xcode-select --install  然后点击安装，等待下载安装即可。
     </div>
     <div class="read-more">
       <a href="/personal-site/post/ml-chap07/" class="read-more-link">Read more..</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/personal-site/post/ml-chap06/">chap 06 - 支持向量机 | Support Vector Machine (SVM)</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2017-11-28 </span>
-      <div class="post-category">
-          <a href="/personal-site/categories/machine-learning/"> Machine Learning </a>
-          </div>
-        <span class="more-meta"> 524 words </span>
-        <span class="more-meta"> 3 mins read </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      6.1 间隔与支持向量 划分：
-给定训练样本集$D = {(x_1, y_1), (x_2, y_2), \cdots, (x_m,y_m)}, \, y_i \in {-1,+1}$，分类学习最基本的想法就是在样本集D所在的样本空间中寻找一个划分超平面，能将不同类别的样本划分开。
-从图6.1中可以看出，存在多个划分超平面能将两类训练样本分开。那么那种最佳？直观上，我们会选择最中间的那个平面，因为：该划分平面对训练样本局部扰动的“容忍”最性好。（泛化能力最强）
-举一个例子，由于训练集的局限性或噪声的因素，训练集外的样本可能比图6.1中的训练样本更接近两个类的分隔界，这将使许多划分超平面对新样本分类错误，而中间的红色超平面受影响最小。换言之，红色划分超平面产生的分类结果是最鲁棒（robust）的，对新样本的泛化能力最强。
-用线性方程描述划分超平面
-在样本空间中，划分超平面可通过如下线性方程来描述： 符号：
- 法向量：$\boldsymbol{w}=(w_1;w_2;\cdots,w_d)$，决定超平面的方向 位移项：$b$，决定超平面与原点之间的距离 超平面: 被法向量和位移决定，记做$(\boldsymbol{w}, b)$。 样本空间任意点x到超平面$(\boldsymbol{w}, b)$的距离：   假设超平面$(\boldsymbol{w}, b)$能将训练样本正确分类，即对于$(x_i, y_i) \in D$，若$y_i=+1$，则有$\boldsymbol{w}^T \boldsymbol{x}_i +b &gt; 0$；若$y_i=-1$，则有$\boldsymbol{w}^T \boldsymbol{x}_i +b &lt; 0$。令 1️⃣支持向量 support vector：
-如图6.2所示，距离超平面最近的这几个训练样本使(6.3)的等号成立，它们被称作“支持向量”。 2️⃣间隔 margin：
-两个异类支持向量到超平面的距离之和：  每个样本点对应一个特征向量。
- 3️⃣最大间隔( maximum margin )的划分超平面——SVM基本型：
-找到满足式(6.3)中约束的参数$\boldsymbol{w}$和$b$，使得$\gamma$最大，即 为了最大化间隔$\gamma$，仅需最大化$||\boldsymbol{w}||^{-1}$，等价于最小化$||\boldsymbol{w}||^2$。于是，上述最优化问题可重写为 这就是支持向量机(Support Vector Machine, SVM)的基本型。
- 间隔貌似仅与w有关，但事实上b通过约束隐式地影响着w的取值，进而对间隔产生影响。
- 6.2 对偶问题 dual problem——SVM求解 求解式(6.
-    </div>
-    <div class="read-more">
-      <a href="/personal-site/post/ml-chap06/" class="read-more-link">Read more..</a>
     </div>
   </div>
 </article>

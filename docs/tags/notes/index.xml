@@ -40,6 +40,27 @@
     </item>
     
     <item>
+      <title>chap 09 - 聚类 | Clustering</title>
+      <link>https://octemull.github.io/personal-site/post/ml-chap09/</link>
+      <pubDate>Thu, 14 Dec 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://octemull.github.io/personal-site/post/ml-chap09/</guid>
+      <description>9.1 聚类任务 clustering 类别：无监督学习 (unsupervised learning)
+常见的无监督学习任务：
+聚类(clustering)、密度估计(density estimation)、异常检测(anomaly detection)
+聚类：将样本集划分为若干个通常是不相交的子集，每个子集称为一个“簇”(cluster)。每个簇可能对应某个潜在（事先不知道，需要聚类后命名）的类别。如对西瓜聚类，可能得到“浅色瓜”“深色瓜”“外地瓜”“本地瓜”等。
+聚类的数学表示：
+假定样本集$D = {\boldsymbol{x}_1, \boldsymbol{x}_2, \cdots, \boldsymbol{x}_m}$包含$m$个无标记样本，每个样本$\boldsymbol{x} = {x_1;x_2; \cdots,x_n }$是一个$n$维特征向量，则聚类算法将样本集$D$划分为$k$个不相交的簇${Cl \, | \, l=1,2,\cdots, k}$其中$C{l&amp;rsquo;} \cap_{l&amp;rsquo; \neq l}Cl = \varnothing$且$D = \cup{l=1}^k C_l$. 相应地，用$\lambda_j \in {1,2,\cdots , k}$表示样本$\boldsymbol{x}_j$的“簇标记”(cluster label)，即$\boldsymbol{x}j \in C{\lambda_j}$.于是，聚类的结果可用包含$m$个元素的簇标记向量$\boldsymbol{\lambda}=(\lambda_1; \lambda_2; \cdots, \lambda_m)$表示。
+聚类的适用场景：
+ 可作为单独过程，寻找数据内在的分布结构； 也可作为分类任务的先驱过程。  举一个例子：
+商业应用中先对顾客进行聚类后，把顾客分为几个类型。然后用分类后的数据做训练集训练分类器，等有新顾客来的时候就能判断新顾客的类型。
+9.2 性能度量 聚类性能度量：有效性指标(validity index)
+好的聚类：“物以类聚”。聚类结果的“簇内相似度”(intra-cluster similarity)高且“簇间相似度”(inter-cluster similarity)低。
+分类：
+ 外部指标 external index：将聚类结果与某个参考模型(reference model)比较【如，将领域专家划分结果作为参考模型】； 内部指标 internal index：直接考察聚类结果。  外部指标 对数据集$D = {\boldsymbol{x}_1, \boldsymbol{x}_2, \cdots, \boldsymbol{x}_m}$，假定通过聚类给出的划分结果为$\cal{C}={C_1, C_2, \cdots, C_k}$, 参考模型给出的簇划分为$\cal{C}^\ast = {C_1^\ast, C_2^\ast, \cdots, C_s^\ast}$.</description>
+    </item>
+    
+    <item>
       <title>chap 08 - 集成学习 | Ensemble learning</title>
       <link>https://octemull.github.io/personal-site/post/ml-chap08/</link>
       <pubDate>Mon, 11 Dec 2017 00:00:00 +0000</pubDate>

@@ -1,7 +1,7 @@
 ---
 title: "目录 周志华机器学习笔记"
 date: 2017-12-19
-lastmod: 2019-03-23 
+lastmod: 2019-04-01
 draft: false
 show_comments: true
 keywords: []
@@ -32,7 +32,7 @@ categories: [Machine Learning]
 14. chap 07 - ex
 15. [chap 08 - 集成学习 | Ensemble learning ](https://octemull.github.io/personal-site/post/ml-chap08/)
 16. chap 08 - ex 
-17. chap 09 - 聚类 | Clustering
+17. [chap 09 - 聚类 | Clustering](https://octemull.github.io/personal-site/post/ml-chap09/)
 18. chap 09 - ex
 19. chap 10 - 降维与度量学习
 20. chap 10 - ex

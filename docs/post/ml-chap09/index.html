@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>chap 09 - 聚类 | Clustering - Octemull&#39;s Personal Site</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Octemull" /><meta name="description" content="9.1 聚类任务 clustering 类别：无监督学习 (unsupervised learning)
+常见的无监督学习任务：
+聚类(clustering)、密度估计(density estimation)、异常检测(anomaly detection)
+聚类：将样本集划分为若干个通常是不相交的子集，每个子集称为一个“簇”(cluster)。每个簇可能对应某个潜在（事先不知道，需要聚类后命名）的类别。如对西瓜聚类，可能得到“浅色瓜”“深色瓜”“外地瓜”“本地瓜”等。
+聚类的数学表示：
+假定样本集$D = {\boldsymbol{x}_1, \boldsymbol{x}_2, \cdots, \boldsymbol{x}_m}$包含$m$个无标记样本，每个样本$\boldsymbol{x} = {x_1;x_2; \cdots,x_n }$是一个$n$维特征向量，则聚类算法将样本集$D$划分为$k$个不相交的簇${Cl \, | \, l=1,2,\cdots, k}$其中$C{l&amp;rsquo;} \cap_{l&amp;rsquo; \neq l}Cl = \varnothing$且$D = \cup{l=1}^k C_l$. 相应地，用$\lambda_j \in {1,2,\cdots , k}$表示样本$\boldsymbol{x}_j$的“簇标记”(cluster label)，即$\boldsymbol{x}j \in C{\lambda_j}$.于是，聚类的结果可用包含$m$个元素的簇标记向量$\boldsymbol{\lambda}=(\lambda_1; \lambda_2; \cdots, \lambda_m)$表示。
+聚类的适用场景：
+ 可作为单独过程，寻找数据内在的分布结构； 也可作为分类任务的先驱过程。  举一个例子：
+商业应用中先对顾客进行聚类后，把顾客分为几个类型。然后用分类后的数据做训练集训练分类器，等有新顾客来的时候就能判断新顾客的类型。
+9.2 性能度量 聚类性能度量：有效性指标(validity index)
+好的聚类：“物以类聚”。聚类结果的“簇内相似度”(intra-cluster similarity)高且“簇间相似度”(inter-cluster similarity)低。
+分类：
+ 外部指标 external index：将聚类结果与某个参考模型(reference model)比较【如，将领域专家划分结果作为参考模型】； 内部指标 internal index：直接考察聚类结果。  外部指标 对数据集$D = {\boldsymbol{x}_1, \boldsymbol{x}_2, \cdots, \boldsymbol{x}_m}$，假定通过聚类给出的划分结果为$\cal{C}={C_1, C_2, \cdots, C_k}$, 参考模型给出的簇划分为$\cal{C}^\ast = {C_1^\ast, C_2^\ast, \cdots, C_s^\ast}$." /><meta name="keywords" content="Blog" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.53 with even 4.0.0" />
+
+
+<link rel="canonical" href="https://octemull.github.io/personal-site/post/ml-chap09/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/personal-site/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/personal-site/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/personal-site/favicon-16x16.png">
+<link rel="manifest" href="/personal-site/manifest.json">
+<link rel="mask-icon" href="/personal-site/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/personal-site/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="chap 09 - 聚类 | Clustering" />
+<meta property="og:description" content="9.1 聚类任务 clustering 类别：无监督学习 (unsupervised learning)
+常见的无监督学习任务：
+聚类(clustering)、密度估计(density estimation)、异常检测(anomaly detection)
+聚类：将样本集划分为若干个通常是不相交的子集，每个子集称为一个“簇”(cluster)。每个簇可能对应某个潜在（事先不知道，需要聚类后命名）的类别。如对西瓜聚类，可能得到“浅色瓜”“深色瓜”“外地瓜”“本地瓜”等。
+聚类的数学表示：
+假定样本集$D = {\boldsymbol{x}_1, \boldsymbol{x}_2, \cdots, \boldsymbol{x}_m}$包含$m$个无标记样本，每个样本$\boldsymbol{x} = {x_1;x_2; \cdots,x_n }$是一个$n$维特征向量，则聚类算法将样本集$D$划分为$k$个不相交的簇${Cl \, | \, l=1,2,\cdots, k}$其中$C{l&rsquo;} \cap_{l&rsquo; \neq l}Cl = \varnothing$且$D = \cup{l=1}^k C_l$. 相应地，用$\lambda_j \in {1,2,\cdots , k}$表示样本$\boldsymbol{x}_j$的“簇标记”(cluster label)，即$\boldsymbol{x}j \in C{\lambda_j}$.于是，聚类的结果可用包含$m$个元素的簇标记向量$\boldsymbol{\lambda}=(\lambda_1; \lambda_2; \cdots, \lambda_m)$表示。
+聚类的适用场景：
+ 可作为单独过程，寻找数据内在的分布结构； 也可作为分类任务的先驱过程。  举一个例子：
+商业应用中先对顾客进行聚类后，把顾客分为几个类型。然后用分类后的数据做训练集训练分类器，等有新顾客来的时候就能判断新顾客的类型。
+9.2 性能度量 聚类性能度量：有效性指标(validity index)
+好的聚类：“物以类聚”。聚类结果的“簇内相似度”(intra-cluster similarity)高且“簇间相似度”(inter-cluster similarity)低。
+分类：
+ 外部指标 external index：将聚类结果与某个参考模型(reference model)比较【如，将领域专家划分结果作为参考模型】； 内部指标 internal index：直接考察聚类结果。  外部指标 对数据集$D = {\boldsymbol{x}_1, \boldsymbol{x}_2, \cdots, \boldsymbol{x}_m}$，假定通过聚类给出的划分结果为$\cal{C}={C_1, C_2, \cdots, C_k}$, 参考模型给出的簇划分为$\cal{C}^\ast = {C_1^\ast, C_2^\ast, \cdots, C_s^\ast}$." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://octemull.github.io/personal-site/post/ml-chap09/" /><meta property="article:published_time" content="2017-12-14T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-04-01T00:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="chap 09 - 聚类 | Clustering">
+<meta itemprop="description" content="9.1 聚类任务 clustering 类别：无监督学习 (unsupervised learning)
+常见的无监督学习任务：
+聚类(clustering)、密度估计(density estimation)、异常检测(anomaly detection)
+聚类：将样本集划分为若干个通常是不相交的子集，每个子集称为一个“簇”(cluster)。每个簇可能对应某个潜在（事先不知道，需要聚类后命名）的类别。如对西瓜聚类，可能得到“浅色瓜”“深色瓜”“外地瓜”“本地瓜”等。
+聚类的数学表示：
+假定样本集$D = {\boldsymbol{x}_1, \boldsymbol{x}_2, \cdots, \boldsymbol{x}_m}$包含$m$个无标记样本，每个样本$\boldsymbol{x} = {x_1;x_2; \cdots,x_n }$是一个$n$维特征向量，则聚类算法将样本集$D$划分为$k$个不相交的簇${Cl \, | \, l=1,2,\cdots, k}$其中$C{l&rsquo;} \cap_{l&rsquo; \neq l}Cl = \varnothing$且$D = \cup{l=1}^k C_l$. 相应地，用$\lambda_j \in {1,2,\cdots , k}$表示样本$\boldsymbol{x}_j$的“簇标记”(cluster label)，即$\boldsymbol{x}j \in C{\lambda_j}$.于是，聚类的结果可用包含$m$个元素的簇标记向量$\boldsymbol{\lambda}=(\lambda_1; \lambda_2; \cdots, \lambda_m)$表示。
+聚类的适用场景：
+ 可作为单独过程，寻找数据内在的分布结构； 也可作为分类任务的先驱过程。  举一个例子：
+商业应用中先对顾客进行聚类后，把顾客分为几个类型。然后用分类后的数据做训练集训练分类器，等有新顾客来的时候就能判断新顾客的类型。
+9.2 性能度量 聚类性能度量：有效性指标(validity index)
+好的聚类：“物以类聚”。聚类结果的“簇内相似度”(intra-cluster similarity)高且“簇间相似度”(inter-cluster similarity)低。
+分类：
+ 外部指标 external index：将聚类结果与某个参考模型(reference model)比较【如，将领域专家划分结果作为参考模型】； 内部指标 internal index：直接考察聚类结果。  外部指标 对数据集$D = {\boldsymbol{x}_1, \boldsymbol{x}_2, \cdots, \boldsymbol{x}_m}$，假定通过聚类给出的划分结果为$\cal{C}={C_1, C_2, \cdots, C_k}$, 参考模型给出的簇划分为$\cal{C}^\ast = {C_1^\ast, C_2^\ast, \cdots, C_s^\ast}$.">
+
+
+<meta itemprop="datePublished" content="2017-12-14T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-04-01T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="622">
+
+
+
+<meta itemprop="keywords" content="Notes," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="chap 09 - 聚类 | Clustering"/>
+<meta name="twitter:description" content="9.1 聚类任务 clustering 类别：无监督学习 (unsupervised learning)
+常见的无监督学习任务：
+聚类(clustering)、密度估计(density estimation)、异常检测(anomaly detection)
+聚类：将样本集划分为若干个通常是不相交的子集，每个子集称为一个“簇”(cluster)。每个簇可能对应某个潜在（事先不知道，需要聚类后命名）的类别。如对西瓜聚类，可能得到“浅色瓜”“深色瓜”“外地瓜”“本地瓜”等。
+聚类的数学表示：
+假定样本集$D = {\boldsymbol{x}_1, \boldsymbol{x}_2, \cdots, \boldsymbol{x}_m}$包含$m$个无标记样本，每个样本$\boldsymbol{x} = {x_1;x_2; \cdots,x_n }$是一个$n$维特征向量，则聚类算法将样本集$D$划分为$k$个不相交的簇${Cl \, | \, l=1,2,\cdots, k}$其中$C{l&rsquo;} \cap_{l&rsquo; \neq l}Cl = \varnothing$且$D = \cup{l=1}^k C_l$. 相应地，用$\lambda_j \in {1,2,\cdots , k}$表示样本$\boldsymbol{x}_j$的“簇标记”(cluster label)，即$\boldsymbol{x}j \in C{\lambda_j}$.于是，聚类的结果可用包含$m$个元素的簇标记向量$\boldsymbol{\lambda}=(\lambda_1; \lambda_2; \cdots, \lambda_m)$表示。
+聚类的适用场景：
+ 可作为单独过程，寻找数据内在的分布结构； 也可作为分类任务的先驱过程。  举一个例子：
+商业应用中先对顾客进行聚类后，把顾客分为几个类型。然后用分类后的数据做训练集训练分类器，等有新顾客来的时候就能判断新顾客的类型。
+9.2 性能度量 聚类性能度量：有效性指标(validity index)
+好的聚类：“物以类聚”。聚类结果的“簇内相似度”(intra-cluster similarity)高且“簇间相似度”(inter-cluster similarity)低。
+分类：
+ 外部指标 external index：将聚类结果与某个参考模型(reference model)比较【如，将领域专家划分结果作为参考模型】； 内部指标 internal index：直接考察聚类结果。  外部指标 对数据集$D = {\boldsymbol{x}_1, \boldsymbol{x}_2, \cdots, \boldsymbol{x}_m}$，假定通过聚类给出的划分结果为$\cal{C}={C_1, C_2, \cdots, C_k}$, 参考模型给出的簇划分为$\cal{C}^\ast = {C_1^\ast, C_2^\ast, \cdots, C_s^\ast}$."/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/personal-site/" class="logo">Octemull</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/personal-site/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/personal-site/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/personal-site/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/personal-site/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/personal-site/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/personal-site/" class="logo">Octemull</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/personal-site/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/personal-site/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/personal-site/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/personal-site/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/personal-site/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">chap 09 - 聚类 | Clustering</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2017-12-14 </span>
+        <div class="post-category">
+            <a href="/personal-site/categories/machine-learning/"> Machine Learning </a>
+            </div>
+          <span class="more-meta"> 622 words </span>
+          <span class="more-meta"> 3 mins read </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#9-1-聚类任务-clustering">9.1 聚类任务 clustering</a></li>
+<li><a href="#9-2-性能度量">9.2 性能度量</a>
+<ul>
+<li><a href="#外部指标">外部指标</a></li>
+<li><a href="#内部指标">内部指标</a></li>
+</ul></li>
+<li><a href="#9-3-距离计算-dist">9.3 距离计算 dist(·,·)</a>
+<ul>
+<li><a href="#闵可夫斯基距离">闵可夫斯基距离</a></li>
+<li><a href="#vdm-value-difference-metric-stanfill-and-waltz-1986">VDM（Value Difference Metric）[Stanfill and Waltz, 1986]</a></li>
+<li><a href="#闵式距离-vdm">闵式距离&amp;VDM</a></li>
+<li><a href="#加权距离-weighted-distance">加权距离(weighted distance)</a></li>
+<li><a href="#非度量距离-non-metric-distance">非度量距离 non-metric distance</a></li>
+</ul></li>
+<li><a href="#9-4-原型聚类">9.4 原型聚类</a>
+<ul>
+<li><a href="#9-4-1-k均值算法-k-means">9.4.1 k均值算法 (k-means)</a></li>
+<li><a href="#9-4-2-学习向量量化-learning-vector-quantization-lvq">9.4.2 学习向量量化 (Learning Vector Quantization, LVQ)</a></li>
+<li><a href="#9-4-3-高斯混合聚类-mixture-of-gaussian">9.4.3 高斯混合聚类 (Mixture-of-Gaussian)</a>
+<ul>
+<li><a href="#高斯混合分布">高斯混合分布</a></li>
+<li><a href="#后验概率和先验概率">后验概率和先验概率</a></li>
+<li><a href="#参数求解">参数求解</a></li>
+<li><a href="#高斯混合模型的em算法">高斯混合模型的EM算法：</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#9-5-密度聚类">9.5 密度聚类</a>
+<ul>
+<li>
+<ul>
+<li><a href="#簇">簇</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#9-6-层次聚类-hierarchical-clustering">9.6 层次聚类 hierarchical clustering</a></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      
+
+<p><img src="https://i.loli.net/2019/04/01/5ca220a094654.png" alt="D1EB9267-94FB-43A9-8113-A77F95ADA1DE" /></p>
+
+<h2 id="9-1-聚类任务-clustering">9.1 聚类任务 clustering</h2>
+
+<p><strong>类别：</strong>无监督学习 (unsupervised learning)</p>
+
+<p><strong>常见的无监督学习任务：</strong></p>
+
+<p>聚类(clustering)、密度估计(density estimation)、异常检测(anomaly detection)</p>
+
+<p><strong>聚类：</strong>将样本集划分为若干个通常是不相交的子集，每个子集称为一个“簇”(cluster)。每个簇可能对应某个潜在（事先不知道，需要聚类后命名）的类别。如对西瓜聚类，可能得到“浅色瓜”“深色瓜”“外地瓜”“本地瓜”等。</p>
+
+<p><strong>聚类的数学表示：</strong></p>
+
+<p>假定样本集$D = {\boldsymbol{x}_1, \boldsymbol{x}_2, \cdots, \boldsymbol{x}_m}$包含$m$个无标记样本，每个样本$\boldsymbol{x} = {x_1;x_2; \cdots,x_n }$是一个$n$维特征向量，则聚类算法将样本集$D$划分为$k$个不相交的簇${C<em>l \, | \, l=1,2,\cdots, k}$其中$C</em>{l&rsquo;} \cap_{l&rsquo; \neq l}C<em>l = \varnothing$且$D = \cup</em>{l=1}^k C_l$. 相应地，用$\lambda_j \in {1,2,\cdots , k}$表示样本$\boldsymbol{x}_j$的“簇标记”(cluster label)，即$\boldsymbol{x}<em>j \in C</em>{\lambda_j}$.于是，聚类的结果可用包含$m$个元素的簇标记向量$\boldsymbol{\lambda}=(\lambda_1; \lambda_2; \cdots, \lambda_m)$表示。</p>
+
+<p><strong>聚类的适用场景：</strong></p>
+
+<ul>
+<li>可作为单独过程，寻找数据内在的分布结构；</li>
+<li>也可作为分类任务的先驱过程。</li>
+</ul>
+
+<p><strong>举一个例子：</strong></p>
+
+<p>商业应用中先对顾客进行聚类后，把顾客分为几个类型。然后用分类后的数据做训练集训练分类器，等有新顾客来的时候就能判断新顾客的类型。</p>
+
+<h2 id="9-2-性能度量">9.2 性能度量</h2>
+
+<p><strong>聚类性能度量：</strong>有效性指标(validity index)</p>
+
+<p><strong>好的聚类：</strong>“物以类聚”。聚类结果的“簇内相似度”(intra-cluster similarity)高且“簇间相似度”(inter-cluster similarity)低。</p>
+
+<p><strong>分类：</strong></p>
+
+<ul>
+<li><strong>外部指标 external index</strong>：将聚类结果与某个参考模型(reference model)比较【如，将领域专家划分结果作为参考模型】；</li>
+<li><strong>内部指标 internal index</strong>：直接考察聚类结果。</li>
+</ul>
+
+<h3 id="外部指标">外部指标</h3>
+
+<p>对数据集$D = {\boldsymbol{x}_1, \boldsymbol{x}_2, \cdots, \boldsymbol{x}_m}$，假定通过聚类给出的划分结果为$\cal{C}={C_1, C_2, \cdots, C_k}$, 参考模型给出的簇划分为$\cal{C}^\ast = {C_1^\ast, C_2^\ast, \cdots, C_s^\ast}$. 相应，令$λ$与$λ^\ast$分别表示与$C$和$C^\ast$对应的簇标记向量。将样本两两配对考虑，定义
+<img src="https://i.loli.net/2019/04/01/5ca220c18a902.png" alt="D7BADEB8-39E2-4DBF-8E8A-D436CCC3D6B" /></p>
+
+<p><strong>说明：</strong></p>
+
+<ul>
+<li>a 集合SS：包含在C中隶属于相同簇，且在C*中也隶属于相同簇的样本对；</li>
+<li>b 集合SD：包含在C中隶属于相同簇，但在C*中隶属于不同簇的样本对；</li>
+<li>c 集合DS：包含在C中隶属于不同簇，但在C*中隶属于相同簇的样本对；</li>
+<li>d 集合DD：包含在C中隶属于不同簇，且在C*中也隶属于不同簇的样本对。</li>
+</ul>
+
+<p>由上述式子，可导出常用外部指标：</p>
+
+<ul>
+<li><p>Jaccard系数(Jaccard Coeffcient, JC)
+<img src="https://i.loli.net/2019/04/01/5ca2209469d2d.png" alt="043E46FD-5619-474B-9661-96B544FFCFFA" /></p></li>
+
+<li><p>FM指数(Foelkes and Mallows Index, FMI)<img src="https://i.loli.net/2019/04/01/5ca220946b76e.png" alt="3E3D1748-7D0E-4E70-9854-4CE74D9CA363" /></p></li>
+
+<li><p>Rand指数(Rand Index, RI)
+<img src="https://i.loli.net/2019/04/01/5ca220946d20c.png" alt="10701FCA-F894-4181-A746-A53811FD7961" /></p></li>
+</ul>
+
+<p><strong>指标范围：</strong>[0, 1]</p>
+
+<p><strong>判断方法：</strong>值越大，聚类性能越好。</p>
+
+<h3 id="内部指标">内部指标</h3>
+
+<p>考虑聚类结果的簇划分$\cal{C}={C_1, C_2, \cdots, C_k}$，定义
+<img src="https://i.loli.net/2019/04/01/5ca220c148507.png" alt="07F3807C-9270-4D02-80CF-5278601127A0" /></p>
+
+<p><strong>说明：</strong></p>
+
+<ul>
+<li>$dist(·,·)$：两个样本之间的距离；</li>
+<li>$μ$：簇C的中心点$\boldsymbol{\mu} = \frac{1}{|C|} \sum_{i \leq i \leq |C|} \boldsymbol{x}_i$；</li>
+<li>$avg&copy;$：簇$C$内样本间的平均距离（共有$|C|(|C|-1)/2$个距离值）；</li>
+<li>$diam&copy;$：簇$C$内样本间的最远距离；</li>
+<li>$d_{\min}(Ci,Cj)$：簇$C_i$与簇$C_j$最近样本间距离；</li>
+<li>$d_{cen}(Ci,Cj)$：簇$C_i$与簇$C_j$中心点之间的距离。</li>
+</ul>
+
+<p>由此，可得常用内部指标：</p>
+
+<ul>
+<li><p>DB指数(Davies-Bouldin Index, DBI)
+<img src="https://i.loli.net/2019/04/01/5ca220b7c2dbc.png" alt="DCD1E211-9C89-4AB6-9E18-43A242339B88" /></p></li>
+
+<li><p>Dunn指数(Dunn Index, DI)
+<img src="https://i.loli.net/2019/04/01/5ca220b1a4b32.png" alt="EF100FA8-3C74-4EF2-8A78-1DD1A7617C" /></p></li>
+</ul>
+
+<p><strong>判断方法：</strong></p>
+
+<ul>
+<li>DBI越小，聚类性能越好；</li>
+<li>DI越大，聚类性能越好。</li>
+</ul>
+
+<h2 id="9-3-距离计算-dist">9.3 距离计算 dist(·,·)</h2>
+
+<p><strong>距离度量的基本性质：</strong></p>
+
+<ul>
+<li>非负性：$dist(\boldsymbol{x}_i, \boldsymbol{x}_j) \geq 0 \tag{9.14}$</li>
+<li>同一性：$dist(\boldsymbol{x}_i, \boldsymbol{x}_j) = 0 \text{ 当且仅当 } \boldsymbol{x}_i = \boldsymbol{x}_j\tag{9.15}$</li>
+<li>对称性：$dist(\boldsymbol{x}_i, \boldsymbol{x}_j) =dist(\boldsymbol{x}_j, \boldsymbol{x}_i)  \tag{9.16}$</li>
+<li>直递性(三角不等式)：$dist(\boldsymbol{x}_i, \boldsymbol{x}_j) \leq dist(\boldsymbol{x}_i, \boldsymbol{x}_k) + dist(\boldsymbol{x}_k, \boldsymbol{x}_j)   \tag{9.17}$</li>
+</ul>
+
+<p><strong>属性分类：</strong></p>
+
+<p>通常将属性划分为“连续属性”(continuous attribute)【在定义域上有无穷多个可能取值】和“离散属性”(categorical attribute)【在定义域上只有有限个取值】。</p>
+
+<blockquote>
+<ul>
+<li>连续属性亦称“数值属性”（numerical attirbute），离散属性亦称“列名属性”(nominal attribute)。</li>
+<li>定义距离时，考虑有序和无序更重要。</li>
+</ul>
+</blockquote>
+
+<ul>
+<li>有序属性：属性值之间有次序，可直接在属性值上计算距离。
+例如，定义域为{1,2,3}的离散属性与连续属性更相似，1与2较近、1与3较远。</li>
+<li>无序属性：属性值之间无次序，不能直接用属性值计算距离。
+例如，定义域为{飞机，火车，轮船}。</li>
+</ul>
+
+<h3 id="闵可夫斯基距离">闵可夫斯基距离</h3>
+
+<p><strong>适用：</strong>有序属性</p>
+
+<p>给定样本$\boldsymbol{x}<em>i = {x</em>{i1};x<em>{i2}; \cdots ; x</em>{in} }$与$\boldsymbol{x}<em>j = {x</em>{j1};x<em>{j2}; \cdots ; x</em>{jn} }$，闵式距离定义如下
+<img src="https://i.loli.net/2019/04/01/5ca2209496aab.png" alt="86F3F30C-7DB9-430D-8B97-44BB2F9390D1" /></p>
+
+<p>$p≥1$时，显然满足距离度量的基本性质。【上式即为$\boldsymbol{x}_i - \boldsymbol{x}_j$的$L_p$范数$||\boldsymbol{x}_i - \boldsymbol{x}_j||_p$】</p>
+
+<ul>
+<li><p>p=2，“欧氏距离”(Euclidean Distance)
+<img src="https://i.loli.net/2019/04/01/5ca220b1a31c9.png" alt="F673D9FA-CFC1-4223-ABD8-23189F2CE67" /></p></li>
+
+<li><p>p=1，“曼哈顿距离”(Manhattan distance)
+<img src="https://i.loli.net/2019/04/01/5ca220b7c1397.png" alt="C6523444-6BF2-4A33-9245-F2191CF73A30" /></p></li>
+</ul>
+
+<blockquote>
+<p>亦称“街区距离”（city block distance）</p>
+</blockquote>
+
+<ul>
+<li>p→∞，“切比雪夫距离”（）</li>
+</ul>
+
+<h3 id="vdm-value-difference-metric-stanfill-and-waltz-1986">VDM（Value Difference Metric）[Stanfill and Waltz, 1986]</h3>
+
+<p><strong>适用：</strong>无序属性</p>
+
+<p><strong>符号：</strong></p>
+
+<ul>
+<li>$m_{u,a}$：在属性$u$上取值为$a$的样本数；</li>
+<li>$m_{u,a,i}$：在第$i$个样本簇中在属性$u$上取值为$a$的样本数；</li>
+<li>$k$：样本簇数。【样本类别已知时k通常设置为类别数。】</li>
+</ul>
+
+<p>属性$u$上两个离散值$a$与$b$之间的VDM距离为
+<img src="https://i.loli.net/2019/04/01/5ca220b1a1703.png" alt="E7105DF5-26CC-4E82-B470-35ED3ED0D96" /></p>
+
+<h3 id="闵式距离-vdm">闵式距离&amp;VDM</h3>
+
+<p><strong>适用：</strong>混合属性</p>
+
+<p>假设有$nc$个有序属性、$n-n_c$个无序属性，不失一般性，令有序属性排列在无序属性之前，则
+<img src="https://i.loli.net/2019/04/01/5ca220b7dfe99.png" alt="1EF9E398-42BC-48BD-81E7-6321E7DCE4DB" /></p>
+
+<h3 id="加权距离-weighted-distance">加权距离(weighted distance)</h3>
+
+<p><strong>适用：</strong>属性重要程度不同时</p>
+
+<p><strong>例子：</strong>加权闵式距离
+<img src="https://i.loli.net/2019/04/01/5ca220b182f2d.png" alt="424EC9B5-D2FE-4786-B077-728031AC096" /></p>
+
+<p>其中，权重$w<em>i \geq 0 \, (i=1,2,\cdots, n)$表征不同属性的重要性，通常$\sum</em>{i=1}^n w_i =1$.</p>
+
+<h3 id="非度量距离-non-metric-distance">非度量距离 non-metric distance</h3>
+
+<p><strong>适用：</strong>不满足直递性的相似度度量距离</p>
+
+<p><strong>例子：</strong>“人”“马”分别与“人马”相似，但“人”与“马”很不相似；在距离上表现为，“人”“马”分别与“人马”的距离都较小，“人”与“马”的距离很大。如图9.1所示。
+<img src="https://i.loli.net/2019/04/01/5ca220c730d8d.png" alt="8AB64789-0A67-4744-9762-0C4603D57E43" /></p>
+
+<blockquote>
+<p>该例子中，从数学上看，令$d_3=3$即可满足直递性；但从语意上看，$d_3$应远大于$d_1$与$d_2$。</p>
+</blockquote>
+
+<h2 id="9-4-原型聚类">9.4 原型聚类</h2>
+
+<p>原型聚类亦称“基于原型的聚类”(prototype-based clustering)</p>
+
+<ul>
+<li><strong>假设</strong>：聚类结构能通过一组原型刻画（“原型”指样本空间中具有代表性的点）</li>
+<li><strong>基本思路：</strong>先对原型进行初始化，然后对原型进行迭代更新求解。</li>
+<li><strong>区别：</strong> 初始化方法不同，求解方式不同。</li>
+</ul>
+
+<h3 id="9-4-1-k均值算法-k-means">9.4.1 k均值算法 (k-means)</h3>
+
+<p><strong>符号：</strong></p>
+
+<ul>
+<li>样本集：$D = {\boldsymbol{x}_1, \boldsymbol{x}_2, \cdots, \boldsymbol{x}_m}$</li>
+<li>聚类所得簇划分：$\cal{C}={C_1, C_2, \cdots, C_k}$</li>
+<li>簇𝐶𝑖的均值向量：$\boldsymbol{\mu}_i = \frac{1}{|C<em>i|} \sum</em>{\boldsymbol{x} \in C_i} \boldsymbol{x}$</li>
+</ul>
+
+<p><strong>目标：</strong>k-means算法对聚类所得簇划分最小化平方误差
+<img src="https://i.loli.net/2019/04/01/5ca2209498b7d.png" alt="1C996A78-046C-4668-A819-C6F3FC68CB78" /></p>
+
+<p><strong>说明：</strong></p>
+
+<ul>
+<li>E在一定程度上刻画了簇内样本围绕簇均值向量的紧密程度；</li>
+<li>E越小则簇内样本相似度越高。</li>
+</ul>
+
+<p><strong>难点：</strong>最小化平方误差E是NP难问题，需考察对样本集的所有划分。</p>
+
+<p><strong>解决：</strong>贪心策略，迭代优化得近似解。</p>
+
+<p><strong>算法流程：</strong>
+<img src="https://i.loli.net/2019/04/01/5ca220a1b13c8.png" alt="2811345E-890D-497A-B99B-A0C4EF232DFB" /></p>
+
+<ul>
+<li>1：对均值向量进行初始化；</li>
+<li>4-8、9-10：对当前簇划分及均值向量迭代更新，若迭代更新后聚类结果不变，则在第18行返回当前划分结果。</li>
+</ul>
+
+<blockquote>
+<p>为避免运行时间过长，可设置最大迭代次数限制或最小调整幅度阈值，一旦超过最大迭代次数或调整幅度小于阈值，则停止运行。</p>
+</blockquote>
+
+<p><strong>举一个例子：</strong></p>
+
+<p>以表9.1的西瓜数据集4.0为例。将编号为$i$的样本称作$\boldsymbol{x}_i$，$\boldsymbol{x}_i$是一个二维向量。
+<img src="https://i.loli.net/2019/04/01/5ca220a0f1f60.png" alt="3BA1CC0E-1C5C-472C-8B20-6D8711400A78" /></p>
+
+<p>假设聚类簇数$k=3$，开始随机选取三个样本$\boldsymbol{x}<em>6$，$\boldsymbol{x}</em>{12}$，$\boldsymbol{x}_{24}$作为初始均值向量，即
+<img src="https://i.loli.net/2019/04/01/5ca220b7e2292.png" alt="299DDB6B-86A8-4B7C-A78E-2B06A1911C03" /></p>
+
+<p>考察样本$\boldsymbol{x}_1=(0.697; 0.460)$，它与当前均值向量𝛍1,𝛍2,𝛍3的距离分别为0.369, 0.506, 0.220. 因此把$\boldsymbol{x}_1$划分到簇C3中。类似，对数据集中所有样本考察依次按后，可得当前簇划分为
+<img src="https://i.loli.net/2019/04/01/5ca220b184a62.png" alt="79698B59-5181-4653-AD1A-442EAFF205AE" />
+于是，可从C1、C2、C3分别求出新的均值向量
+<img src="https://i.loli.net/2019/04/01/5ca2209493523.png" alt="8305A13F-7459-4DE8-A369-7F4F28DC3E2E" />
+更新当前均值向量后，不断重复上述过程，如图9.3所示，第五轮迭代产生的结果与第四轮迭代相同，于是算法停止，得到最终的簇划分。
+<img src="https://i.loli.net/2019/04/01/5ca220a16d147.png" alt="59A94059-798B-4E14-BAB4-068FDCD68659" /></p>
+
+<h3 id="9-4-2-学习向量量化-learning-vector-quantization-lvq">9.4.2 学习向量量化 (Learning Vector Quantization, LVQ)</h3>
+
+<p><strong>区别：</strong>假设数据样本带有类标记，学习过程利用样本的标记信息（监督信息）来辅助聚类。</p>
+
+<p><strong>符号：</strong></p>
+
+<ul>
+<li>$D = {\boldsymbol{x}_1, \boldsymbol{x}_2, \cdots, \boldsymbol{x}_m}$：样本集；</li>
+<li>$(x<em>{j1};x</em>{j2}; \cdots; x_{jn})$：每个样本$\boldsymbol{x}_j$是由$n$个属性描述的特征向量;</li>
+<li>$𝑦_𝑗 ∈ 𝜸$：样本$\boldsymbol{x}_j$的类别标记；</li>
+<li>$η$：学习率。</li>
+</ul>
+
+<p><strong>目标：</strong> 习得一组$n$维原型向量${\boldsymbol{p}_1, \boldsymbol{p}_2, \cdots, \boldsymbol{p}_q}$每个原型向量代表一个聚类簇，簇标记为$t_i \in \cal{Y}$.</p>
+
+<p><strong>算法：</strong>
+<img src="https://i.loli.net/2019/04/01/5ca220a100482.png" alt="28ACBF90-DEC7-4BF2-946E-1225EB398ADE" /></p>
+
+<ul>
+<li>1：初始化原型向量（如，对第q个簇可从类别标记为$t_q$的样本中随机选取一个作为原型向量）；</li>
+<li>2-12：对原型向量迭代优化；</li>
+<li>每轮迭代中，随机选取一个有标记的训练样本，找到与其距离最近的原型向量，并根据连着挂这两者的类别标记是否一致来对原型向量进行相应更新。</li>
+<li>5：竞争学习的“胜者为王”策略。SOM是基于无标记样本的聚类算法，而LVQ可看做SOM基于监督信息的扩展。竞争学习与SOM参见5.5.2和5.5.3.</li>
+<li>7：$\boldsymbol{x}<em>j$与$𝒑</em>{𝑖^\ast}$的类别相同；</li>
+<li>9：$\boldsymbol{x}<em>j$与$𝒑</em>{𝑖^\ast}$的类别不同；</li>
+<li>12：若算法停止条件已满足，则将当前原型向量作为最终结果返回。</li>
+</ul>
+
+<p><strong>如何更新原型向量（算法第6-10行）</strong></p>
+
+<p>若当最近的原型向量$𝒑_{𝑖^\ast}$与$\boldsymbol{x}<em>j$的类别标记相同，则令$𝒑</em>{𝑖^\ast}$向$\boldsymbol{x}_j$的方向靠拢（第7行）
+<img src="https://i.loli.net/2019/04/01/5ca220949f53a.png" alt="B7DD6923-C389-4927-B38E-4E5FD05C9DDB" /></p>
+
+<p>𝒑&rsquo;与$\boldsymbol{x}_j$间的距离为
+<img src="https://i.loli.net/2019/04/01/5ca220b7c47c4.png" alt="553FA199-179F-41D5-A8C3-D8B8913F4861" /></p>
+
+<p>反之，若类别标记不同，则令$𝒑_{𝑖^\ast}$远离$\boldsymbol{x}_j$的方向（第9行）
+𝒑&rsquo;与$\boldsymbol{x}<em>j$间的距离增大为$(1 + \eta)\cdot ||𝒑</em>{𝑖^\ast} - \boldsymbol{x}_j||_2$。</p>
+
+<p><strong>Voronoi剖分 (Voronoi tessellation)</strong></p>
+
+<p>如此，习得一组原型向量${\boldsymbol{p}_1, \boldsymbol{p}_2, \cdots, \boldsymbol{p}_q}$后即可对样本空间𝓧进行簇划分。将样本𝒙划分至与其最近的原型向量代表的簇中。每个原型向量$𝒑_𝑖$定义了与之相关的区域$𝑅_𝑖$，该区域中每个样本与$𝒑<em>𝑖$的距离不大于它与其他原型向量$𝒑</em>{𝑖&rsquo;}(𝑖&rsquo;≠𝑖)$的距离，即
+<img src="https://i.loli.net/2019/04/01/5ca22094a4699.png" alt="C96733C6-C089-4F86-B9FE-4EDC712148AA" />
+由此形成的对样本空间𝓧的簇划分${𝑅_1,𝑅_2,…,𝑅_q}$，该划分通常称为“Voroni剖分”。</p>
+
+<blockquote>
+<p>若将中样本全用用原型向量表示，则可实现数据的“有损压缩”(lossy compression)，这称为“向量量化”(vector quantization)；LVQ由此得名。</p>
+</blockquote>
+
+<p><strong>举一个例子🌰：</strong></p>
+
+<p>以表9.1的西瓜数据集4.0为例。</p>
+
+<p>令9-21号样本的类别标记为c2，其他样本的类别标记为c1。假定q=5，即学习目标是找到5个原型向量$\boldsymbol{p}_1, \boldsymbol{p}_2, \cdots, \boldsymbol{p}_5$并假定其对应的类别标记分别为$c_1, c_2, c_2, c_1, c_1$(即，希望为“好瓜=是”找到3个簇，“好瓜=否”找到2个簇。)</p>
+
+<p>算法开始时，根据样本的类别标记和簇的预设类别标记对原型向量进行随机初始化，假定初始化为样本$\boldsymbol{x}<em>5, \boldsymbol{x}</em>{12}, \boldsymbol{x}<em>{18}, \boldsymbol{x}</em>{23}, \boldsymbol{x}_{29}$.在第一轮迭代中，假定随机选取的样本为$𝒙_1$，该样本与当前原型向量的距离分别为0.283, 0.506, 0.434, 0.260, 0.032. 由于$𝒑_5$与$𝒙_1$距离最近且类别标记相同(c2)，假定学习率$η=0.1$，则LVQ更新$𝒑_5$得到新原型向量
+<img src="https://i.loli.net/2019/04/01/5ca220c04423d.png" alt="4D3591EE-B0BF-4061-963C-4A800EA721AB" />
+将$𝒑_5$更新为$𝒑&rsquo;$后，不断重复上述步骤，不同轮数之后的聚类结果如图9.5所示。
+<img src="https://i.loli.net/2019/04/01/5ca220a4178df.png" alt="56E4C966-2DD6-47D7-A21B-F218EDE24A72" /></p>
+
+<h3 id="9-4-3-高斯混合聚类-mixture-of-gaussian">9.4.3 高斯混合聚类 (Mixture-of-Gaussian)</h3>
+
+<p><strong>区别：</strong>采用概率模型来表达聚类原型。</p>
+
+<p><strong>（多元）高斯分布</strong></p>
+
+<p>对n维样本空间𝓧找那个的随机向量$\boldsymbol{x}$，若$\boldsymbol{x}$服从高斯分布，其概率密度函数为
+<img src="https://i.loli.net/2019/04/01/5ca220b1a654d.png" alt="8DFB54DA-5DCF-4C41-9525-F7EE00B9" /></p>
+
+<p>记做$𝒙\sim \cal{N}(𝛍,𝚺)$. $𝚺$：对称正定矩阵；$|𝚺|$：$𝚺$的行列式；$𝚺^{-1}$：$𝚺$的逆矩阵。</p>
+
+<p><strong>符号：</strong></p>
+
+<ul>
+<li>𝛍：n维均值向量；</li>
+<li>𝚺：n×n协方差矩阵。</li>
+</ul>
+
+<p>高斯分布完全由上述两个参数决定，把其概率密度函数记做$p(\boldsymbol{x} \, | \, 𝛍,𝚺)$</p>
+
+<h4 id="高斯混合分布">高斯混合分布</h4>
+
+<p><img src="https://i.loli.net/2019/04/01/5ca220b7d6d56.png" alt="3E8A58F4-26D5-4579-ADEB-9705F7FDBF5B" /></p>
+
+<blockquote>
+<p>$𝑝<em>{\cal{M}}(·)$也是概率密度函数，$\int p</em>{\cal{M}}(\boldsymbol{x}) d\boldsymbol{x} =1$.</p>
+</blockquote>
+
+<p>共由$k$个混合成分组成，每个混合成分对应一个高斯分布。其中$𝛍_𝑖$与$𝚺_𝑖$是第$i$个高斯混合成分的参数，而$𝛼<em>𝑖&gt;0$为相应的“混合系数”(mixture coefficient)，$\sum</em>{i=1}^k \alpha_i = 1$.</p>
+
+<p><strong>算法：</strong>
+<img src="https://i.loli.net/2019/04/01/5ca220a1f316f.png" alt="FCE21442-A5F3-41F8-A9C8-6CA3B189" /></p>
+
+<p><strong>思路：</strong></p>
+
+<p>假设样本的生成过程由高斯混合分布给出：</p>
+
+<ul>
+<li>首先，根据$\alpha_1,\alpha_2,\cdots,\alpha_k$定义的先验分布选择高斯混合成分，其中$𝛼_𝑖$为选择第$i$个混合成分的概率；</li>
+<li>然后，根据被选择的混合成分的概率密度函数进行采样，生成相应的样本。</li>
+</ul>
+
+<h4 id="后验概率和先验概率">后验概率和先验概率</h4>
+
+<p>若训练集$D = {\boldsymbol{x}_1, \boldsymbol{x}_2, \cdots, \boldsymbol{x}_m}$由上述过程生成，令随机变量$z_j \in {1,2,\cdots,k}$表示生成样本$\boldsymbol{x}_j$的高斯混合成分，其取值未知。</p>
+
+<p>$z_j$的<strong>先验概率</strong>$P(z_j=i)$对应于$α_i(i=1,2,&hellip;,k)$。根据贝叶斯定理，$z_j$的后验分布对应于
+<img src="https://i.loli.net/2019/04/01/5ca220c0424aa.png" alt="03486FFE-73B1-470D-88C0-9D1E563BE07E" /></p>
+
+<p>即，$p_{\cal{M}}(z_j=i \, | \, \boldsymbol{x}_j)$给出了样本$\boldsymbol{x}<em>j$由第$i$个高斯混合成分生成的后验概率，记做$γ</em>{ji}\, (i=1, 2, &hellip;, k)$。</p>
+
+<p><strong>确定样本所属簇标记λj</strong></p>
+
+<p>当高斯混合分布(9.29)已知时，高斯混合聚类将把样本集$D$划分为$k$个簇$\cal{C}={C_1, C_2, \cdots, C_k}$每个样本的簇标记$λ_j$如下确定
+<img src="https://i.loli.net/2019/04/01/5ca22094ac43d.png" alt="71577F1C-EC81-43E5-9B57-6CEDDD64CBEA" /></p>
+
+<div class="admonition tip"><p class="admonition-title">summary</p>
+  <p>从原型聚类的角度看，高斯混合聚类是采用概率模型（高斯分布）对原型进行刻画，簇划分则由原型对应的后验概率决定。</p>
+
+</div>
+
+<h4 id="参数求解">参数求解</h4>
+
+<p>$${ (\alpha_i, \boldsymbol{\mu}_i, \boldsymbol{\Sigma}_i \, | \, 1 \leq i \leq k}$$</p>
+
+<p><strong>方法：</strong>极大似然法+EM算法</p>
+
+<p>给定样本集$D$，用极大似然估计，最大化（对数）似然
+<img src="https://i.loli.net/2019/04/01/5ca220c04f053.png" alt="C75EA0EB-A3AB-489B-88E2-0DE3638C9D" /></p>
+
+<p>用EM算法迭代优化求解：</p>
+
+<p><strong>求样本均值向量μ_i</strong></p>
+
+<p>若参数${ (\alpha_i, \boldsymbol{\mu}_i, \boldsymbol{\Sigma}_i \, | \, 1 \leq i \leq k}$能使式(9.32)最大化，则由$\frac{\partial LL(D)}{\partial \boldsymbol{\mu}_i} =0$有
+<img src="https://i.loli.net/2019/04/01/5ca220b7d522a.png" alt="84C4A559-65EC-470E-AF81-BF4885A78552" /></p>
+
+<p>由式(9.30)以及$\gamma<em>{ji} = p</em>{\cal{M}} (z_j = i \, | \, \boldsymbol{x})$有
+<img src="https://i.loli.net/2019/04/01/5ca220c051c89.png" alt="F53B4D27-5BC3-411C-AD0F-44AEFC5EE7A2" /></p>
+
+<p>即<strong>各混合成分的均值可通过样本加权平均来估计，样本权重是每个样本属于该成分的后验概率。</strong></p>
+
+<p><strong>求协方差阵$∑_i$</strong></p>
+
+<p>类似，令$\frac{\partial LL(D)}{\partial \boldsymbol{\Sigma}_i} =0$可得
+<img src="https://i.loli.net/2019/04/01/5ca220c0adbe7.png" alt="05F16BEE-6735-4086-8C20-634C76C327F3" /></p>
+
+<p><strong>求高斯成分的混合系数$α_i$</strong></p>
+
+<p>对混合系数$α_i$，除了最大化$LL(D)$，还需满足考虑$LL(D)的$拉格朗日形式
+<img src="https://i.loli.net/2019/04/01/5ca220b18e276.png" alt="F9F06440-743A-4A24-9684-FB64D682974B" /></p>
+
+<p>其中$λ$为拉格朗日乘子。由式(9.36)对$α_i$的导数为$0$，有
+<img src="https://i.loli.net/2019/04/01/5ca220b7cda1c.png" alt="1BD63CB7-C78B-4021-8BA1-DBEC05E96940" /></p>
+
+<p>两边同乘以$α_i$，对所有混合成分求和可知$λ=-m$，有
+<img src="https://i.loli.net/2019/04/01/5ca220b7cb23e.png" alt="8C5ADF68-170D-409B-9B97-C98F4E1EEC8A" /></p>
+
+<p>即，<strong>每个高斯成分的混合系数由样本属于该成分的平均后验概率决定。</strong></p>
+
+<h4 id="高斯混合模型的em算法">高斯混合模型的EM算法：</h4>
+
+<ul>
+<li>E：在每步迭代中，先根据当前参数来计算每个样本属于每个高斯成分的后验概率$γ_{ji}$；</li>
+<li>M：根据均值向量、协方差阵、混合系数的公式来更新模型参数${ (\alpha_i, \boldsymbol{\mu}_i, \boldsymbol{\Sigma}_i \, | \, 1 \leq i \leq k}$。</li>
+</ul>
+
+<p><strong>举一个例子🌰：</strong></p>
+
+<p>以表9.1的西瓜数据集4.0为例，令高斯混合成分的个数$k=3$。算法开始时，假定初始化模型参数为
+<img src="https://i.loli.net/2019/04/01/5ca220b192a22.jpg" alt="-w588" />
+第一轮迭代，先计算样本由3个混合成分生成的后验概率。以x1为例，由式(9.30)算出后验概率
+<img src="https://i.loli.net/2019/04/01/5ca220949738f.jpg" alt="-w592" />
+所有样本的后验概率算法后，得到新的模型参数如下：
+<img src="https://i.loli.net/2019/04/01/5ca220c0288bf.jpg" alt="-w590" />
+更新参数，不断重复上述过程，不同轮数之后的聚类结果如图9.7所示。
+<img src="https://i.loli.net/2019/04/01/5ca220c7a7784.png" alt="C296E6DC-A0CB-457A-93B0-E8AC9CD480E8" /></p>
+
+<h2 id="9-5-密度聚类">9.5 密度聚类</h2>
+
+<blockquote>
+<p>亦称“基于密度的聚类”(density&ndash;based clustering)</p>
+</blockquote>
+
+<p><strong>思路：</strong>假设聚类结构能通过样本分布的紧密程度决定。通常情形下，魔都聚类算法从样本密度的角度来考察样本之间的可连接性，并基于可连接样本不断扩展聚类簇以获得最终结果。</p>
+
+<p><strong>代表算法：</strong> DBSCAN (Density-Based Spatial Clustering of Applications with Noise), 基于一组“领域”(neighborhood)参数$(𝜖, MinPts)$来刻画样本分布的紧密程度。</p>
+
+<p><strong>符号：</strong></p>
+
+<p>给定数据集$D = {\boldsymbol{x}_1, \boldsymbol{x}_2, \cdots, \boldsymbol{x}_m}$，定义</p>
+
+<ul>
+<li><strong>$𝜖-$邻域</strong>：对$\boldsymbol{x}_j$∈D，其𝜖-领域包含样本集D中与$\boldsymbol{x}<em>j$的距离不大于𝜖的样本，即$N</em>{\epsilon}(\boldsymbol{x}_j) = {\boldsymbol{x}_i \in D \, | \, dist(\boldsymbol{x}_i, \boldsymbol{x}_j) \leq \epsilon$</li>
+<li><strong>核心对象(core object)</strong>：若$\boldsymbol{x}<em>j$的𝜖-邻域至少包含$MinPts$个样本，即$N</em>{\epsilon}(\boldsymbol{x}_j) \geq MinPts$，则$\boldsymbol{x}_j$是一个核心对象；</li>
+<li><strong>密度直达(deirectly density-reachable)</strong>：若$\boldsymbol{x}_j$位于$\boldsymbol{x}_1$的𝜖-邻域中，且$\boldsymbol{x}_i$是核心对象，则称$\boldsymbol{x}_j$由$\boldsymbol{x}_i$密度直达；（通常不满足对称性）</li>
+<li><strong>密度可达(density-reachable)</strong>：对𝒙𝑖与$\boldsymbol{x}_j$，若存在样本序列$𝒑_1,𝒑_2,&hellip;,𝒑_n$, 其中$𝒑_1=𝒙_𝑖$, $𝒑_n=\boldsymbol{x}<em>j$且$𝒑</em>{𝑖+1}$由$𝒑_𝑖$密度直达，则称$\boldsymbol{x}_j$由$\boldsymbol{x}_i$密度可达；（满足直递性，但不满足对称性）</li>
+<li><strong>密度相连(density-connected)</strong>：对$\boldsymbol{x}_i$与$\boldsymbol{x}_j$，若存在$\boldsymbol{x}_k$使得$\boldsymbol{x}_i$与$\boldsymbol{x}_j$均由$\boldsymbol{x}_k$密度可达，则称$\boldsymbol{x}_i$与$\boldsymbol{x}_j$密度相连。（满足对称性）</li>
+</ul>
+
+<p>直观图如下：
+<img src="https://i.loli.net/2019/04/01/5ca220c72eb1d.png" alt="D8CAAD56-FBE1-47BD-AED9-60AA4764F6A9" /></p>
+
+<h4 id="簇">簇</h4>
+
+<p><strong>定义：</strong>由密度可达关系导出的最大的密度相连样本集合。用数学语言表达，给定领域参数$(𝜖, MinPts)$，簇$𝐶⊆𝐷$是满足一下性质的非空样本子集：</p>
+
+<ul>
+<li>连接性：$𝒙_𝑖∈𝐶$，$\boldsymbol{x}_j ∈𝐶$ ⇒  $𝒙_𝑖$与$\boldsymbol{x}_j$密度相连                                              (9.39)</li>
+<li>最大性：$𝒙_𝑖∈𝐶$，$\boldsymbol{x}_j$由$𝒙_𝑖$密度可达  ⇒  $\boldsymbol{x}_j∈𝐶$                                             (9.40)</li>
+</ul>
+
+<blockquote>
+<p>D中不属于任何簇的样本被认为是噪声noise或异常anomaly样本。</p>
+</blockquote>
+
+<p><strong>寻找聚类簇</strong></p>
+
+<p>**聚类簇： * 若$𝒙$为核心对象，由$𝒙$密度可达的所有样本组成的集合记为$X={𝒙&rsquo;∈D \, | \, 𝒙&rsquo;由𝒙密度可达}$，则X即为满足连接性与最大性的簇。</p>
+
+<p><strong>思路：</strong>先任选数据集中的一个核心对象为“种子”(seed)，再由此出发确定相应的聚类簇。</p>
+
+<p><strong>算法描述：</strong>
+<img src="https://i.loli.net/2019/04/01/5ca220a200e81.png" alt="1DC9D45F-5085-4465-8359-220DE4225618" /></p>
+
+<p><strong>说明：</strong></p>
+
+<ul>
+<li>1-7：根据给定的邻域参数(𝜖, MinPts)找出所有核心对象；</li>
+<li>10-24：以任一对象为出发点，找出由其密度可达的样本生成聚类簇，直到所有核心对象均被访问过为止。</li>
+</ul>
+
+<p><strong>举一个例子🌰：</strong></p>
+
+<p>以表9.1的西瓜数据集4.0为例。 假定邻域参数$(𝜖, MinPts)$设置为$𝜖=0.11$，$MinPts=5$.</p>
+
+<ol>
+<li>先找出各样本的𝜖-邻域并确定核心对象集合：
+<img src="https://i.loli.net/2019/04/01/5ca220b1967b0.jpg" alt="-w604" /></li>
+<li>然后，从Ω中随机选取一个核心对象作为种子，找出由它密度可达的所有样本，这就构成了第一个聚类簇。不妨假定核心对象$𝒙_8$被选做种子，则DBSCAN生成的第一个聚类簇为
+<img src="https://i.loli.net/2019/04/01/5ca220b1981ad.png" alt="1863525D-5D66-4B6C-A354-C2D15D992494" /></li>
+<li>将$C_1$中包含的核心对象从$Ω$中去除：$Ω=Ω\backslash C_1= {\boldsymbol{x}_3, \boldsymbol{x}_5, \boldsymbol{x}<em>9, \boldsymbol{x}</em>{13}, \boldsymbol{x}<em>{14}, \boldsymbol{x}</em>{24}, \boldsymbol{x}<em>{25}, \boldsymbol{x}</em>{28}, \boldsymbol{x}_{29} }$</li>
+<li>从更新后的集合$Ω$中随机选取一个核心对象作为种子，用于生成下一个聚类簇。</li>
+<li>不断重复上述过程，直至$Ω$为空。</li>
+</ol>
+
+<p>9.10显示出DBSCAN先后生成聚类簇的情况。$C_1$之后生成的聚类簇为
+<img src="https://i.loli.net/2019/04/01/5ca220b7de19a.png" alt="B9E0C13D-C12C-472E-97B1-F842D25D6089" />
+<img src="https://i.loli.net/2019/04/01/5ca220a347590.png" alt="D500E646-9263-4F25-A748-8271167D0CD2" /></p>
+
+<h2 id="9-6-层次聚类-hierarchical-clustering">9.6 层次聚类 hierarchical clustering</h2>
+
+<p>试图在不同的层次对数据集进行划分，从而形成树形的聚类结构。数据集的划分可采用“自底向上”的聚合策略，也可采用“自顶向下”的拆分策略。</p>
+
+<p><strong>代表算法：</strong> AGNES（AGglomerative NESting）（自底向上）</p>
+
+<p><strong>思路：</strong></p>
+
+<p>先将数据集中的每个样本看做一个初始聚类簇，然后在算法运行的每一步中找出距离最近的两个聚类簇进行合并，不断重复上述过程直至达到预设的聚类簇个数。</p>
+
+<p><strong>关键：</strong>计算聚类簇间的距离</p>
+
+<p>每个聚类簇是一个样本集合，采用关于集合的某种距离即可。例如，给定聚类簇$C_i$与$C_j$，可通过以下方式计算距离：
+<img src="https://i.loli.net/2019/04/01/5ca220c11d47d.jpg" alt="-w602" /></p>
+
+<blockquote>
+<p>集合间的距离计算常采用豪斯多夫距离(Hausdorff distance)。</p>
+</blockquote>
+
+<p>最小距离由两个簇的最近样本决定，最大距离由两个簇的最远样本决定，平均距离则由两个簇所有样本共同决定。当聚类簇距离由$d<em>{\min}$、$d</em>{\max}$或$d_{avg}$计算时，AGNES算法被相应地称为“单链接”(single-linkage)、“全链接”(complete-linkage)或“均链接”(average-linkage)算法。</p>
+
+<p>算法描述：
+<img src="https://i.loli.net/2019/04/01/5ca220c7aaa61.png" alt="354DF491-4795-4F9C-95E3-AFD90D68621D" /></p>
+
+<p><strong>说明：</strong></p>
+
+<ul>
+<li>距离度量函数$d$：通常使用$d<em>{\min}$、$d</em>{\max}$或$d_{avg}$。</li>
+<li>1-9：先对仅含一个样本的初始聚类簇和相应的距离矩阵进行初始化；</li>
+<li>2：初始化单样本聚类簇；</li>
+<li>6：初始化聚类簇距离矩阵；</li>
+<li>11-23：不断合并距离最近的聚类簇，并对合并得到的聚类簇的距离矩阵进行更新；</li>
+<li>12：i*&lt;j*。</li>
+<li>不断重复，直至达到预设的聚类数目。</li>
+</ul>
+
+<p><strong>举一个例子🌰：</strong></p>
+
+<p>以西瓜数据集4.0为例。令AGNES算法一直执行到所有样本出现在同一个簇中，即$k=1$，则可得到图9.12所示的“树状图”(dendrogram)，其中每层链接一组聚类簇。
+<img src="https://i.loli.net/2019/04/01/5ca220a0968b6.png" alt="3F20CA93-B9A2-461A-AA88-1D09A0651A44" /></p>
+
+<p>在树状图的特定层次上进行分割，可得到相应的簇划分结果。例如，以图9.12中所示虚线分割树状图，将得到包含7个聚类簇的结果：
+<img src="https://i.loli.net/2019/04/01/5ca220c18629a.png" alt="2A0E5E78-125A-4457-B885-B092C15CA2A3" /></p>
+
+<p>将分割层逐步上移，则可得到聚类簇逐渐减少的聚类结果。例如，图9.13显示了从图9.12中产生的7至4个聚类簇的划分结果。
+<img src="https://i.loli.net/2019/04/01/5ca220c7a25fe.png" alt="25C0F644-50C1-41F0-8505-72599BC32D" /></p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">Octemull</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">2019-04-01</span>
+  </p>
+  
+  
+</div><footer class="post-footer">
+      <div class="post-tags">
+          <a href="/personal-site/tags/notes/">Notes</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/personal-site/post/ml-contents/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">目录 周志华机器学习笔记</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/personal-site/post/ml-chap08/">
+            <span class="next-text nav-default">chap 08 - 集成学习 | Ensemble learning</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        id: '2017-12-14 00:00:00 \x2b0000 UTC',
+        title: 'chap 09 - 聚类 | Clustering',
+        clientID: 'ce8007fddcb901cf8139',
+        clientSecret: '25db834f14aadc3708bf0c8eeb5c10127a9f5a22',
+        repo: 'personal-site-comment',
+        owner: 'Octemull',
+        admin: ['Octemull'],
+        body: decodeURI(location.href)
+      });
+      gitalk.render('gitalk-container');
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript>
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:yyear103@outlook.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/Octemull" class="iconfont icon-github" title="github"></a>
+  <a href="https://octemull.github.io/personal-site/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Octemull</span>
+  </span>
+</div>
+
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/personal-site/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/personal-site/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?41497b30235376fbac44b6375248dcd8";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+
+
+
+
+
+</body>
+</html>
