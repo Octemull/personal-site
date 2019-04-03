@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>chap 10 - 降维与度量学习 - Octemull&#39;s Personal Site</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Octemull" /><meta name="description" content="10.1 k近邻学习(k-Nearest Neighbor, kNN) 类型：监督学习
+工作机制： 给定测试样本，基于某种距离度量计算出训练集中与该样本距离最近的k个训练样本，然后基于这k个“邻居”的信息来进行预测。通常，在分类任务中采取“投票法”，回归任务中采取“平均法”，还可基于距离的远近使用“加权投票法”或“加权平均法”。
+特点：
+ 懒惰学习(lazy learning)的著名代表。此类学习技术在训练阶段仅仅保存训练样本，训练时间开销为零，待收到测试样本之后再处理。 之前的算法都是“急切学习”(eager learning)算法，即收到训练样本就马上处理。  kNN的关键：
+ k取值不同，分类结果会显著不同； 距离度量的计算方式会导致同一测试样本有不同的“近邻”。  举一个例子🌰： 分类性能：
+假设距离计算是“恰当”（能恰当找到$k$个近邻）的，取$k=1$，讨论“最近邻分类器”($1NN, k=1$)在二分类问题上的性能。
+给定测试样本$x$，若其最近邻样本为$z$，则最近邻分类器出错的概率就是$x$与$z$类别标记不同的概率，即
+假设样本i.i.d.，且对任意$x$和任意小正数$δ$，在$x$的$δ$邻域内总能找到一个训练样本；换言之，对任意测试样本，总能在任意近的范围内找到式(10.1)中的训练样本$z$。
+ 即假设训练样本密度足够大，或称为“密度采样”(dense sample)。
+ 令$c^\ast = \arg \max_{c \in \cal{Y}} P(c \,|\, \boldsymbol{x})$表示贝叶斯最优分类器的结果，有 可以看出，1NN虽然简单，但其泛化错误率不超过贝叶斯最优分类器错误率的两倍。 【严格分析参阅[Cover and Hart, 1967]】
+10.2 低维嵌入 维数灾难 kNN的缺陷：“密度采样”难以满足。
+ 属性维数越多，要满足密度采样条件的样本数目是无法达到的； 如，取$δ=0.001$，仅考虑单个属性，则需$1000$个样本点平均分布在归一化后的属性取值范围内；若属性维数为$20$，则至少需$(10^3)^{20}=10^{60}$个样本。【作为参照：宇宙间基本粒子的总数约为$10^{80}$（一粒灰尘中含有几十亿个基本粒子）】 在高维空间计算距离十分困难。  如，当维数很高时计算内积都十分困难。
+以上在高维情形下出现的数据样本稀疏、距离计算困难等问题，是所有机器学习方法共同面临的严重障碍，被称为“维数灾难”(curse of dimensionality).
+ [Bellman, 1957]最早提出，亦称“维数诅咒”、“维数危机”。
+ 如何缓解维数灾难
+ 特征选择（chap 11） 降维（dimension reduction）/ 维数约简：通过某种数学变换将原始高维属性空间转变为一个低维“子空间”(subspace)。在子空间内，样本密度大幅提高，距离计算变得简单。  可以降维的原因：" /><meta name="keywords" content="Blog" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.53 with even 4.0.0" />
+
+
+<link rel="canonical" href="https://octemull.github.io/personal-site/post/ml-chap10/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/personal-site/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/personal-site/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/personal-site/favicon-16x16.png">
+<link rel="manifest" href="/personal-site/manifest.json">
+<link rel="mask-icon" href="/personal-site/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/personal-site/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="chap 10 - 降维与度量学习" />
+<meta property="og:description" content="10.1 k近邻学习(k-Nearest Neighbor, kNN) 类型：监督学习
+工作机制： 给定测试样本，基于某种距离度量计算出训练集中与该样本距离最近的k个训练样本，然后基于这k个“邻居”的信息来进行预测。通常，在分类任务中采取“投票法”，回归任务中采取“平均法”，还可基于距离的远近使用“加权投票法”或“加权平均法”。
+特点：
+ 懒惰学习(lazy learning)的著名代表。此类学习技术在训练阶段仅仅保存训练样本，训练时间开销为零，待收到测试样本之后再处理。 之前的算法都是“急切学习”(eager learning)算法，即收到训练样本就马上处理。  kNN的关键：
+ k取值不同，分类结果会显著不同； 距离度量的计算方式会导致同一测试样本有不同的“近邻”。  举一个例子🌰： 分类性能：
+假设距离计算是“恰当”（能恰当找到$k$个近邻）的，取$k=1$，讨论“最近邻分类器”($1NN, k=1$)在二分类问题上的性能。
+给定测试样本$x$，若其最近邻样本为$z$，则最近邻分类器出错的概率就是$x$与$z$类别标记不同的概率，即
+假设样本i.i.d.，且对任意$x$和任意小正数$δ$，在$x$的$δ$邻域内总能找到一个训练样本；换言之，对任意测试样本，总能在任意近的范围内找到式(10.1)中的训练样本$z$。
+ 即假设训练样本密度足够大，或称为“密度采样”(dense sample)。
+ 令$c^\ast = \arg \max_{c \in \cal{Y}} P(c \,|\, \boldsymbol{x})$表示贝叶斯最优分类器的结果，有 可以看出，1NN虽然简单，但其泛化错误率不超过贝叶斯最优分类器错误率的两倍。 【严格分析参阅[Cover and Hart, 1967]】
+10.2 低维嵌入 维数灾难 kNN的缺陷：“密度采样”难以满足。
+ 属性维数越多，要满足密度采样条件的样本数目是无法达到的； 如，取$δ=0.001$，仅考虑单个属性，则需$1000$个样本点平均分布在归一化后的属性取值范围内；若属性维数为$20$，则至少需$(10^3)^{20}=10^{60}$个样本。【作为参照：宇宙间基本粒子的总数约为$10^{80}$（一粒灰尘中含有几十亿个基本粒子）】 在高维空间计算距离十分困难。  如，当维数很高时计算内积都十分困难。
+以上在高维情形下出现的数据样本稀疏、距离计算困难等问题，是所有机器学习方法共同面临的严重障碍，被称为“维数灾难”(curse of dimensionality).
+ [Bellman, 1957]最早提出，亦称“维数诅咒”、“维数危机”。
+ 如何缓解维数灾难
+ 特征选择（chap 11） 降维（dimension reduction）/ 维数约简：通过某种数学变换将原始高维属性空间转变为一个低维“子空间”(subspace)。在子空间内，样本密度大幅提高，距离计算变得简单。  可以降维的原因：" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://octemull.github.io/personal-site/post/ml-chap10/" /><meta property="article:published_time" content="2017-12-18T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-04-03T00:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="chap 10 - 降维与度量学习">
+<meta itemprop="description" content="10.1 k近邻学习(k-Nearest Neighbor, kNN) 类型：监督学习
+工作机制： 给定测试样本，基于某种距离度量计算出训练集中与该样本距离最近的k个训练样本，然后基于这k个“邻居”的信息来进行预测。通常，在分类任务中采取“投票法”，回归任务中采取“平均法”，还可基于距离的远近使用“加权投票法”或“加权平均法”。
+特点：
+ 懒惰学习(lazy learning)的著名代表。此类学习技术在训练阶段仅仅保存训练样本，训练时间开销为零，待收到测试样本之后再处理。 之前的算法都是“急切学习”(eager learning)算法，即收到训练样本就马上处理。  kNN的关键：
+ k取值不同，分类结果会显著不同； 距离度量的计算方式会导致同一测试样本有不同的“近邻”。  举一个例子🌰： 分类性能：
+假设距离计算是“恰当”（能恰当找到$k$个近邻）的，取$k=1$，讨论“最近邻分类器”($1NN, k=1$)在二分类问题上的性能。
+给定测试样本$x$，若其最近邻样本为$z$，则最近邻分类器出错的概率就是$x$与$z$类别标记不同的概率，即
+假设样本i.i.d.，且对任意$x$和任意小正数$δ$，在$x$的$δ$邻域内总能找到一个训练样本；换言之，对任意测试样本，总能在任意近的范围内找到式(10.1)中的训练样本$z$。
+ 即假设训练样本密度足够大，或称为“密度采样”(dense sample)。
+ 令$c^\ast = \arg \max_{c \in \cal{Y}} P(c \,|\, \boldsymbol{x})$表示贝叶斯最优分类器的结果，有 可以看出，1NN虽然简单，但其泛化错误率不超过贝叶斯最优分类器错误率的两倍。 【严格分析参阅[Cover and Hart, 1967]】
+10.2 低维嵌入 维数灾难 kNN的缺陷：“密度采样”难以满足。
+ 属性维数越多，要满足密度采样条件的样本数目是无法达到的； 如，取$δ=0.001$，仅考虑单个属性，则需$1000$个样本点平均分布在归一化后的属性取值范围内；若属性维数为$20$，则至少需$(10^3)^{20}=10^{60}$个样本。【作为参照：宇宙间基本粒子的总数约为$10^{80}$（一粒灰尘中含有几十亿个基本粒子）】 在高维空间计算距离十分困难。  如，当维数很高时计算内积都十分困难。
+以上在高维情形下出现的数据样本稀疏、距离计算困难等问题，是所有机器学习方法共同面临的严重障碍，被称为“维数灾难”(curse of dimensionality).
+ [Bellman, 1957]最早提出，亦称“维数诅咒”、“维数危机”。
+ 如何缓解维数灾难
+ 特征选择（chap 11） 降维（dimension reduction）/ 维数约简：通过某种数学变换将原始高维属性空间转变为一个低维“子空间”(subspace)。在子空间内，样本密度大幅提高，距离计算变得简单。  可以降维的原因：">
+
+
+<meta itemprop="datePublished" content="2017-12-18T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-04-03T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="456">
+
+
+
+<meta itemprop="keywords" content="Notes," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="chap 10 - 降维与度量学习"/>
+<meta name="twitter:description" content="10.1 k近邻学习(k-Nearest Neighbor, kNN) 类型：监督学习
+工作机制： 给定测试样本，基于某种距离度量计算出训练集中与该样本距离最近的k个训练样本，然后基于这k个“邻居”的信息来进行预测。通常，在分类任务中采取“投票法”，回归任务中采取“平均法”，还可基于距离的远近使用“加权投票法”或“加权平均法”。
+特点：
+ 懒惰学习(lazy learning)的著名代表。此类学习技术在训练阶段仅仅保存训练样本，训练时间开销为零，待收到测试样本之后再处理。 之前的算法都是“急切学习”(eager learning)算法，即收到训练样本就马上处理。  kNN的关键：
+ k取值不同，分类结果会显著不同； 距离度量的计算方式会导致同一测试样本有不同的“近邻”。  举一个例子🌰： 分类性能：
+假设距离计算是“恰当”（能恰当找到$k$个近邻）的，取$k=1$，讨论“最近邻分类器”($1NN, k=1$)在二分类问题上的性能。
+给定测试样本$x$，若其最近邻样本为$z$，则最近邻分类器出错的概率就是$x$与$z$类别标记不同的概率，即
+假设样本i.i.d.，且对任意$x$和任意小正数$δ$，在$x$的$δ$邻域内总能找到一个训练样本；换言之，对任意测试样本，总能在任意近的范围内找到式(10.1)中的训练样本$z$。
+ 即假设训练样本密度足够大，或称为“密度采样”(dense sample)。
+ 令$c^\ast = \arg \max_{c \in \cal{Y}} P(c \,|\, \boldsymbol{x})$表示贝叶斯最优分类器的结果，有 可以看出，1NN虽然简单，但其泛化错误率不超过贝叶斯最优分类器错误率的两倍。 【严格分析参阅[Cover and Hart, 1967]】
+10.2 低维嵌入 维数灾难 kNN的缺陷：“密度采样”难以满足。
+ 属性维数越多，要满足密度采样条件的样本数目是无法达到的； 如，取$δ=0.001$，仅考虑单个属性，则需$1000$个样本点平均分布在归一化后的属性取值范围内；若属性维数为$20$，则至少需$(10^3)^{20}=10^{60}$个样本。【作为参照：宇宙间基本粒子的总数约为$10^{80}$（一粒灰尘中含有几十亿个基本粒子）】 在高维空间计算距离十分困难。  如，当维数很高时计算内积都十分困难。
+以上在高维情形下出现的数据样本稀疏、距离计算困难等问题，是所有机器学习方法共同面临的严重障碍，被称为“维数灾难”(curse of dimensionality).
+ [Bellman, 1957]最早提出，亦称“维数诅咒”、“维数危机”。
+ 如何缓解维数灾难
+ 特征选择（chap 11） 降维（dimension reduction）/ 维数约简：通过某种数学变换将原始高维属性空间转变为一个低维“子空间”(subspace)。在子空间内，样本密度大幅提高，距离计算变得简单。  可以降维的原因："/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/personal-site/" class="logo">Octemull</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/personal-site/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/personal-site/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/personal-site/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/personal-site/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/personal-site/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/personal-site/" class="logo">Octemull</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/personal-site/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/personal-site/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/personal-site/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/personal-site/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/personal-site/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">chap 10 - 降维与度量学习</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2017-12-18 </span>
+        <div class="post-category">
+            <a href="/personal-site/categories/machine-learning/"> Machine Learning </a>
+            </div>
+          <span class="more-meta"> 456 words </span>
+          <span class="more-meta"> 3 mins read </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#10-1-k近邻学习-k-nearest-neighbor-knn">10.1 k近邻学习(k-Nearest Neighbor, kNN)</a></li>
+<li><a href="#10-2-低维嵌入">10.2 低维嵌入</a>
+<ul>
+<li><a href="#维数灾难">维数灾难</a></li>
+<li><a href="#多维缩放-multiple-dimensional-scaling-mds">多维缩放 (Multiple Dimensional Scaling, MDS)</a></li>
+</ul></li>
+<li><a href="#10-3-主成分分析-principal-component-analysis-pca">10.3 主成分分析 (Principal Component Analysis, PCA)</a></li>
+<li><a href="#10-4-核化-kernelized-线性降维">10.4 核化(kernelized)线性降维</a>
+<ul>
+<li><a href="#核主成分分析-kernelized-pca-kpca">核主成分分析(Kernelized PCA, KPCA)</a></li>
+</ul></li>
+<li><a href="#10-5-流形学习-manifold-learning">10.5 流形学习 (manifold learning)</a>
+<ul>
+<li><a href="#10-5-1-等度量映射-isometric-mapping-isomap-tenenbaum-et-al-2000">10.5.1 等度量映射(Isometric Mapping, Isomap) [Tenenbaum et al., 2000]</a></li>
+<li><a href="#10-5-2-局部线性嵌入-locally-linear-embedding-lle-roweis-and-saul-2000">10.5.2 局部线性嵌入(Locally Linear Embedding, LLE) [Roweis and Saul, 2000]</a></li>
+</ul></li>
+<li><a href="#10-6-度量学习-距离度量学习-distance-metric-learning">10.6 度量学习/距离度量学习(distance metric learning)</a>
+<ul>
+<li><a href="#距离度量的推广">距离度量的推广</a></li>
+<li><a href="#马氏距离-mahalanobis-distance">马氏距离(Mahalanobis distance)</a></li>
+<li><a href="#其他优化目标-领域知识">其他优化目标——领域知识</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      
+
+<p><img src="https://i.loli.net/2019/04/03/5ca4237ab755d.png" alt="降维与度量学习" /></p>
+
+<h2 id="10-1-k近邻学习-k-nearest-neighbor-knn">10.1 k近邻学习(k-Nearest Neighbor, kNN)</h2>
+
+<p><strong>类型：</strong>监督学习</p>
+
+<p><strong>工作机制：</strong> 给定测试样本，基于某种距离度量计算出训练集中与该样本距离最近的k个训练样本，然后基于这k个“邻居”的信息来进行预测。通常，在分类任务中采取“投票法”，回归任务中采取“平均法”，还可基于距离的远近使用“加权投票法”或“加权平均法”。</p>
+
+<p><strong>特点：</strong></p>
+
+<ul>
+<li><strong>懒惰学习(lazy learning)</strong>的著名代表。此类学习技术在训练阶段仅仅保存训练样本，训练时间开销为零，待收到测试样本之后再处理。</li>
+<li>之前的算法都是“急切学习”(eager learning)算法，即收到训练样本就马上处理。</li>
+</ul>
+
+<p><strong>kNN的关键：</strong></p>
+
+<ul>
+<li>k取值不同，分类结果会显著不同；</li>
+<li>距离度量的计算方式会导致同一测试样本有不同的“近邻”。</li>
+</ul>
+
+<p><strong>举一个例子🌰：</strong>
+<img src="https://i.loli.net/2019/04/03/5ca4237d59193.png" alt="04CC118A-73E7-4C49-853A-14E5128B10B8" /></p>
+
+<p><strong>分类性能：</strong></p>
+
+<p>假设距离计算是“恰当”（能恰当找到$k$个近邻）的，取$k=1$，讨论“最近邻分类器”($1NN, k=1$)在二分类问题上的性能。</p>
+
+<p>给定测试样本$x$，若其最近邻样本为$z$，则最近邻分类器出错的概率就是$x$与$z$类别标记不同的概率，即</p>
+
+<p><img src="https://i.loli.net/2019/04/03/5ca4235987be4.png" alt="55A93961-38BE-430C-8610-31E9B2A6994A" /></p>
+
+<p>假设样本i.i.d.，且对任意$x$和任意小正数$δ$，在$x$的$δ$邻域内总能找到一个训练样本；换言之，对任意测试样本，总能在任意近的范围内找到式(10.1)中的训练样本$z$。</p>
+
+<blockquote>
+<p>即假设训练样本密度足够大，或称为“密度采样”(dense sample)。</p>
+</blockquote>
+
+<p>令$c^\ast = \arg \max_{c \in \cal{Y}} P(c \,|\, \boldsymbol{x})$表示贝叶斯最优分类器的结果，有
+<img src="https://i.loli.net/2019/04/03/5ca4237d13dd6.png" alt="2B0B649E-972B-417C-9F62-55F87800C660" />
+可以看出，1NN虽然简单，但其泛化错误率不超过贝叶斯最优分类器错误率的两倍。
+【严格分析参阅[Cover and Hart, 1967]】</p>
+
+<h2 id="10-2-低维嵌入">10.2 低维嵌入</h2>
+
+<h3 id="维数灾难">维数灾难</h3>
+
+<p><strong>kNN的缺陷：</strong>“密度采样”难以满足。</p>
+
+<ol>
+<li>属性维数越多，要满足密度采样条件的样本数目是无法达到的；
+如，取$δ=0.001$，仅考虑单个属性，则需$1000$个样本点平均分布在归一化后的属性取值范围内；若属性维数为$20$，则至少需$(10^3)^{20}=10^{60}$个样本。【作为参照：宇宙间基本粒子的总数约为$10^{80}$（一粒灰尘中含有几十亿个基本粒子）】</li>
+<li>在高维空间计算距离十分困难。</li>
+</ol>
+
+<p>如，当维数很高时计算内积都十分困难。</p>
+
+<p>以上在高维情形下出现的数据样本稀疏、距离计算困难等问题，是所有机器学习方法共同面临的严重障碍，被称为“维数灾难”(curse of dimensionality).</p>
+
+<blockquote>
+<p>[Bellman, 1957]最早提出，亦称“维数诅咒”、“维数危机”。</p>
+</blockquote>
+
+<p><strong>如何缓解维数灾难</strong></p>
+
+<ul>
+<li>特征选择（chap 11）</li>
+<li><strong>降维（dimension reduction）/ 维数约简</strong>：通过某种数学变换将原始高维属性空间转变为一个低维“子空间”(subspace)。在子空间内，样本密度大幅提高，距离计算变得简单。</li>
+</ul>
+
+<p><strong>可以降维的原因：</strong></p>
+
+<p>虽观测到的样本数据是高维的，但很多时候，与学习任务密切相关的也许仅仅是某个低维分布，即高维空间中的一个低维“嵌入”(embedding)。图10.2给出了一个例子。原始高维空间中的样本点，在低维嵌入子空间中更容易学习。
+<img src="https://i.loli.net/2019/04/03/5ca423843871a.png" alt="B6BB0FD4-22A0-464E-BC6A-22CCA3BB0957" /></p>
+
+<h3 id="多维缩放-multiple-dimensional-scaling-mds">多维缩放 (Multiple Dimensional Scaling, MDS)</h3>
+
+<p><strong>特点：</strong>在低维空间中保持了原始空间中样本之间的距离。</p>
+
+<p><strong>推导：</strong></p>
+
+<p><strong>符号&amp;假设：</strong></p>
+
+<ul>
+<li>$\boldsymbol{D} \in \mathbb{R}^{m \times m}$：$m$个样本在原始空间的距离矩阵，其第$i$行$j$列的元素$dist_{ij}$为样本$x_i$到$x_j$的距离；</li>
+<li>$\boldsymbol{Z} \in \mathbb{R}^{d&rsquo; \times m}$：样本在$d&rsquo;$维空间的表示，$d&rsquo;≤d$，且任意两个样本在$d&rsquo;$维空间中的欧式距离等于原始空间中的距离，即$||z_i - z<em>j|| = dist</em>{ij}$。</li>
+</ul>
+
+<p><strong>目标：</strong>求<strong>Z</strong></p>
+
+<p>① 求内积矩阵$B=Z^T Z$</p>
+
+<p>令$B=Z^T Z \in \mathbb{R}^{m \times m}$，其中$B$为降维后样本的内积矩阵，$b_{ij} = z_i^T z_j$，有
+<img src="https://i.loli.net/2019/04/03/5ca423598d03a.png" alt="5A06D302-8F4A-4A2E-81E7-9B783D609B09" /></p>
+
+<p>为了便于讨论，令降维后的样本$Z$被中心化，即$\sum_{i=1}^m z<em>i=0$。显然，矩阵B的行与列之和均为零，即$\sum</em>{i=1}^m b<em>{ij} = \sum</em>{j=1}^m b_{ij} = 0$。易知，
+<img src="https://i.loli.net/2019/04/03/5ca423756ad18.png" alt="927973D6-206F-40A3-8281-06481BB6EA3E" /></p>
+
+<p>其中，tr(·)表示矩阵的迹(trace)，$tr(B) = \sum_{i=1}^m ||z_i||^2 $。令
+<img src="https://i.loli.net/2019/04/03/5ca4237561cc2.png" alt="16414F27-1B16-4F25-9E15-57BAE5E06435" /></p>
+
+<p>由式(10.3)和式(10.4)~(10.9)可得
+<img src="https://i.loli.net/2019/04/03/5ca423754ba61.png" alt="F77BA204-B534-426D-A59F-492EDD164803" /></p>
+
+<p>由此，即可通过降维前后保持不变的距离矩阵<strong>D</strong>求取内积矩阵<strong>B</strong>。</p>
+
+<p>②通过内积矩阵<strong>B</strong>求<strong>Z</strong></p>
+
+<p>对矩阵<strong>B</strong>做特征值分解(eigenvalue decomposition)，$B=V \Lambda V^T$，其中$\Lambda=diag(\lambda_1,\lambda_2,\cdots, \lambda_d)$为特征值构成的对角矩阵，$\lambda_1 ≥ \lambda_2≥\cdots ≥\lambda_d$，$V$为特征向量矩阵。</p>
+
+<p>假定其中有$d^\ast$个非零特征值，它们构成对角矩阵$\Lambda_\ast=diag(\lambda_1,\lambda<em>2,\cdots, \lambda</em>{d^\ast})$，令$V_\ast$表表示相应的特征向量矩阵，则$Z$可表达为
+<img src="https://i.loli.net/2019/04/03/5ca423663ecba.png" alt="DA121ACA-4AD4-4BFB-B721-6503AF52076B" /></p>
+
+<p>现实应用中为了有效降维，往往仅需降维后的距离与原始空间中的距离尽可能接近，不必严格相等。此时，可取$d&rsquo;&lt;&lt;d$个最大特征值构成对角矩阵$\tilde{\Lambda}=diag(\lambda_1,\lambda<em>2,\cdots,\lambda</em>{d&rsquo;})$，令
+$\tilde{V}$表示特征向量矩阵，则$Z$可表达为
+<img src="https://i.loli.net/2019/04/03/5ca423663d15d.png" alt="2CF530E6-6683-4D63-91E7-AED0E00A5994" /></p>
+
+<p><strong>算法描述：</strong>
+<img src="https://i.loli.net/2019/04/03/5ca42383ed813.png" alt="C3C1BEA1-8467-43A3-994E-B171971A0DF5" /></p>
+
+<p><strong>其他方法：</strong></p>
+
+<p><strong>最简单：</strong>线性降维，对原始高维空间进行线性变换。</p>
+
+<p>给定$d$维空间中的样本$X=(x_1,x_2, \cdots, x_m) \in \mathbb{R}^{d \times m}$，变换后得到$d&rsquo;≤d$维空间中的样本
+<img src="https://i.loli.net/2019/04/03/5ca423598bd84.png" alt="80420716-8E61-4801-84B1-55CCA51B6A4B" /></p>
+
+<p><strong>符号：</strong></p>
+
+<ul>
+<li>$\boldsymbol{W} \in \mathbb{R}^{d \times d&rsquo;}$：变换矩阵；</li>
+<li>$\boldsymbol{Z} \in \mathbb{R}^{d&rsquo; \times m}$：样本在新空间中的表达。</li>
+</ul>
+
+<p>变换矩阵<strong>W</strong>可视为$d&rsquo;$个$d$维向量，是第$i$个样本与这$d&rsquo;$个基向量分别做内积而得到的$d&rsquo;$维属性向量。换言之，$\boldsymbol{z}_i$是原属性向量$\boldsymbol{x}_i$在新坐标系${w_1,w<em>2, \cdots, w</em>{d&rsquo;}}$中的坐标向量。若$\boldsymbol{w}_i$与$\boldsymbol{w}_j (i \neq j)$正交，则新坐标系是一个正交坐标系，此时$\boldsymbol{W}$为正交变换。显然，新空间中的属性是原空间中属性的线性组合。</p>
+
+<p><strong>关键：W</strong></p>
+
+<p>对W施加不同的约束相当于对低维子空间有不同的要求。</p>
+
+<p><strong>降维效果评估：</strong></p>
+
+<p>通常，比较降维前后学习器的性能，若性能有所提高，则认为降维起到的作用。若将维数降至二维或三维，则可通过可视化技术直观判断。</p>
+
+<h2 id="10-3-主成分分析-principal-component-analysis-pca">10.3 主成分分析 (Principal Component Analysis, PCA)</h2>
+
+<p><strong>思路：</strong></p>
+
+<p>对正交属性空间中的样本点，如何寻找一个超平面（直线的高维推广）恰当描述所有样本？</p>
+
+<p><strong>超平面应满足的性质：</strong></p>
+
+<ul>
+<li>最近重构性：样本点到这个超平面的而距离都足够近；</li>
+<li>最大可分性：样本点在这个超平面上的投影能尽可能分开。</li>
+</ul>
+
+<p><strong>PCA的最近重构性推导：</strong></p>
+
+<p><strong>符号&amp;假设：</strong></p>
+
+<ul>
+<li>$\sum_i \boldsymbol{x}_i =0$：假定对数据样本中心化；</li>
+<li>${w_1,w_2, \cdots, w_d}$：投影变换后的新坐标系，$\boldsymbol{w}_i$为标准正交基向量，$||\boldsymbol{w}_i||_2 =1, \boldsymbol{w}_i^T \boldsymbol{w}_j=0 (i \neq j)$；</li>
+<li>$\boldsymbol{z}<em>i=(z</em>{i1};z<em>{i2};\cdots;z</em>{id&rsquo;})$：样本点$\boldsymbol{x}<em>i$在低维坐标系中的投影（丢弃新坐标系中的部分坐标，将维度降低至$d&rsquo;&lt;d$），$\boldsymbol{z}</em>{ij} = \boldsymbol{w}_j^T \boldsymbol{x}_i $是$\boldsymbol{x}_i$在低维坐标系下第$j$维的坐标。</li>
+<li>$\hat{\boldsymbol{x}}<em>i = \sum</em>{j=1}^{d&rsquo;} z_{ij} \boldsymbol{w}_j$：基于$\boldsymbol{z}_i$重构$\boldsymbol{x}_i$得到的$\boldsymbol{x}_i$坐标。</li>
+</ul>
+
+<p>考虑整个训练集，原样本点$\boldsymbol{x}_i$与基于投影重构的样本点$\hat{\boldsymbol{x}}_i$之间的距离为</p>
+
+<p><img src="https://i.loli.net/2019/04/03/5ca4237d15bba.png" alt="268430F3-8EA0-48E1-AD17-E0364FE56BDA" /></p>
+
+<blockquote>
+<p>正交矩阵性质$A^TA=I, \, A^{-1}=A^T$.</p>
+</blockquote>
+
+<p>其中,$\boldsymbol{W} = (\boldsymbol{w}_1,\boldsymbol{w}_2,\cdots,\boldsymbol{w}_d)$。根据重构性，应最小化式(10.14)。考虑到$\boldsymbol{w}_i$标准正交基，$\sum_i \boldsymbol{x}_i \boldsymbol{x}_i^T$是协方差矩阵，有
+<img src="https://i.loli.net/2019/04/03/5ca4237d177c2.png" alt="17901108-137E-44BA-B0A1-C7811ACAE23" /></p>
+
+<blockquote>
+<p>严格来说, 协方差矩阵是$\frac{1}{m-1} \sum_{i=1}^m \boldsymbol{x}_i \boldsymbol{x}_i^T$, 但前面的常数项在此不发生影响。</p>
+</blockquote>
+
+<p><strong>PCA的最大可分性推导：</strong></p>
+
+<p><strong>符号&amp;假设：</strong></p>
+
+<ul>
+<li>$\boldsymbol{W}^T \boldsymbol{x}_i$：样本点$\boldsymbol{x}_i$在新空间中超平面上的投影；</li>
+<li>$\sum_i \boldsymbol{W}^T \boldsymbol{x}_i \boldsymbol{x}_i^T \boldsymbol{W}$：投影后样本点的方差。</li>
+</ul>
+
+<p><strong>目标：</strong>投影后样本点方差最大化，如图10.4。
+<img src="https://i.loli.net/2019/04/03/5ca423842529e.png" alt="F97FBAD3-543F-4680-96A6-55C7137181AE" /></p>
+
+<p><strong>优化目标：</strong></p>
+
+<p><img src="https://i.loli.net/2019/04/03/5ca4236641630.png" alt="BFB1CE06-A2D1-435D-B850-5B636A56D798" /></p>
+
+<p><strong>目标函数求解：</strong></p>
+
+<p>(10.15)与(10.16)等价，用拉格朗日乘子法可得
+<img src="https://i.loli.net/2019/04/03/5ca42359818a9.png" alt="8FFBD826-6A46-4E42-BEAE-C2B5DFC4CB14" /></p>
+
+<p><strong>求解方法：</strong></p>
+
+<p>对协方差矩阵$\boldsymbol{X} \boldsymbol{X}^T$进行特征值分解，将求得的特征值排序$\lambda_1 ≥ \lambda_2≥\cdots ≥\lambda_d$，取前$d&rsquo;$个特征值对应的特征向量构成$\boldsymbol{W} = (\boldsymbol{w}_1,\boldsymbol{w}<em>2,\cdots,\boldsymbol{w}</em>{d&rsquo;})$，即为PCA的解。</p>
+
+<div class="admonition info"><p class="admonition-title">注意</p>
+  <ul>
+<li>实践中常用对$\boldsymbol{X}$进行奇异值分解来代替协方差矩阵的特征值分解。</li>
+<li>PCA也可看做逐一选取方差最大方向，即先对$\sum_i \boldsymbol{x}_i \boldsymbol{x}_i^T$做特征值分解，取最大特征值对应的特征向量$\boldsymbol{w}_1$；再对$\sum_i \boldsymbol{x}_i \boldsymbol{x}_i^T - \lambda \boldsymbol{w}_1 \boldsymbol{w}_1^T$做特征值分解，取最大特征值对应的特征向量$\boldsymbol{w}_2$;……由<strong>W</strong>各分量正交及$\sum_i \boldsymbol{x}_i \boldsymbol{x}_i^T = \sum_j \lambda_j \boldsymbol{w}_j \boldsymbol{w}_j^T$可知，上述注意选取方差最大方向的做法与直接选取最大$d&rsquo;$个特征值等价。</li>
+</ul>
+
+</div>
+
+<p><strong>算法描述：</strong>
+<img src="https://i.loli.net/2019/04/03/5ca4237d4924e.png" alt="212378C3-4F67-44EE-8FBD-5B8B535800FE" /></p>
+
+<p><strong>低维空间维数d&rsquo;的确定：</strong></p>
+
+<ol>
+<li>用户指定d&rsquo;；</li>
+<li>在d&rsquo;不同的低维空间里训练开销较小的学习器（如，kNN），用CV选择较好的d&rsquo;值。</li>
+<li>设置重构阈值，如t=95%，再选取使式(10.18)成立的最小d&rsquo;。
+<img src="https://i.loli.net/2019/04/03/5ca4235992fc8.png" alt="A3E29856-7914-458E-9026-CF3D78B93" /></li>
+</ol>
+
+<p><strong>投影新样本到低维空间：</strong> 保留W与样本均值向量即可。</p>
+
+<p><strong>舍弃d-d&rsquo;个特征值的作用：</strong></p>
+
+<ol>
+<li>使样本采样密度增大；</li>
+<li>当数据受到噪声影响时，最小特征值所对应的特征向量往往与噪声有关，将它们舍弃能在一定程度上起到去噪的效果。</li>
+</ol>
+
+<h2 id="10-4-核化-kernelized-线性降维">10.4 核化(kernelized)线性降维</h2>
+
+<p>PCA是一种线性降维方法，但现实中很多时候需要非线性映射才能找到合适的低维嵌入。如图10.6所示。
+<img src="https://i.loli.net/2019/04/03/5ca4237a9c3ac.png" alt="65BBB1CA-2BE6-4762-BFBC-D9FA7ED35B41" /></p>
+
+<blockquote>
+<p>为了和降维后的结果加以区分，称“原本采样的”低维结构为“本真”(intrinsic)低维空间。</p>
+</blockquote>
+
+<h3 id="核主成分分析-kernelized-pca-kpca">核主成分分析(Kernelized PCA, KPCA)</h3>
+
+<ul>
+<li>非线性降维方法</li>
+<li>[Schölkopf et al., 1998]</li>
+</ul>
+
+<p><strong>推导</strong></p>
+
+<p><strong>符号：</strong></p>
+
+<ul>
+<li>$\boldsymbol{W} = (\boldsymbol{w}_1,\boldsymbol{w}_2,\cdots,\boldsymbol{w}_d)$：低维超平面；</li>
+<li>$\boldsymbol{x}_i$：原始空间样本点；</li>
+<li>$\boldsymbol{z}_i$：把$\boldsymbol{x}_i$投影到低维平面后的像；</li>
+<li>$\phi$：把$\boldsymbol{x}_i$投影为$\boldsymbol{z}_i$的映射，$\boldsymbol{z}_i = \phi(\boldsymbol{x}_i), \, i=1,2,\cdots, m$；</li>
+<li>$\boldsymbol{K}$：核函数$k$对应的核矩阵；</li>
+</ul>
+
+<p>假定我们将在高维特征空间中把数据投影到由$\boldsymbol{W} = (\boldsymbol{w}_1,\boldsymbol{w}_2,\cdots,\boldsymbol{w}_d)$确定的超平面上，则对于$\boldsymbol{w}_i$，由式(10.17)有
+<img src="https://i.loli.net/2019/04/03/5ca423599496b.png" alt="46221F32-CB8F-4632-9563-235D6C389BBA" /></p>
+
+<p>其中，$\boldsymbol{z}_i$是样本点$\boldsymbol{x}_i$在高维特征空间中的像。易知
+<img src="https://i.loli.net/2019/04/03/5ca4236643b75.png" alt="C22B5514-B5CB-4CB6-89C2-D80E3FD93D39" />
+其中，$\boldsymbol{\alpha}_i = \frac{1}{\lambda_j} \boldsymbol{z}_i^T \boldsymbol{w}_j$是$\boldsymbol{\alpha}_i$的第$j$个分量，假定$boldsymbol{z}_i$是由原始属性空间中样本点$\boldsymbol{x}_i$通过映射$\phi$产生，即$\boldsymbol{z}_i = \phi(\boldsymbol{x}_i), \, i=1,2,\cdots, m$</p>
+
+<p>①若$\phi$能被显示表达，则先将样本映射至高维特征空间，再在特征空间中实施PCA即可。式(10.19)变换为
+<img src="https://i.loli.net/2019/04/03/5ca42359949a6.jpg" alt="Jietu20171219-144923@2x" /></p>
+
+<p>式(10.20)变换为
+<img src="https://i.loli.net/2019/04/03/5ca423598cb55.jpg" alt="Jietu20171219-145139@2x" /></p>
+
+<p>②大多数情况，不知道$\phi$的具体形式，引入核函数
+<img src="https://i.loli.net/2019/04/03/5ca42359811d4.jpg" alt="Jietu20171219-144714@2x" /></p>
+
+<p>将式(10.22)和(10.23)代入(10.21)后化简可得
+<img src="https://i.loli.net/2019/04/03/5ca423596b080.png" alt="AD487C39-E151-4D88-A205-7760C84CF610" /></p>
+
+<p>其中，$\boldsymbol{K}$为核函数$\kappa$对应的核矩阵，$\boldsymbol{K}_{ij} = \kappa(\boldsymbol{x}_i, \boldsymbol{x}_j)$，$\boldsymbol{\alpha}^j = (\alpha^j_1, \alpha^j_2, \cdots, \alpha^j_m)$。用特征值分解求解式(10.24)，取$\boldsymbol{K}$最大的$d&rsquo;$个特征值对应的特征向量即可。</p>
+
+<p>对新样本$\boldsymbol{x}$，其投影后的第$j(j=1,2,&hellip;,d&rsquo;)$维坐标为
+<img src="https://i.loli.net/2019/04/03/5ca42366488e8.png" alt="DCC95D9C-1CE1-41A7-9F6C-6425B52E2FB" /></p>
+
+<p>其中，$\boldsymbol{\alpha}^i$已经规范化。式(10.25)显示出，为获得投影后的坐标，KPCA需对所有样本求和，因此其计算开销较大。</p>
+
+<h2 id="10-5-流形学习-manifold-learning">10.5 流形学习 (manifold learning)</h2>
+
+<p><strong>流形：</strong>是在局部与欧式空间同胚的空间，换言之，它在局部具有欧式空间的性质，能用欧氏距离来进行距离计算。</p>
+
+<p><strong>启发：</strong></p>
+
+<ul>
+<li>若低维流形嵌入到高维空间中，则数据样本在高维空间的分布虽然看上去十分复杂，但在局部上仍具有欧式空间的性质。因此，易在局部建立降维映射关系，然后再设法将局部映射关系推广到全局。</li>
+<li>当维数被降至二维或三维时，能对数据进行可视化展示。</li>
+</ul>
+
+<h3 id="10-5-1-等度量映射-isometric-mapping-isomap-tenenbaum-et-al-2000">10.5.1 等度量映射(Isometric Mapping, Isomap) [Tenenbaum et al., 2000]</h3>
+
+<p><strong>基本出发点：</strong></p>
+
+<p>认为低维流形嵌入到高维空间后，直接在高维空间中计算距离具有误导性，因为高维空间中的直线距离在低维嵌入流形中不可达。</p>
+
+<p><strong>举一个例子🌰：</strong></p>
+
+<p>低维嵌入流形上两点间的距离是“测地线”(geodesic)距离：想象一只虫子从一点爬到另一点，如果它不能脱离曲面行走，那么图10.7(a)中的红色曲线是距离最短的路径，即S曲面上的测地线，测地线距离是两点之间的本真距离。显然，直接在高维空间中计算直线距离是不恰当的。
+<img src="https://i.loli.net/2019/04/03/5ca4237aa8bc9.png" alt="4C4330F8-1110-434D-99B2-617460C3FB3D" /></p>
+
+<p><strong>如何计算测地线距离</strong></p>
+
+<p>利用流形在局部上与欧式空间同胚的性质，对每个点基于欧式空间找出其近邻点，然后就能建立一个近邻连接图，图中近邻点之间存在连接，而非近邻点之间不存在连接，于是，计算两点之间测地线距离的问题，就转变为计算近邻连接图上两点之间的最短路径问题。从图10.7(b)可看出，基于近邻距离逼近能获得低维流形上测地线距离很好的近似。</p>
+
+<p><strong>如何在近邻连接图上计算两点间的最短路径</strong></p>
+
+<ul>
+<li>可采用著名的Dijkstra算法或Floyd算法；</li>
+<li>得到任意两点的距离之后，通过10.2节介绍的MDS方法来获得样本在低维空间中的坐标。</li>
+</ul>
+
+<blockquote>
+<p>1972年图灵奖得主E.W.Dijstra和1978年图灵奖得主R.floyd分别提出的著名算法，参阅数据结构教科书。</p>
+</blockquote>
+
+<p><strong>Isomap算法描述：</strong>
+<img src="https://i.loli.net/2019/04/03/5ca42384080cd.png" alt="9BF6EFB2-1F93-4F07-8442-8253E6D5A3CE" /></p>
+
+<ul>
+<li>6：MDS参见10.2节。</li>
+</ul>
+
+<p><strong>如何将新样本映射到低维空间</strong></p>
+
+<p>*** 常用解决方案：回归**。将训练样本的高维空间坐标作为输入、低维空间坐标作为输出，训练一个回归学习器，然后对新样本的低维坐标进行预测。
+* 权宜之计，目前似乎并没有更好的办法。</p>
+
+<p><strong>构建近邻图的两种常见做法</strong></p>
+
+<ol>
+<li><strong>指定近邻点个数k</strong>：如，选择欧式距离最近的k个点作为近邻点，这样得到的近邻图被称为“k近邻图”；</li>
+<li><strong>指定距离阈值𝜖</strong>：距离小于𝜖的点被认为是近邻点，这样得到的近邻图被称为“𝜖近邻图”。</li>
+</ol>
+
+<p><strong>不足：</strong></p>
+
+<ol>
+<li><strong>短路</strong>：近邻范围过大，距离很远的点被误认为近邻；</li>
+<li><strong>断路</strong>：近邻范围过小，图中有些区域与其他区域不存在连接。</li>
+</ol>
+
+<p>都会给后续的最短路径计算造成误导。</p>
+
+<h3 id="10-5-2-局部线性嵌入-locally-linear-embedding-lle-roweis-and-saul-2000">10.5.2 局部线性嵌入(Locally Linear Embedding, LLE) [Roweis and Saul, 2000]</h3>
+
+<p><strong>与Isomap的区别：</strong></p>
+
+<ul>
+<li>Isomap试图保持近邻样本之间的距离；</li>
+<li>LLE试图保持邻域内样本之间的线性关系，如式(10.26)。</li>
+</ul>
+
+<p><strong>举一个例子🌰：</strong></p>
+
+<p>如图10.9，假设样本点$\boldsymbol{x}_i$的坐标能通过其邻域样本$\boldsymbol{x}_j$,$\boldsymbol{x}_k$,$\boldsymbol{x}_l$的坐标通过线性组合重构，即
+<img src="https://i.loli.net/2019/04/03/5ca423661e653.png" alt="23501B15-A2CA-44B6-B2D5-7EAA03C8112F" />
+<img src="https://i.loli.net/2019/04/03/5ca4237d32420.png" alt="7EA8AF6E-7A97-41B7-876F-083FF87A967D" /></p>
+
+<p><strong>LLE的推导</strong></p>
+
+<p><strong>确定线性组合系数$\boldsymbol{w}_{ij}$</strong></p>
+
+<p>先为每个样本$\boldsymbol{x}_i$找到其近邻下标集合$Q_i$，然后计算出基于$Q_i$中的样本点对$\boldsymbol{x}_i$进行线性重构的系数$\boldsymbol{w}_i$：
+<img src="https://i.loli.net/2019/04/03/5ca4237563b30.png" alt="04BE4FED-F21F-4C34-B9A2-ACD04095BFF0" /></p>
+
+<p>其中，$\boldsymbol{x}_i$和$\boldsymbol{x}<em>j$均为已知，令$C</em>{jk}=(\boldsymbol{x}_i - \boldsymbol{x}_j)^T (\boldsymbol{x}_i - \boldsymbol{x}<em>k)$，$w</em>{ij}$有闭式解
+<img src="https://i.loli.net/2019/04/03/5ca423664d62c.png" alt="E97FCC98-2458-4FA9-9845-C8E787B88515" /></p>
+
+<p><strong>确定对应的低维空间坐标$\boldsymbol{z}_i$</strong></p>
+
+<p>因为LLE在低维空间中保持$\boldsymbol{w}_i$不变，于是$\boldsymbol{x}_i$对应的低维空间坐标$\boldsymbol{z}_i$可通过下式求解：
+<img src="https://i.loli.net/2019/04/03/5ca4237569051.png" alt="344F68E5-BA02-4B0B-9662-BE839A3E0ABD" /></p>
+
+<p>式(10.29)与(10.27)优化目标同形，唯一区别是需确定的变量不同($\boldsymbol{w}_i$和$\boldsymbol{z}_i$)。</p>
+
+<p>令$\boldsymbol{Z} = (z_1,z_2,\cdots, z<em>m) \in \mathbb{R}^{d&rsquo; \times m}$, $(\boldsymbol{W})</em>{ij}$ = $w_{ij}$
+<img src="https://i.loli.net/2019/04/03/5ca423599bbda.png" alt="EC8AC7D3-F5B6-4731-9823-943D9F9D3498" /></p>
+
+<p>则式(10.29)可重写为
+<img src="https://i.loli.net/2019/04/03/5ca42366244c9.png" alt="FEC0B8E3-FB14-4B7E-939D-FA02BA2DF065" /></p>
+
+<p>式(10.31)可通过特征值分解求解：$\boldsymbol{M}$最小的$d&rsquo;$个特征值对应的特征向量组成的矩阵即为$\boldsymbol{Z}^T$。</p>
+
+<p><strong>算法描述</strong>
+<img src="https://i.loli.net/2019/04/03/5ca42383e88e4.png" alt="82BD6084-7E54-4CE1-8A1F-D3A8CE68750B" /></p>
+
+<ul>
+<li>4：对于不在样本邻域区域的样本，无论其如何变化都对没有任何影响。</li>
+</ul>
+
+<blockquote>
+<p>这种将变动限制在局部的思想在许多地方都有用。</p>
+</blockquote>
+
+<h2 id="10-6-度量学习-距离度量学习-distance-metric-learning">10.6 度量学习/距离度量学习(distance metric learning)</h2>
+
+<p><strong>基本动机：</strong>学习出一个合适的距离度量。</p>
+
+<blockquote>
+<p>降维的目的是找到合适的低维空间，在该空间中进行学习可以获得更佳性能。实际上，每个空间对应了在样本属性上定义的一个距离度量，寻找合适的低维空间，本本质就是在寻找合适的距离度量。</p>
+</blockquote>
+
+<h3 id="距离度量的推广">距离度量的推广</h3>
+
+<p><strong>原因：</strong>一般的距离度量都没有可供调整的参数，无法通过对样本的学习来改善距离度量。</p>
+
+<p><strong>符号：</strong></p>
+
+<ul>
+<li>$dist_{ij,k}$：$\boldsymbol{x}_i$和$\boldsymbol{x}_j$在第$k$维上的距离；</li>
+<li>$\boldsymbol{w}$：属性权重，$w_i≥0$；</li>
+</ul>
+
+<p><strong>推广过程：</strong></p>
+
+<p>对两个$d$维样本$\boldsymbol{x}_i$和$\boldsymbol{x}_j$，它们之间的平方欧式距离（欧式距离的平方，为后面推导便利）可写为
+<img src="https://i.loli.net/2019/04/03/5ca423752b0f8.png" alt="EFF8770D-1251-4250-82CB-6C061F87F609" /></p>
+
+<p>其中，$dist_{ij,k}$表示$\boldsymbol{x}_i$和$\boldsymbol{x}_j$在第$k$维上的距离。若假定不同属性的重要性不同，则可引入属性权重$\boldsymbol{w}$，得到
+<img src="https://i.loli.net/2019/04/03/5ca4237555486.png" alt="1B552F93-B4F4-4762-9798-9E0F520B70A9" /></p>
+
+<p>其中，$w<em>i≥0$, $\boldsymbol{W} = diag(\boldsymbol{w})$是一个对角矩阵，$(\boldsymbol{W})</em>{ii} = w_i$。</p>
+
+<p>式(10.33)中的$\boldsymbol{W}$可通过学习确定。</p>
+
+<h3 id="马氏距离-mahalanobis-distance">马氏距离(Mahalanobis distance)</h3>
+
+<p><strong>假定属性之间相关</strong>，即属性对应的坐标轴不正交（$\boldsymbol{W}$的非对角元素均为零，意味着坐标轴正交，即属性之间无关），将$\boldsymbol{W}$替换为一个普通半正定对称矩阵$\boldsymbol{M}$（度量矩阵），即得马氏距离
+<img src="https://i.loli.net/2019/04/03/5ca423752ce21.png" alt="96869F06-B59C-429A-87A7-EEA1076B0596" /></p>
+
+<p>度量学习就是对度量矩阵$\boldsymbol{M}$的学习。为了保证距离的非负性、对称性，$\boldsymbol{M}$必须是(半)正定对称矩阵，即必有正交基$\boldsymbol{P}$使得$\boldsymbol{M} = \boldsymbol{P} \boldsymbol{P}^T$.</p>
+
+<blockquote>
+<p>马氏距离以印度数学家P.C.Mahalanobis命名。标准马氏距离中$\boldsymbol{M}$是协方差矩阵的逆，即$M=\Sigma^{-1}$；在度量学习中，$M$被赋予更大的灵活性。</p>
+</blockquote>
+
+<p><strong>求$\boldsymbol{M}$</strong></p>
+
+<p><strong>目标：</strong>假定希望提高近邻分类器(Neighbourhood Component Analysis, NCA)[Goldberger et al., 2005]的性能，使LOO正确率最大化。（不同的目标可得不同的$\boldsymbol{M}$）</p>
+
+<p><strong>推导：</strong></p>
+
+<p><strong>求LOO正确率</strong></p>
+
+<p>NCA在进行判别式一般使用多数投票法，邻域中的每个样本投1票，邻域外的样本投0票。为了求$\boldsymbol{M}$，将其替换为概率投票法。对于任意样本$\boldsymbol{x}_j$，它对$\boldsymbol{x}_i$分类结果影响的概率为
+<img src="https://i.loli.net/2019/04/03/5ca423752fee1.png" alt="24882D6F-511B-4D14-AA56-86DCB05586BF" /></p>
+
+<p><strong>分析：</strong></p>
+
+<ul>
+<li>当$i=j$时，$p_{ij}$最大；</li>
+<li>$\boldsymbol{x}_j$对$\boldsymbol{x}_i$的影响随着它们之间距离的增大而减小。</li>
+</ul>
+
+<p>以LOO正确率最大化为目标，则可计算$\boldsymbol{x}_i$的LOO正确率，即它被自身之外的所有样本正确分类的概率为
+<img src="https://i.loli.net/2019/04/03/5ca423662b0c0.png" alt="68A3A9DF-C2C7-4936-86EF-913A51958C1E" /></p>
+
+<p>其中，$Ω_i$表示与$\boldsymbol{x}_i$属于相同类别的样本的下标集合。于是，整个样本集上的LOO正确率为
+<img src="https://i.loli.net/2019/04/03/5ca423662df1b.png" alt="D984366D-4678-481D-A4A9-FF945E28FFE7" /></p>
+
+<p><strong>确定NCA的优化目标</strong></p>
+
+<p>将式(10.35)代入(10.37)，再考虑到$\boldsymbol{M} = \boldsymbol{P} \boldsymbol{P}^T$，则NCA的优化目标为
+<img src="https://i.loli.net/2019/04/03/5ca42375572f5.png" alt="A2C15BD1-EE61-4BFC-ACA9-2EB1E78B1417" /></p>
+
+<p>求解(10.38)即可得到最大化NCA的LOO正确率的距离度量矩阵$\boldsymbol{M}$。（可用随机梯度下降法求解）</p>
+
+<h3 id="其他优化目标-领域知识">其他优化目标——领域知识</h3>
+
+<p>除了引入LOO，还能在度量学习中引入领域知识。如，若已知某些样本相似、某些样本不相似，则可定义“必连”(must-link)约束集合M与“勿连”(cannot-link)约束集合$C$，$(\boldsymbol{x}_i,\boldsymbol{x}_j)∈M$表示$\boldsymbol{x}_i$与$\boldsymbol{x}_j$相似，$(\boldsymbol{x}_i,\boldsymbol{x}_j)∈ C$表示$\boldsymbol{x}_i$与$\boldsymbol{x}_j$不相似。</p>
+
+<p>自然地，希望相似样本之间距离小、不相似样本间距离大，可得如下凸优化问题来求解度量矩阵M[Xing et al., 2003]：
+<img src="https://i.loli.net/2019/04/03/5ca4237d2d692.png" alt="DA280F60-7C5B-4A05-BAEE-DBAFA3160A15" /></p>
+
+<p>其中，约束$\boldsymbol{M} \succeq 0$表明$\boldsymbol{M}$必须是半正定的. 式(10.39)要求在不相似样本间的距离不小于1的前提下，使相似样本间的距离尽可能小。</p>
+
+<p><strong>降维</strong></p>
+
+<p>若获得的$\boldsymbol{M}$是一个低秩矩阵，则通过对$\boldsymbol{M}$进行特征值分解，总能找到一组正交基，其正交基数目为矩阵$\boldsymbol{M}$的秩$rank(\boldsymbol{M})&lt;d$。于是，度量学习的习得结果可衍生出一个降维矩阵$\boldsymbol{P} \in \mathbb{R}^{d \times rank(M)}$，用于降维目的。</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">Octemull</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">2019-04-03</span>
+  </p>
+  
+  
+</div><footer class="post-footer">
+      <div class="post-tags">
+          <a href="/personal-site/tags/notes/">Notes</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/personal-site/post/ml-contents/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">目录 周志华机器学习笔记</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/personal-site/post/ml-chap09/">
+            <span class="next-text nav-default">chap 09 - 聚类 | Clustering</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        id: '2017-12-18 00:00:00 \x2b0000 UTC',
+        title: 'chap 10 - 降维与度量学习',
+        clientID: 'ce8007fddcb901cf8139',
+        clientSecret: '25db834f14aadc3708bf0c8eeb5c10127a9f5a22',
+        repo: 'personal-site-comment',
+        owner: 'Octemull',
+        admin: ['Octemull'],
+        body: decodeURI(location.href)
+      });
+      gitalk.render('gitalk-container');
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript>
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:yyear103@outlook.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/Octemull" class="iconfont icon-github" title="github"></a>
+  <a href="https://octemull.github.io/personal-site/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Octemull</span>
+  </span>
+</div>
+
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/personal-site/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/personal-site/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?41497b30235376fbac44b6375248dcd8";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+
+
+
+
+
+</body>
+</html>

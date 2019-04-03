@@ -309,6 +309,44 @@ xcode-select --install  然后点击安装，等待下载安装即可。
 
     <article class="post">
   <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/personal-site/post/ml-chap10/">chap 10 - 降维与度量学习</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2017-12-18 </span>
+      <div class="post-category">
+          <a href="/personal-site/categories/machine-learning/"> Machine Learning </a>
+          </div>
+        <span class="more-meta"> 456 words </span>
+        <span class="more-meta"> 3 mins read </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      10.1 k近邻学习(k-Nearest Neighbor, kNN) 类型：监督学习
+工作机制： 给定测试样本，基于某种距离度量计算出训练集中与该样本距离最近的k个训练样本，然后基于这k个“邻居”的信息来进行预测。通常，在分类任务中采取“投票法”，回归任务中采取“平均法”，还可基于距离的远近使用“加权投票法”或“加权平均法”。
+特点：
+ 懒惰学习(lazy learning)的著名代表。此类学习技术在训练阶段仅仅保存训练样本，训练时间开销为零，待收到测试样本之后再处理。 之前的算法都是“急切学习”(eager learning)算法，即收到训练样本就马上处理。  kNN的关键：
+ k取值不同，分类结果会显著不同； 距离度量的计算方式会导致同一测试样本有不同的“近邻”。  举一个例子🌰： 分类性能：
+假设距离计算是“恰当”（能恰当找到$k$个近邻）的，取$k=1$，讨论“最近邻分类器”($1NN, k=1$)在二分类问题上的性能。
+给定测试样本$x$，若其最近邻样本为$z$，则最近邻分类器出错的概率就是$x$与$z$类别标记不同的概率，即
+假设样本i.i.d.，且对任意$x$和任意小正数$δ$，在$x$的$δ$邻域内总能找到一个训练样本；换言之，对任意测试样本，总能在任意近的范围内找到式(10.1)中的训练样本$z$。
+ 即假设训练样本密度足够大，或称为“密度采样”(dense sample)。
+ 令$c^\ast = \arg \max_{c \in \cal{Y}} P(c \,|\, \boldsymbol{x})$表示贝叶斯最优分类器的结果，有 可以看出，1NN虽然简单，但其泛化错误率不超过贝叶斯最优分类器错误率的两倍。 【严格分析参阅[Cover and Hart, 1967]】
+10.2 低维嵌入 维数灾难 kNN的缺陷：“密度采样”难以满足。
+ 属性维数越多，要满足密度采样条件的样本数目是无法达到的； 如，取$δ=0.001$，仅考虑单个属性，则需$1000$个样本点平均分布在归一化后的属性取值范围内；若属性维数为$20$，则至少需$(10^3)^{20}=10^{60}$个样本。【作为参照：宇宙间基本粒子的总数约为$10^{80}$（一粒灰尘中含有几十亿个基本粒子）】 在高维空间计算距离十分困难。  如，当维数很高时计算内积都十分困难。
+以上在高维情形下出现的数据样本稀疏、距离计算困难等问题，是所有机器学习方法共同面临的严重障碍，被称为“维数灾难”(curse of dimensionality).
+ [Bellman, 1957]最早提出，亦称“维数诅咒”、“维数危机”。
+ 如何缓解维数灾难
+ 特征选择（chap 11） 降维（dimension reduction）/ 维数约简：通过某种数学变换将原始高维属性空间转变为一个低维“子空间”(subspace)。在子空间内，样本密度大幅提高，距离计算变得简单。  可以降维的原因：
+    </div>
+    <div class="read-more">
+      <a href="/personal-site/post/ml-chap10/" class="read-more-link">Read more..</a>
+    </div>
+  </div>
+</article>
+
+    <article class="post">
+  <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/personal-site/post/ml-chap09/">chap 09 - 聚类 | Clustering</a></h1>
     <div class="post-meta">
       <span class="post-time"> 2017-12-14 </span>
@@ -378,38 +416,6 @@ xcode-select --install  然后点击安装，等待下载安装即可。
     </div>
     <div class="read-more">
       <a href="/personal-site/post/ml-chap08/" class="read-more-link">Read more..</a>
-    </div>
-  </div>
-</article>
-
-    <article class="post">
-  <header class="post-header">
-    <h1 class="post-title"><a class="post-link" href="/personal-site/post/ml-chap07/">chap 07 - 贝叶斯分类器 | Bayesian Classifier</a></h1>
-    <div class="post-meta">
-      <span class="post-time"> 2017-12-04 </span>
-      <div class="post-category">
-          <a href="/personal-site/categories/machine-learning/"> Machine Learning </a>
-          </div>
-        <span class="more-meta"> 577 words </span>
-        <span class="more-meta"> 3 mins read </span>
-    </div>
-  </header>
-  
-  <div class="post-content">
-    <div class="post-summary">
-      7.1 贝叶斯决策论 Bayesian decision theory 定义： 贝叶斯决策论是概率框架下实施决策的基本方法。对分类任务来说，在所有相关概率都已知的理想情形下，贝叶斯决策论考虑如何基于这些概率和误判损失来选择最优类别标记。
-举例：多分类任务 符号：
- $N$：类别数目，即$\cal{Y} = {c_1,c_2, \cdots, c_N}$； $λ_{ij}$：将真实标记为$c_j$的样本误分类为$c_i$所产生的损失； 样本$\boldsymbol{x}$上的“条件风险”(conditional risk)：基于后验概率$P(c_i|\boldsymbol{x})$可获得将样本分类为$c_i$所产生的期望损失(expected loss)    决策论中将“期望损失”称为“风险”(risk)。
- 学习目标：
-寻找判定准则$h\, : \, \cal{X} \mapsto \cal{Y}$以最小化总体风险 贝叶斯判定准则Bayes decision rule：
-为最小化总体风险，只需为每个样本选择能使条件风险$R(c|\boldsymbol{x})$最小的类别标记，即 符号：
- $h^\star$：贝叶斯最优分类器(Bayes optimal classifier)； $R(h^\star)$：与$h^\star$对应的总体风险，贝叶斯风险(Bayes risk)； $1-R(h^\star)$：分类器能达到的最好性能（模型精度的理论上限）。  具体来说，若目标是最小化分类错误率：
- 误判损失$λ_{ij}$：  条件风险：  最小化分类错误率的贝叶斯最优分类器： 即对每个样本$\boldsymbol{x}$，选择能使后验概率$P(c|\boldsymbol{x})$最大的类别标记。  使用贝叶斯判定准则的第一步：获得后验概率$P(c\, | \, \boldsymbol{x})$
- 现实任务中常常难以直接获得； 只能基于有限的训练样本集合尽可能准确估计后验概率。  估计后验概率的方法：
- 判别式模型 discriminative models：给定$\boldsymbol{x}$，通过直接建模$P(c|\boldsymbol{x})$来预测$c$。如，决策树、BP神经网络、支持向量机。 生成式模型 generative models：先对联合概率分布$P(\boldsymbol{x},c)$建模，再由此获得$P(c|\boldsymbol{x})$。考虑 基于贝叶斯定理，$P(c|\boldsymbol{x})$可写为   符号：
-    </div>
-    <div class="read-more">
-      <a href="/personal-site/post/ml-chap07/" class="read-more-link">Read more..</a>
     </div>
   </div>
 </article>

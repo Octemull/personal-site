@@ -34,7 +34,7 @@ categories: [Machine Learning]
 16. chap 08 - ex 
 17. [chap 09 - 聚类 | Clustering](https://octemull.github.io/personal-site/post/ml-chap09/)
 18. chap 09 - ex
-19. chap 10 - 降维与度量学习
+19. [chap 10 - 降维与度量学习](https://octemull.github.io/personal-site/post/ml-chap10/)
 20. chap 10 - ex
 21. chap 11 - 特征选择（特征选取） 与 稀疏学习
 22. chap 11 - ex
