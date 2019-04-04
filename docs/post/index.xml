@@ -94,6 +94,22 @@ xcode-select --install  然后点击安装，等待下载安装即可。
     </item>
     
     <item>
+      <title>chap 11 - 特征选择（特征选取） 与 稀疏学习</title>
+      <link>https://octemull.github.io/personal-site/post/ml-chap11/</link>
+      <pubDate>Tue, 19 Dec 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://octemull.github.io/personal-site/post/ml-chap11/</guid>
+      <description>1 - 子集搜索与评价 1.1 - 特征 特征的定义：Feature，属性
+按照对当前学习任务是否有用，可分为：
+ 有用 → 相关特征 Relevant Feature 没用 → 无关特征 Irrelevant Feature  1.2 - 特征选择 Feature Selection 概述：
+ 从给定的特征集合中选择出相关特征子集的过程 一个重要的数据预处理(data preprocessing)过程  原因（Why）：
+ ①属性过多造成“维数灾难” ②去除不相关特征可降低学习任务的难度  注意
+ 必须确保不丢失重要特征，缺失重要特征会影响后续学习过程。 数据集相同，不同的学习任务的重要特征往往不同。   冗余特征(redundant feature, 可通过其他特征推演得出）：
+ ①大多数情况无用 ②有时可以降低学习难度 → 该特征对应学习任务所需的某一“中间概念”  ⭐️假定：
+ ①数据中不涉及冗余特征 ②初始的特征集合中包含了所有重要信息  1.3 - 如何选取特征子集？  若无背景知识作为先验假设，只能遍历所有可能子集 → 不可行，组合爆炸 选用“候选子集”，在此基础上增减特征，根据评价准则得到最优特征子集  1.4 - 子集搜索 (subset search) 特征选择方法</description>
+    </item>
+    
+    <item>
       <title>目录 周志华机器学习笔记</title>
       <link>https://octemull.github.io/personal-site/post/ml-contents/</link>
       <pubDate>Tue, 19 Dec 2017 00:00:00 +0000</pubDate>

@@ -44,7 +44,7 @@
 <meta property="og:description" content="Personal site of Octemull." />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://octemull.github.io/personal-site/" />
-<meta property="og:updated_time" content="2017-12-04T00:00:00&#43;00:00"/>
+<meta property="og:updated_time" content="2017-12-11T00:00:00&#43;00:00"/>
 
 <meta itemprop="name" content="Octemull&#39;s Personal Site">
 <meta itemprop="description" content="Personal site of Octemull.">
@@ -116,6 +116,46 @@
       <div class="content-wrapper">
         <div id="content" class="content">
           <section id="posts" class="posts">
+    <article class="post">
+  <header class="post-header">
+    <h1 class="post-title"><a class="post-link" href="/personal-site/post/ml-chap08/">chap 08 - 集成学习 | Ensemble learning</a></h1>
+    <div class="post-meta">
+      <span class="post-time"> 2017-12-11 </span>
+      <div class="post-category">
+          <a href="/personal-site/categories/machine-learning/"> Machine Learning </a>
+          </div>
+        <span class="more-meta"> 543 words </span>
+        <span class="more-meta"> 3 mins read </span>
+    </div>
+  </header>
+  
+  <div class="post-content">
+    <div class="post-summary">
+      8.1 个体与集成 def【集成学习】：
+通过构建并结合多个学习器来完成学习任务，有时也被称作“多分类器系统”(multi-classifier system)、“基于委员会的学习”(committee-based learning)等。
+集成学习的一般结构：
+先生成一组“个体学习器”，然后用某种方法把它们结合起来，最后输出结果。
+个体学习器：
+通常采用现有的方法，如，C4.5决策树算法、BP神经网络算法。
+个体学习器的分类：
+ 同质 homogenous：个体学习器采用的方法相同。如，“神经网络集成”中全是神经网络、“决策树集成”中全是决策树。此时，个体学习器对应的算法称为“基学习算法”(base learning algorithm)。 异质 heterogenous：个体学习器采用的方法不同。如，同时包含决策树和神经网络。此时，个体学习器称为“组件学习器”(component learner)或直接称为个体学习器。  集成学习的性能：
+ 集成学习通过结合多个学习器，其泛化性能常优于单个学习器。  弱学习器【常指泛化性能略优于随机猜测的学习器。如，在二分类问题上精度略高于50%的学习器。】的集成效应尤其明显，很多集成学习的理论研究都是针对弱学习器进行的。基学习器有时也被称作弱学习器。 理论上，弱学习器集成可获得较好的泛化性能。但是实际中，为了使用较少的个体学习器、或重用关于常见学习器的经验，人们通常选用较强的学习器、  如何获得比单一学习器更优的泛化性能？  方法：选用“投票法” voting （少数服从多数）产生。 要求：个体学习器有一定的“准确性”（学习器不能太坏），且“多样性”diversity（学习器要有差异）。   举一个例子🌰：
+在二分类任务中，假定三个分类器在三个测试样本上的表现如图8.2所示，其中√表示分类正确，×表示分类错误。集成学习的结果采用“投票法”产生。
+ 在图8.2(a)中，每个分类器都只有66.6%的精度，但集成学习的精度达到100%； 在图8.2(b)中，三个分类器无差别，集成后性能没有提高； 在图8.2&copy;中，每个分类器的精度为33.3%，集成学习的结果更糟。  分析：
+考虑二分类问题$y \in {-1, +1}$和真实函数$f$，假定基分类器的错误率为$\epsilon$，即对每个基分类器，有
+假设集成通过简单投票法结合$T$个基分类器，若有超过半数的基分类器正确，则集成分类就正确：
+假设基分类器的错误率相互独立，则由Hoeffding不等式可知，集成的错误率为
+上式表明，随着集成中个体分类器数目T的增大，集成的错误率将指数级下降，最终趋向于零。
+基学习器的误差独立性：
+1. 基学习器是为了解决同一个问题训练出来的，显然不互相独立； 2. 个体学习器的“准确性”和“多样性”本身存在冲突（一般，准确性高时，增加多样性就会牺牲准确性）； 3. 如何产生并结合“好而不同”的个体学习器，是集成学习研究的核心。  集成学习方法分类：
+ 序列化方法：  个体学习器间存在强依赖关系、必须串行生成。 代表方法：Boosting。  并行化方法：  个体学习器间不存在强依赖关系、可同时生成。 代表方法：Bagging，随机森林 Random Forest。   8.
+    </div>
+    <div class="read-more">
+      <a href="/personal-site/post/ml-chap08/" class="read-more-link">Read more..</a>
+    </div>
+  </div>
+</article>
+
     <article class="post">
   <header class="post-header">
     <h1 class="post-title"><a class="post-link" href="/personal-site/post/ml-chap07/">chap 07 - 贝叶斯分类器 | Bayesian Classifier</a></h1>

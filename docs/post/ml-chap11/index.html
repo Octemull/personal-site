@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>chap 11 - 特征选择（特征选取） 与 稀疏学习 - Octemull&#39;s Personal Site</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="Octemull" /><meta name="description" content="1 - 子集搜索与评价 1.1 - 特征 特征的定义：Feature，属性
+按照对当前学习任务是否有用，可分为：
+ 有用 → 相关特征 Relevant Feature 没用 → 无关特征 Irrelevant Feature  1.2 - 特征选择 Feature Selection 概述：
+ 从给定的特征集合中选择出相关特征子集的过程 一个重要的数据预处理(data preprocessing)过程  原因（Why）：
+ ①属性过多造成“维数灾难” ②去除不相关特征可降低学习任务的难度  注意
+ 必须确保不丢失重要特征，缺失重要特征会影响后续学习过程。 数据集相同，不同的学习任务的重要特征往往不同。   冗余特征(redundant feature, 可通过其他特征推演得出）：
+ ①大多数情况无用 ②有时可以降低学习难度 → 该特征对应学习任务所需的某一“中间概念”  ⭐️假定：
+ ①数据中不涉及冗余特征 ②初始的特征集合中包含了所有重要信息  1.3 - 如何选取特征子集？  若无背景知识作为先验假设，只能遍历所有可能子集 → 不可行，组合爆炸 选用“候选子集”，在此基础上增减特征，根据评价准则得到最优特征子集  1.4 - 子集搜索 (subset search) 特征选择方法" /><meta name="keywords" content="Blog" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.53 with even 4.0.0" />
+
+
+<link rel="canonical" href="https://octemull.github.io/personal-site/post/ml-chap11/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/personal-site/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/personal-site/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/personal-site/favicon-16x16.png">
+<link rel="manifest" href="/personal-site/manifest.json">
+<link rel="mask-icon" href="/personal-site/safari-pinned-tab.svg" color="#5bbad5">
+
+
+<link href="/personal-site/dist/even.c2a46f00.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+
+
+<meta property="og:title" content="chap 11 - 特征选择（特征选取） 与 稀疏学习" />
+<meta property="og:description" content="1 - 子集搜索与评价 1.1 - 特征 特征的定义：Feature，属性
+按照对当前学习任务是否有用，可分为：
+ 有用 → 相关特征 Relevant Feature 没用 → 无关特征 Irrelevant Feature  1.2 - 特征选择 Feature Selection 概述：
+ 从给定的特征集合中选择出相关特征子集的过程 一个重要的数据预处理(data preprocessing)过程  原因（Why）：
+ ①属性过多造成“维数灾难” ②去除不相关特征可降低学习任务的难度  注意
+ 必须确保不丢失重要特征，缺失重要特征会影响后续学习过程。 数据集相同，不同的学习任务的重要特征往往不同。   冗余特征(redundant feature, 可通过其他特征推演得出）：
+ ①大多数情况无用 ②有时可以降低学习难度 → 该特征对应学习任务所需的某一“中间概念”  ⭐️假定：
+ ①数据中不涉及冗余特征 ②初始的特征集合中包含了所有重要信息  1.3 - 如何选取特征子集？  若无背景知识作为先验假设，只能遍历所有可能子集 → 不可行，组合爆炸 选用“候选子集”，在此基础上增减特征，根据评价准则得到最优特征子集  1.4 - 子集搜索 (subset search) 特征选择方法" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://octemull.github.io/personal-site/post/ml-chap11/" /><meta property="article:published_time" content="2017-12-19T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2017-12-19T00:00:00&#43;00:00"/>
+
+<meta itemprop="name" content="chap 11 - 特征选择（特征选取） 与 稀疏学习">
+<meta itemprop="description" content="1 - 子集搜索与评价 1.1 - 特征 特征的定义：Feature，属性
+按照对当前学习任务是否有用，可分为：
+ 有用 → 相关特征 Relevant Feature 没用 → 无关特征 Irrelevant Feature  1.2 - 特征选择 Feature Selection 概述：
+ 从给定的特征集合中选择出相关特征子集的过程 一个重要的数据预处理(data preprocessing)过程  原因（Why）：
+ ①属性过多造成“维数灾难” ②去除不相关特征可降低学习任务的难度  注意
+ 必须确保不丢失重要特征，缺失重要特征会影响后续学习过程。 数据集相同，不同的学习任务的重要特征往往不同。   冗余特征(redundant feature, 可通过其他特征推演得出）：
+ ①大多数情况无用 ②有时可以降低学习难度 → 该特征对应学习任务所需的某一“中间概念”  ⭐️假定：
+ ①数据中不涉及冗余特征 ②初始的特征集合中包含了所有重要信息  1.3 - 如何选取特征子集？  若无背景知识作为先验假设，只能遍历所有可能子集 → 不可行，组合爆炸 选用“候选子集”，在此基础上增减特征，根据评价准则得到最优特征子集  1.4 - 子集搜索 (subset search) 特征选择方法">
+
+
+<meta itemprop="dateModified" content="2017-12-19T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="440">
+
+
+
+<meta itemprop="keywords" content="Notes," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="chap 11 - 特征选择（特征选取） 与 稀疏学习"/>
+<meta name="twitter:description" content="1 - 子集搜索与评价 1.1 - 特征 特征的定义：Feature，属性
+按照对当前学习任务是否有用，可分为：
+ 有用 → 相关特征 Relevant Feature 没用 → 无关特征 Irrelevant Feature  1.2 - 特征选择 Feature Selection 概述：
+ 从给定的特征集合中选择出相关特征子集的过程 一个重要的数据预处理(data preprocessing)过程  原因（Why）：
+ ①属性过多造成“维数灾难” ②去除不相关特征可降低学习任务的难度  注意
+ 必须确保不丢失重要特征，缺失重要特征会影响后续学习过程。 数据集相同，不同的学习任务的重要特征往往不同。   冗余特征(redundant feature, 可通过其他特征推演得出）：
+ ①大多数情况无用 ②有时可以降低学习难度 → 该特征对应学习任务所需的某一“中间概念”  ⭐️假定：
+ ①数据中不涉及冗余特征 ②初始的特征集合中包含了所有重要信息  1.3 - 如何选取特征子集？  若无背景知识作为先验假设，只能遍历所有可能子集 → 不可行，组合爆炸 选用“候选子集”，在此基础上增减特征，根据评价准则得到最优特征子集  1.4 - 子集搜索 (subset search) 特征选择方法"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/personal-site/" class="logo">Octemull</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/personal-site/">
+        <li class="mobile-menu-item">Home</li>
+      </a><a href="/personal-site/post/">
+        <li class="mobile-menu-item">Archives</li>
+      </a><a href="/personal-site/tags/">
+        <li class="mobile-menu-item">Tags</li>
+      </a><a href="/personal-site/categories/">
+        <li class="mobile-menu-item">Categories</li>
+      </a><a href="/personal-site/about/">
+        <li class="mobile-menu-item">About</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/personal-site/" class="logo">Octemull</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/personal-site/">Home</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/personal-site/post/">Archives</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/personal-site/tags/">Tags</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/personal-site/categories/">Categories</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/personal-site/about/">About</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">chap 11 - 特征选择（特征选取） 与 稀疏学习</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2017-12-19 </span>
+        <div class="post-category">
+            <a href="/personal-site/categories/machine-learning/"> Machine Learning </a>
+            </div>
+          <span class="more-meta"> 440 words </span>
+          <span class="more-meta"> 3 mins read </span>
+        
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Contents</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents">
+<ul>
+<li><a href="#1-子集搜索与评价">1 - 子集搜索与评价</a>
+<ul>
+<li><a href="#1-1-特征">1.1 -  特征</a></li>
+<li><a href="#1-2-特征选择-feature-selection">1.2 - 特征选择 Feature Selection</a></li>
+<li><a href="#1-3-如何选取特征子集">1.3 - 如何选取特征子集？</a></li>
+<li><a href="#1-4-子集搜索-subset-search">1.4 - 子集搜索 (subset search)</a>
+<ul>
+<li><a href="#1-前向-forward-搜索">（1） “前向”(forward) 搜索</a></li>
+<li><a href="#2-后向-backward-搜索">（2）“后向”(backward) 搜索</a></li>
+<li><a href="#3-双向-bidirectional-搜索">（3）“双向”(bidirectional) 搜索</a></li>
+</ul></li>
+<li><a href="#1-5-子集评价-subset-evaluation">1.5 - 子集评价 (subset evaluation)</a></li>
+</ul></li>
+<li><a href="#2-特征选择方法">2 - 特征选择方法</a>
+<ul>
+<li><a href="#2-1-过滤式-filter-选择">2.1 - 过滤式(Filter)选择</a></li>
+<li><a href="#2-2-包裹式-wrapper-选择">2.2 - 包裹式(Wrapper)选择</a></li>
+<li><a href="#2-3-嵌入式-embedding-选择">2.3 - 嵌入式(Embedding)选择</a></li>
+</ul></li>
+<li><a href="#3-稀疏表示与字典学习">3 - 稀疏表示与字典学习</a></li>
+</ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      
+
+<p><img src="https://i.loli.net/2019/04/04/5ca600bedddbe.png" alt="CA50A431-C466-4155-BB60-FD9B7DFAE6EF" /></p>
+
+<h1 id="1-子集搜索与评价">1 - 子集搜索与评价</h1>
+
+<h2 id="1-1-特征">1.1 -  特征</h2>
+
+<p><strong>特征的定义</strong>：Feature，属性</p>
+
+<p>按照对当前学习任务是否有用，可分为：</p>
+
+<ul>
+<li>有用 → 相关特征 Relevant Feature</li>
+<li>没用 → 无关特征 Irrelevant Feature</li>
+</ul>
+
+<h2 id="1-2-特征选择-feature-selection">1.2 - 特征选择 Feature Selection</h2>
+
+<p><strong>概述：</strong></p>
+
+<ul>
+<li>从给定的特征集合中选择出相关特征子集的过程</li>
+<li>一个重要的数据预处理(data preprocessing)过程</li>
+</ul>
+
+<p><strong>原因（Why）：</strong></p>
+
+<ul>
+<li>①属性过多造成“维数灾难”</li>
+<li>②去除不相关特征可降低学习任务的难度</li>
+</ul>
+
+<div class="admonition warning"><p class="admonition-title">注意</p>
+  <ol>
+<li>必须确保不丢失重要特征，缺失重要特征会影响后续学习过程。</li>
+<li>数据集相同，不同的学习任务的重要特征往往不同。</li>
+</ol>
+
+</div>
+
+<p><strong>冗余特征(redundant feature, 可通过其他特征推演得出）：</strong></p>
+
+<ul>
+<li>①大多数情况无用</li>
+<li>②有时可以降低学习难度 → 该特征对应学习任务所需的某一“中间概念”</li>
+</ul>
+
+<p><strong>⭐️假定：</strong></p>
+
+<ul>
+<li>①数据中不涉及冗余特征</li>
+<li>②初始的特征集合中包含了所有重要信息</li>
+</ul>
+
+<h2 id="1-3-如何选取特征子集">1.3 - 如何选取特征子集？</h2>
+
+<ul>
+<li>若无背景知识作为先验假设，只能遍历所有可能子集 → 不可行，组合爆炸</li>
+<li>选用“候选子集”，在此基础上增减特征，根据评价准则得到最优特征子集</li>
+</ul>
+
+<h2 id="1-4-子集搜索-subset-search">1.4 - 子集搜索 (subset search)</h2>
+
+<p><strong>特征选择方法</strong></p>
+
+<h3 id="1-前向-forward-搜索">（1） “前向”(forward) 搜索</h3>
+
+<ul>
+<li>①将特征集合中每个特征看做一个候选子集，依次评价，选取最优的候选子集作为第一轮的选定集；</li>
+<li>②往最优的候选子集里加入一个特征，依次评价，若得到的最优候选子集优于上一轮的选定集，则本轮的选定集为本轮的最优候选子集；</li>
+<li>&hellip;</li>
+<li>直至第k+1轮的最优候选子集劣于第k轮的选定集，则停止生成候选子集，取第k轮选定集作为特征选择结果。</li>
+<li>从一个特征开始，逐步增加特征，直至达到最优结果</li>
+</ul>
+
+<h3 id="2-后向-backward-搜索">（2）“后向”(backward) 搜索</h3>
+
+<ul>
+<li>从完整特征集合开始，逐步剔除特征，直至达到最优结果</li>
+</ul>
+
+<h3 id="3-双向-bidirectional-搜索">（3）“双向”(bidirectional) 搜索</h3>
+
+<ul>
+<li>结合“前向”与“后向”搜索</li>
+</ul>
+
+<div class="admonition abstract"><p class="admonition-title">Summary</p>
+  <p>以上三种方法都是“贪心”策略，因为：</p>
+
+<ol>
+<li>仅考虑使本轮选定集最优</li>
+<li>不穷举可能错过最佳特征子集</li>
+</ol>
+
+<p>e.g. 第三轮假定选择$a_5$优于$a_6$，于是选定集为${a_2,a_4,a_5}$，然而在第四轮却可能是${a_2,a_4,a_6,a_8}$比所有的${a_2,a_4,a_5,a_i}$都更优</p>
+
+</div>
+
+<h2 id="1-5-子集评价-subset-evaluation">1.5 - 子集评价 (subset evaluation)</h2>
+
+<p>以“分类”问题为例：</p>
+
+<p>第二个环节是“子集评价”(subset evaluation)问题．给定数据集$D$,假定$D$中第$i$类样本所占的比例为$p_i (i = 1,2,&hellip;,|\cal{Y}|)$．为便于讨论，假定样本属性均为离散型．对属性子集$A$，假定根据其取值将$D$分成了$V$个子集${D_1,D_2,&hellip;,D_V}$，每个子集中的样本在$A$上取值相同，于是我们可计算属性子集$A$的信息增益</p>
+
+<p><img src="https://i.loli.net/2019/04/04/5ca600b199826.jpg" alt="-w509" /></p>
+
+<blockquote>
+<p>假设每个属性有：$v$个可取值，则$V = v^{|A|}$，这可能是一个很大的值，因此实践中通常是从子集搜索过程中前一轮属性子集的评价值出发来进行计算。</p>
+</blockquote>
+
+<p><img src="https://i.loli.net/2019/04/04/5ca600b18c527.jpg" alt="-w492" /></p>
+
+<p>信息增益$Gain(A$越大，意味着特征子集$A$包含的有助于分类的信息越多．于是，对每个候选特征子集，我们可基于训练数据集$D$来计算其信息增益，以此作为评价准则．</p>
+
+<p>更一般的，特征子集$A$实际上确定了对数据集$D$的一个划分，每个划分区域对应着$A$上的一个取值，而样本标记信息$Y$则对应着对$D$的真实划分，通过估算这两个划分的差异，就能对$A$进行评价．与y对应的划分的差异越小，则说明A越好．信息嫡仅是判断这个差异的一种途径，其他能判断两个划分差异的机制都能用于特征子集评价．</p>
+
+<blockquote>
+<p>许多“多样性度量”如不合度量、相关系数等，稍加调整即可用于特征子集评价，参见8.5.2节。</p>
+</blockquote>
+
+<div class="admonition abstract"><p class="admonition-title">Summary</p>
+  <ul>
+<li>信息增益 Gain(A)</li>
+<li>其他能判断特征子集划分与样本标记信息划分差异的机制</li>
+</ul>
+
+</div>
+
+<h1 id="2-特征选择方法">2 - 特征选择方法</h1>
+
+<ul>
+<li>特征选择方法 = 子集选择 + 子集评价</li>
+<li>三类方法：①过滤式；②包裹式；③嵌入式</li>
+</ul>
+
+<h2 id="2-1-过滤式-filter-选择">2.1 - 过滤式(Filter)选择</h2>
+
+<ul>
+<li><strong>特点</strong>：特征选择 → 训练学习器，特征选择与学习器训练无关</li>
+<li><strong>运行效率</strong>：很高，运行时间随采样次数、特征数目线性增长（Relief）</li>
+<li><strong>著名方法</strong>：Relief (Relevant Features) 法</li>
+
+<li><p><strong>适用范围</strong>：二分类问题（改进的Relief-F法可处理多分类问题）</p></li>
+
+<li><p><strong>方法概述</strong>：设计“相关统计量”来度量特征的重要性（Key: 如何设计“相关统计量”），指定阈值$τ$或欲选取特征个数$k$来决定所选特征。</p></li>
+
+<li><p><strong>关键概念</strong>：</p>
+
+<ul>
+<li>相关统计量：向量，初始特征对应分量，特征子集重要性由初始特征对应分量加总得到</li>
+</ul></li>
+
+<li><p><strong>相关概念</strong>：</p>
+
+<ul>
+<li>猜中近邻 near-hit：在某个样本的同类样本中，距离该样本最近的样本</li>
+<li>猜错近邻 near-miss：在某个样本的异类样本中，距离该样本最近的样本</li>
+</ul></li>
+
+<li><p><strong>算法原理</strong>：（针对二分类问题，即样本标记只有两个取值）</p>
+
+<ul>
+<li>①计算每个样本与$nh$、$nm$在某初始特征上的距离，平均；</li>
+<li>②$d(猜中) &lt; d(猜错)$ ，则该属性对区分同、异类样本有益，增加该统计量分量（$d(猜错)$系数为正）；反之（$d(猜中)$系数为负），减少。</li>
+</ul></li>
+</ul>
+
+<p>显然，Relief的关键是如何确定相关统计量．给定训练集${(x_1, y_1),(x_2,y_2), .. .,(x_m,y_m)}$，对每个示例$\boldsymbol{x}_i$，Relief先在$\boldsymbol{x}<em>i$的同类样本中寻找其最近邻$\boldsymbol{x}</em>{i,nh}$，称为“猜中近邻”(near-hit)，再从$\boldsymbol{x}<em>i$的异类样本中寻找其最近邻$\boldsymbol{x}</em>{i,nh}$，称为“猜错近邻”(near-miss). 然后，相关统计量对应于属性$j$的分量为
+  <img src="https://i.loli.net/2019/04/04/5ca600b18f56e.jpg" alt="-w469" /></p>
+
+<p>其中$x_a^j$表示样本$\boldsymbol{x}_a$ 在属性$j$上的取值。$diff(x_a^j, x_b^j)$取决于属性$j$的类型：若属性$j$为离散型，则$x_a^j=x_b^j$时$diff(x_a^j, x_b^j)=0$，否则为$1$;若属性$j$为连续型，则$diff(x_a^j, x_b^j) = |x_a^j - x_b^j|$，注意$x_a^j, x_b^j$已规范化到$[0,1]$区间．</p>
+
+<div class="admonition abstract"><p class="admonition-title">算法步骤</p>
+  <ul>
+<li>①将属性规范化到$[0, 1]$区间；</li>
+<li>②取样本$\boldsymbol{x}<em>i$，计算其与其他样本的距离，确定$x</em>{i,nh}$和$x_{i,nm}$;</li>
+<li>③对样本$\boldsymbol{x}_i$，计算其在每个属性$j$上与$nh$和$nm$的$diff（某种距离度量）$;</li>
+<li>④计算相关统计量对应属性$j$的分量$\delta^j$</li>
+</ul>
+
+</div>
+
+<p>式（11.3）中的$i$指出了用于平均的样本下标．实际上Relief只需在数据集的采样上而不必在整个数据集上估计相关统计量[Kira and Rendell, 1992]．显然， Relief的时间开销随采样次数以及原始特征数线性增长，因此是一个运行效率很高的过滤式特征选择算法．</p>
+
+<p>Relief是为二分类问题设计的，其扩展变体Relief-F [Kononenko, 1994]能处理多分类问题．假定数据集$D$中的样本来自$|\cal{Y}|$个类别．对示例$\boldsymbol{x}_i$，若它属于第$k$类$k \in {1,2,&hellip;|\cal{Y}| }$，则Relief-F先在第k类的样本中寻找$\boldsymbol{x}<em>i$的最近邻示例$\boldsymbol{x}</em>{i,nh}$并将其作为猜中近邻，然后在第$k$类之外的每个类中找到一个$\boldsymbol{x}<em>i$的最近邻示例作为猜错近邻，记为$\boldsymbol{x}</em>{i,l,nm} (l=1,2,&hellip;,|\cal{Y}|\, ; \, l\neq k)$．于是，相关统计量对应于属性$j$的分量为</p>
+
+<p><img src="https://i.loli.net/2019/04/04/5ca600b197c20.jpg" alt="-w472" /></p>
+
+<p>其中$p_l$为第$l$类样本在数据集$D$中所占的比例．</p>
+
+<h2 id="2-2-包裹式-wrapper-选择">2.2 - 包裹式(Wrapper)选择</h2>
+
+<ul>
+<li>特点：
+
+<ul>
+<li>把最终使用的学习器性能作为特征子集的评价标准，“量身定做”</li>
+<li>性能一般优于过滤式方法</li>
+<li>过多特征数目和较大停止条件控制参数会增加训练耗时，再加上运行时间限制可能无解（LVW）</li>
+</ul></li>
+<li>运行效率：通常&gt;&gt;过滤式方法（多次训练学习器耗时长）</li>
+<li>著名方法：LVW (Las Vegas Wrapper)</li>
+
+<li><p>适用范围：- -</p></li>
+
+<li><p>方法概述：</p>
+
+<ul>
+<li>子集选择：用随机策略在Las Vegas Method框架下搜索</li>
+<li>子集评价：最终分类器的误差</li>
+</ul></li>
+
+<li><p>关键定义：</p>
+
+<ul>
+<li>循环条件：$t &lt; T$</li>
+<li>$T$ - 【停止条件控制参数】最大连续循环次数限制（连续循环T次后，学习器仍未改进则退出循环）</li>
+<li>$t$ - 连续循环次数flag</li>
+</ul></li>
+
+<li><p>相关定义&amp;标记：</p>
+
+<ul>
+<li>$E$ - 学习器误差；$d$ - 特征子集中特征个数；$A$ - 特征子集。</li>
+<li>上轮标记：$E, d, A^\ast$</li>
+<li>本轮标记：$E&rsquo;,d&rsquo;,A&rsquo;$</li>
+</ul></li>
+
+<li><p>算法步骤：</p></li>
+</ul>
+
+<p><img src="https://i.loli.net/2019/04/04/5ca600b80a45d.jpg" alt="-w602" /></p>
+
+<p>注：</p>
+
+<ul>
+<li>1-4：初始化；</li>
+<li>8：在本轮特征子集A’上，用Cross Validation估计学习器误差）；</li>
+<li>9：保留条件：OR（本轮误差 &lt; 上轮误差，本轮误差 = 上轮误差 &amp;  本轮特征个数 &lt; 上轮特征个数）</li>
+</ul>
+
+<blockquote>
+<p>因为LVW算法是在Las Vegas Method框架下建立的，所以若初始特征数目很多、T较大，则LVW算法可能运行很长时间都达不到停止条件。即，若再加上时间限制，可能给不出解。</p>
+
+<p>拉斯维加斯方法和蒙特卡罗方法是两个以著赌城名字命名的随机化方法．两者的主要区别是：若有时间限制，则拉斯维加斯方法或者给出满足要求的解，或者不给出解，而蒙特卡罗方法一定会给出解，虽然给出的解未必满足要求；若无时间限制，则两者都能给出满足要求的解．</p>
+</blockquote>
+
+<h2 id="2-3-嵌入式-embedding-选择">2.3 - 嵌入式(Embedding)选择</h2>
+
+<ul>
+<li>特点：在训练学习器过程中自动进行特征选择，训练学习器与特征选择同时完成</li>
+<li>运行效率：- -</li>
+<li>著名方法：L1范数正则化</li>
+<li>适用范围：以线性回归模型为例</li>
+<li>关键概念：
+
+<ul>
+<li>岭回归(ridge regression)</li>
+<li>LASSO ( Least Absolute Shrinkage and Selection Operator)</li>
+</ul></li>
+<li>方法概述：</li>
+</ul>
+
+<p>令最优化目标函数为平方差损失函数
+<img src="https://i.loli.net/2019/04/04/5ca600b18dc62.jpg" alt="-w524" /></p>
+
+<p>因为(11.5)在特征多、样本少时容易过拟合。为了缓解过拟合，对(11.5)引入正则化项。
+引入L1范数正则化，得 “LASSO”：
+<img src="https://i.loli.net/2019/04/04/5ca600b192afc.jpg" alt="-w492" />
+其中，正则化参数$λ &gt; 0$。求出(11.7)的解即得所选特征子集及最终学习器。</p>
+
+<div class="admonition tip"><p class="admonition-title">注意</p>
+  <ul>
+<li>用其他p范数也可以。事实上，对ω施加“稀疏约束”（即希望ω的非零分量尽可能少）最自然的是使用L0范数，但L0范数不连续，难以优化求解，因此常使用L1范数。</li>
+<li>若引入L2范数正则化，得 “岭回归”：
+<img src="https://i.loli.net/2019/04/04/5ca600b194500.jpg" alt="-w503" /></li>
+</ul>
+
+</div>
+
+<div class="admonition abstract"><p class="admonition-title">summary</p>
+  <ul>
+<li>L1范数和L2范数正则化都能降低过拟合风险，且L1效果优于L2</li>
+<li>L1范数比L2求得的ω会有更少的分量，即更容易获得“稀疏”(sparse)解。</li>
+</ul>
+
+</div>
+
+<div class="admonition tip"><p class="admonition-title">范数</p>
+  <p>p-范数 (p-norm):</p>
+
+<p>若$\boldsymbol{x} = [x_1, x_2, \cdots,x_n]^T$，那么$\boldsymbol{x}$的$p$范数为：$||\boldsymbol{x}||_p = (|x_1|^p + |x_2|^p + \cdots + |x_n|^p)^{\frac{1}{p}}$</p>
+
+<ul>
+<li>$1$-范数：$||\boldsymbol{x}||_1 = (|x_1| + |x_2| + \cdots + |x_n|)$</li>
+<li>$2$-范数：$||\boldsymbol{x}||_2 = (|x_1|^2 + |x_2|^2 + \cdots + |x_n|^2)^{\frac{1}{2}}$</li>
+<li>$\infty$-范数：$||\boldsymbol{x}||_{\infty} = \max (|x_1| + |x_2| + \cdots + |x_n|)$</li>
+</ul>
+
+</div>
+
+<p>❓ 解释L1范数更容易获得稀疏解：
+<img src="https://i.loli.net/2019/04/04/5ca600b7f3b68.jpg" alt="-w639" /></p>
+
+<p>为了理解这一点，我们来看一个直观的例子：假定$\boldsymbol{x}$仅有两个属性，于是无论式（11.6）还是（11.7）解出的$\boldsymbol{w}$都只有两个分量，即$w_1, w_2$，我们将其作为两个坐标轴，然后在图中绘制出式（11.6）与（11.7）的第一项的“等值线”，即在$(w_1, w_2)$空间中平方误差项取值相同的点的连线，再分别绘制出$L_1$范数与$L_2$范数的等值线，即在$(w_1, w_2)$空间中$L_1$范数取值相同的点的连线，以及$L_2$范数取值相同的点的连线，如图11.2所示．式（11.6）与（11.7）的解要在平方误差项与正则化项之间折中，即出现在图中平方误差项等值线与正则化项等值线相交处．由图11.2可看出，采用$L_1$范数时平方误差项等值线与正则化项等值线的交点常出现在坐标轴上，即$w_1$或$w_2$为0，而在采用$L_2$范数时，两者的交点常出现在某个象限中，即$w_1$或$w_2$均非$0$;换言之，采用$L_1$范数比$L_2$范数更易于得到稀疏解．</p>
+
+<ul>
+<li>Q：为什么“子集选择”与“子集评价”同时完成？</li>
+
+<li><p>A：$ω$解出稀疏解 ⇒ 初始特征中仅有系数非零的特征才有作用（经过筛选被留在最终学习器中，此方法就是“嵌入式”的特征选择方法）</p></li>
+
+<li><p>Q：如何求解L1正则化问题？</p></li>
+
+<li><p>A：使用“近端梯度下降”（Proximal Gradient Descent, PGD）方法。</p></li>
+</ul>
+
+<p>$L_1$正则化问题的求解可使用近端梯度下降（Proximal Gradient Descent, 简称PGD) [Boyd and Vandenberghe, 2004]．具体来说，令$\Delta$表示微分算子，对优化目标
+<img src="https://i.loli.net/2019/04/04/5ca600b19124e.jpg" alt="-w601" /></p>
+
+<p>若$f(x)$可导，且$\nabla f$满足L-Lipschitz条件，即存在常数$L&gt;0$使得
+<img src="https://i.loli.net/2019/04/04/5ca600b195e72.jpg" alt="-w602" /></p>
+
+<p>则在$\boldsymbol{x}_k$附近可将$f(\boldsymbol{x})$通过二阶泰勒展式近似为</p>
+
+<p><img src="https://i.loli.net/2019/04/04/5ca600b7d8379.jpg" alt="-w595" /></p>
+
+<p>其中$const$是与$\boldsymbol{x}$无关的常数$\langle \cdot \, , \, \cdot \rangle $表示内积．显然，式（11.10）的最小值在如下$\boldsymbol{x}_{k+1}$获得：
+<img src="https://i.loli.net/2019/04/04/5ca600b19b206.jpg" alt="-w591" /></p>
+
+<p>于是，若通过梯度下降法对$f(\boldsymbol{x})$进行最小化，则每一步梯度下降迭代实际 上等价于最小化二次函数$\hat{f}(\boldsymbol{x})$．将这个思想推广到式（11.8)，则能类似地得到其每一步迭代应为
+<img src="https://i.loli.net/2019/04/04/5ca600b7d0df2.jpg" alt="-w595" /></p>
+
+<p>即在每一步对$f(\boldsymbol{x})$进行梯度下降迭代的同时考虑$L_1$范数最小化.</p>
+
+<p>对于式（11.12)，可先计算$\boldsymbol{z} = \boldsymbol{x}_k - \frac{1}{L} \nabla f(\boldsymbol{x}_k)$，然后求解
+<img src="https://i.loli.net/2019/04/04/5ca600b7c8435.jpg" alt="-w596" /></p>
+
+<p>令$x^i$表示$\boldsymbol{x}$的第$i$个分量，将式（11.13）按分量展开可看出，其中不存在$x^i x^j (i \neq j)$这样的项，即$\boldsymbol{x}$的各分量互不影响，于是式（11.13)有闭式解</p>
+
+<p><img src="https://i.loli.net/2019/04/04/5ca600b7d4915.jpg" alt="-w602" /></p>
+
+<p>其中$x<em>{k+1}^i$与户分别是$\boldsymbol{x}</em>{k+1}$与$\boldsymbol{z}$的第$i$个分量．因此，通过PGD能使LASSO和其他基于$L_1$范数最小化的方法得以快速求解．</p>
+
+<h1 id="3-稀疏表示与字典学习">3 - 稀疏表示与字典学习</h1>
+
+<p><strong>适用场景：</strong></p>
+
+<p>需要进行特征选择的特征是“稀疏”的。若把数据集看做一个矩阵$D$，则$D$的某些列（特征）是与当前学习任务无关的，应去除。</p>
+
+<p><strong>以“字典”为例解释稀疏表示：</strong></p>
+
+<ul>
+<li>数据集矩阵$D$中有很多零元素，零散分布的（不是整行或整列的）。</li>
+</ul>
+
+<p>若令  $样本 ← 文本文档$，$特征 ← 文本中的每个字$，$特征取值 ← 每个字出现的次数$，以$D$的行表示样本，$D$的列表示特征，则$D$是稀疏的。</p>
+
+<p><strong>稀疏的好处：</strong></p>
+
+<ol>
+<li>用字频形式表示文本文档，呈现稀疏特征，使大部分问题线性可分，可用线性支持向量机处理；</li>
+<li>对稀疏矩阵的高效储存方法，大大减轻了储存负担。</li>
+</ol>
+
+<p><strong>合适的稀疏【恰当稀疏】：</strong></p>
+
+<ol>
+<li>用“康熙字典”作列特征（生僻字太多），很可能使D稀疏过头【“过度稀疏”】，用“现代汉语词典”可能稀疏程度适中【“恰当稀疏”】。</li>
+<li>“恰当稀疏”可体现稀疏的好处，利于处理学习任务；“过度稀疏”则不能。</li>
+</ol>
+
+<p><strong>⭐️How?如何实现“恰当稀疏”？</strong></p>
+
+<p>&ndash;  【字典学习dictionary learning（稀疏编码sparse coding）】</p>
+
+<p><strong>Goal:</strong></p>
+
+<p>与文本文档的处理类似，我们对其他任务（如，图像识别）学习出一个“字典”，利用“恰当稀疏”优势，完成学习任务。</p>
+
+<blockquote>
+<p>字典学习侧重字典的产生过程，稀疏编码侧重统计频次的过程。本书不加区分，以字典学习代替。字典，亦称“码书”（code book）；字典学习，亦称“码书学习”（ciodebook learning）</p>
+</blockquote>
+
+<p>给定数据集${ \boldsymbol{x}_1, \boldsymbol{x}_2, \cdots, \boldsymbol{x}_m}$，字典学习最简单的形式为</p>
+
+<p><img src="https://i.loli.net/2019/04/04/5ca600b7d2a09.jpg" alt="-w605" /></p>
+
+<p>其中$\boldsymbol{B} \in \mathbb{R}^{d \times k}$为字典矩阵，$k$称为字典的词汇量，通常由用户指定，$\boldsymbol{\alpha}_i \in \mathbb{R}^k$则是样本$\boldsymbol{x}_i \in \mathbb{R}^d$的稀疏表示．显然，式（11.15）的第一项是希望由$\boldsymbol{\alpha}_i$能很好地重构$\boldsymbol{x}_i$，第二项则是希望$\boldsymbol{\alpha}_i$尽量稀疏．</p>
+
+<p>与LASSO相比，式（11.15）显然麻烦得多，因为除了类似于式（11.7）中$\boldsymbol{w}$的$\boldsymbol{\alpha}_i$，还需学习字典矩阵$\boldsymbol{B}$．不过，受LASSO的启发，我们可采用变量交替优化 的策略来求解式（11.15).</p>
+
+<p>首先在第一步，我们固定住字典$\boldsymbol{B}$，若将式（11.15）按分量展开，可看出其中不涉及$\alpha_i^u \alpha_i^v$这样的交叉项，于是可参照LASSO的解法求解下式，从 而为每个样本$\boldsymbol{x}_i$找到相应的$\boldsymbol{\alpha}_i$:</p>
+
+<p><img src="https://i.loli.net/2019/04/04/5ca600b7c9f89.jpg" alt="-w599" /></p>
+
+<p>在第二步，我们固定住$\boldsymbol{\alpha}_i$来更新字典$\boldsymbol{B}$，此时可将式（11.15）写为</p>
+
+<p><img src="https://i.loli.net/2019/04/04/5ca600b7c6b1e.jpg" alt="-w592" /></p>
+
+<p>其中$\boldsymbol{X}=( \boldsymbol{x}_1, \boldsymbol{x}_2, \cdots, \boldsymbol{x}_m) \in \mathbb{R}^{d \times m}$, $\boldsymbol{A}=(\boldsymbol{\alpha}_1, \boldsymbol{\alpha}_2, &hellip; ,\boldsymbol{\alpha}_m) \in \mathbb{R}^{k \times m}$, $||\cdot||_F$是矩阵的Frobenius范数．式（11.17）有多种求解方法，常用的有基于逐列更新策略的KSVD [Aharon et al., 2006]．令$\boldsymbol{b}_i$表示字典矩阵$\boldsymbol{B}$的第$i$列，$\boldsymbol{\alpha}_i$表示稀疏矩阵$\boldsymbol{A}$的第$i$行，式（11.17）可重写为
+<img src="https://i.loli.net/2019/04/04/5ca600b7e7454.jpg" alt="-w585" /></p>
+
+<p>在更新字典的第$i$列时，其他各列都是固定的，因此$\boldsymbol{E}<em>i = \sum</em>{j \neq i} \boldsymbol{b}_j \boldsymbol{\alpha}^j$是固定的，于是最小化式（11.18）原则上只需对$\boldsymbol{E}_i$进行奇异值分解以取得最大奇异值所对应的正交向量．然而，直接对$\boldsymbol{E}_i$进行奇异值分解会同时修改$\boldsymbol{b}_i$和$\boldsymbol{\alpha}^i$，从而可 能破坏$\boldsymbol{A}$的稀疏性．为避免发生这种情况，KSVD对$\boldsymbol{E}_i$和$\boldsymbol{\alpha}^i$进行专门处理：$\boldsymbol{\alpha}^i$仅保留非零元素，$\boldsymbol{E}_i$则仅保留$\boldsymbol{b}_i$与$\boldsymbol{\alpha}^i$的非零元素的乘积项，然后再进行奇异值分解，这样就保持了第一步所得到的稀疏性．</p>
+
+<p>初始化字典矩阵$\boldsymbol{B}$之后反复迭代上述两步，最终即可求得字典$\boldsymbol{B}$和样本$\boldsymbol{x}_i$的稀疏表示$\boldsymbol{\alpha}^i$。在上述字典学习过程中，用户能通过设置词汇量$k$的大小来控制字典的规模，从而影响到稀疏程度．</p>
+
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">Octemull</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">2017-12-19</span>
+  </p>
+  
+  
+</div><footer class="post-footer">
+      <div class="post-tags">
+          <a href="/personal-site/tags/notes/">Notes</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/personal-site/post/mac-libsvm/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Mac下matlab2014b安装libsvm</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        <a class="next" href="/personal-site/post/ml-contents/">
+            <span class="next-text nav-default">目录 周志华机器学习笔记</span>
+            <span class="next-text nav-mobile">Next</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      var gitalk = new Gitalk({
+        id: '2017-12-19 00:00:00 \x2b0000 UTC',
+        title: 'chap 11 - 特征选择（特征选取） 与 稀疏学习',
+        clientID: 'ce8007fddcb901cf8139',
+        clientSecret: '25db834f14aadc3708bf0c8eeb5c10127a9f5a22',
+        repo: 'personal-site-comment',
+        owner: 'Octemull',
+        admin: ['Octemull'],
+        body: decodeURI(location.href)
+      });
+      gitalk.render('gitalk-container');
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://github.com/gitalk/gitalk">comments powered by gitalk.</a></noscript>
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="mailto:yyear103@outlook.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/Octemull" class="iconfont icon-github" title="github"></a>
+  <a href="https://octemull.github.io/personal-site/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  
+
+  <span class="copyright-year">
+    &copy; 
+    2019
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">Octemull</span>
+  </span>
+</div>
+
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  <script src="/personal-site/lib/highlight/highlight.pack.js?v=20171001"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/personal-site/dist/even.26188efa.min.js"></script>
+  <script type="text/javascript">
+    window.MathJax = {
+      tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+      showProcessingMessages: false,
+      messageStyle: 'none'
+    };
+  </script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"  integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
+
+<script id="baidu_analytics">
+  var _hmt = _hmt || [];
+  (function() {
+    if (window.location.hostname === 'localhost') return;
+    var hm = document.createElement("script"); hm.async = true;
+    hm.src = "https://hm.baidu.com/hm.js?41497b30235376fbac44b6375248dcd8";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+
+
+
+
+
+</body>
+</html>
